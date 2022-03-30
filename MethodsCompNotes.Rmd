@@ -1,0 +1,119 @@
+---
+title: "Methods Comp Notes"
+author: "Zayne Sember"
+date: "3/29/2022"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# POLI 204B
+
+## Hypothesis Testing
+
+1.  Set some threshold, $\alpha$, at or below which you deem a p-value significant
+
+2.  Define the null hypothesis, $H_0$
+
+3.  Define the alternative hypothesis, $H_A$, either two-tailed or one-tailed
+
+4.  Calculate a test statistic such as Z-score or t-test and check the p-value
+
+5.  Draw conclusions
+
+Some hypothesis tests in R
+
+```{r}
+# ONE SAMPLE T-TEST
+# How likely is it that the mean of some population from which we take a normal sample, x, is greater than some number, mu?
+
+x <- rnorm(100)
+t.test(x, mu=5)
+
+# WELCH TWO-SAMPLE T-TEST
+# How likely is it that the means of two populations differ based on two normal samples of equal variance, x and y?
+
+x <- rnorm(100)
+y <- rnorm(100)
+
+t.test(x, y)
+
+# TWO PROPORTION Z-TEST
+# Is there a significant difference in proportions between two populations given normal samples of them, x and y?
+
+x <- rnorm(100)
+y <- rnorm(100)
+
+# Assuming we want to test whether the share of values greater than zero differs between the two populations
+x_count <- length(x[x>0])
+y_count <- length(y[y>0])
+
+prop.test(x=c(x_count,y_count), n=c(length(x), length(y)), alternative="two.sided")
+
+
+# CHI-SQUARED TEST
+# Are two variables independent? Useful for testing relationships between categorical variables
+
+#  For example, if you were investigating the relationship between occupation and party preference, and 35% of voters were Democrats, 32% were Independents, and 33% were Republicans, independence implies the same partisan breakdown across all occupational categories (35, 32, and 33).
+
+data_frame <- read.csv("https://goo.gl/j6lRXD")
+
+table(data_frame$treatment, data_frame$improvement)
+
+chisq.test(data_frame$treatment, data_frame$improvement, correct=FALSE)
+
+
+# DIFFERENCE BETWEEN VARIANCES TEST
+# Is the variance between two normal samples, x and y, drawn from populations significantly different?
+
+x <- rnorm(100, sd=3)
+y <- rnorm(121, sd=3.5)
+
+var.test(x, y)
+```
+
+## Properties of Estimators
+
+### Unbiasedness
+
+$E(\hat{\theta}) - \theta = 0$
+
+### Asymptotic Unbiasedness
+
+As $n$ gets bigger, the estimator's biasedness goes to zero $\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+
+### Efficiency
+
+The estimator needs fewer observations to achieve better error performance $\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}$
+
+### Constitency
+
+The distribution of estimates converges on the true value as $n$ gets bigger $\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+
+## Regression
+
+## Regression Inference
+
+## Categorical Variables
+
+## Interactions
+
+## Regression Diagnostics
+
+## Regression Assumptions
+
+# POLI 271
+
+## Likelihood Theory
+
+## Binary Data
+
+## Out-of-sample Prediction
+
+## Model Selection
+
+## Model Interpretation
+
+# 2021 Exam Questions and Answers
