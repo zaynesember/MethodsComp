@@ -3,23 +3,31 @@ title: "Methods Comp Notes"
 author: "Zayne Sember"
 date: "3/29/2022"
 output: html_document
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+
+library(tidyverse)
 ```
 
 # POLI 204B
 
 ## Hypothesis Testing
 
-1.  Set some threshold, $\alpha$, at or below which you deem a p-value significant
+1.  Set some threshold, $\alpha$, at or below which you deem a p-value
+    significant
 
 2.  Define the null hypothesis, $H_0$
 
-3.  Define the alternative hypothesis, $H_A$, either two-tailed or one-tailed
+3.  Define the alternative hypothesis, $H_A$, either two-tailed or
+    one-tailed
 
-4.  Calculate a test statistic such as Z-score or t-test and check the p-value
+4.  Calculate a test statistic such as Z-score or t-test and check the
+    p-value
 
 5.  Draw conclusions
 
@@ -82,17 +90,318 @@ $E(\hat{\theta}) - \theta = 0$
 
 ### Asymptotic Unbiasedness
 
-As $n$ gets bigger, the estimator's biasedness goes to zero $\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+As $n$ gets bigger, the estimator's biasedness goes to zero
+$\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0$
 
 ### Efficiency
 
-The estimator needs fewer observations to achieve better error performance $\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}$
+The estimator needs fewer observations to achieve better error
+performance $\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}$
 
-### Constitency
+### Consistency
 
-The distribution of estimates converges on the true value as $n$ gets bigger $\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+The distribution of estimates converges on the true value as $n$ gets
+bigger
+$\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0$
 
-## Regression
+## Correlation
+
+We define the correlation, $r$, between two variables, $x$ and $y$, to
+be:
+
+$$r=\frac{\sum{Z_{xi}Z_{yi}}}{n-1}=\frac{\sum{(x_i-\bar{x})(y_i-\bar{y})}}{s_xs_y(n-1)}$$
+where the standard deviation of $x$ (and same for $y$) is:
+
+$$s_x=\sqrt{\frac{\sum{(x_i-\bar{x})^2}}{n-1}}$$
+
+```{r}
+x <- rnorm(n=100, mean=2, sd=3)
+y <- rnorm(n=100, mean=-3, sd=2)
+
+cor(x,y)
+```
+
+## Regression Basics
+
+Ordinary least squares regression seeks to minimize the the vertical
+distances, $\epsilon$, between the data being fitted and some line of
+best fit with some slope (in the bivariate case), $\beta_1$, and some
+intercept, $\beta_0$.
+
+The model we want to fit to:
+
+$$y_i=\beta_0+\beta_1x_i+\epsilon_i$$
+
+The model we estimate:
+
+$$y_i=\hat{\beta_0}+\hat{\beta_1}x_i+e_i$$ The residuals, $e_i$, are an
+estimate of the error (distance between true line and y_i).
+
+The residual sum of squares (RSS) is defined as:
+$$RSS=\sum e_i^2=\sum(y_i-\hat{y_i})^2$$
+
+```{r}
+# If we have some lm model we can get the RSS as follows:
+x <- rnorm(n=100, mean=2, sd=3)
+y <- rnorm(n=100, mean=-3, sd=2)
+
+model <- lm(y ~ x)
+
+deviance(model)
+
+# or
+
+sum(resid(model)^2)
+
+# Or without an lm model:
+
+rss <- function(y, y_hat){
+  return(sum((y-y_hat)^2))
+}
+
+y_hat <- fitted(model)
+
+rss(y, y_hat)
+```
+
+The regression sum of squares (RSS) (AKA sum of squares of regression
+(SSR), explained sum of squares (ESS)) is defined as:
+$$RegSS=\sum(\hat{y_i}-\bar{y})^2$$
+
+```{r}
+x <- rnorm(n=100, mean=2, sd=3)
+y <- rnorm(n=100, mean=-3, sd=2)
+
+model <- lm(y ~ x)
+
+y_hat <- fitted(model)
+
+regSS <- function(y_hat, y){
+  return(sum((y_hat-mean(y))^2))
+}
+
+regSS(y_hat, y)
+```
+
+The total sum of squares (TSS) is defined as:
+$$TSS=\sum(y_i-\bar{y})^2$$
+
+```{r}
+y <- rnorm(n=100, mean=-3, sd=2)
+
+TSS <- function(y){
+  return(sum((y-mean(y))^2))
+}
+
+TSS(y)
+```
+
+The ratio of RegSS to TSS is our $r^2$, the share of variance in $y$
+that is explained by $x$:
+$$r^2=\frac{RegSS}{TSS}=\frac{\sum(\hat{y_i}-\bar{y})^2}{\sum(y_i-\bar{y})^2}$$
+
+```{r}
+x <- rnorm(n=100, mean=2, sd=3)
+y <- rnorm(n=100, mean=-3, sd=2)
+
+model <- lm(y ~ x)
+
+summary(model)$r.squared
+
+# or
+
+y_hat <- fitted(model)
+
+rsquared <- function(y, y_hat){
+  return(sum((y_hat-mean(y))^2)/sum((y-mean(y))^2))
+}
+
+rsquared(y, y_hat)
+```
+
+### Four assumptions of regression
+
+1.  *Linearity*: The relationship between $X$ and the mean of $Y$ is
+    linear
+
+2.  *Homoscedasticity*: The variance of the residual is the same for any
+    value of $X$
+
+3.  *Independence*: Observations are independent of each other
+
+4.  *Normality*: For any fixed value of $X$, $Y$ is normally distributed
+
+### Calculating bivariate regression by hand (linear method)
+
+#### Step 1
+Given the vectors $X$ and $Y$, find $X^2$, $XY$, and the sums of all of the preceding vectors
+```{r}
+calc_x2xy <- function(x, y){
+  df <- data.frame(x=x,y=y)
+  
+  df$xsquared <- x^2
+  df$xy <- x*y
+  
+  totals <- c(sum(x), sum(y), sum(df$xsquared), sum(df$xy))
+  
+  df <- rbind(df, totals)
+  rownames(df) <- c(1:length(x),"total")
+  
+  return(df)
+}
+
+x <- rnorm(n=7, mean=2, sd=3)
+y <- rnorm(n=7, mean=-3, sd=2)
+
+df_step1 <- calc_x2xy(x=x,y=y)
+df_step1
+```
+#### Step 2
+Calculate $\hat\beta_1$ and $\hat\beta_0$:
+$$\hat\beta_1=\frac{N\sum x_iy_i-\sum x_i\sum y_i}{N\sum x_i^2-(\sum x_i)^2}$$
+$$\hat\beta_0=\frac{\sum y_i -\hat\beta_1\sum x_i}{N}$$
+```{r}
+calc_beta1 <- function(df){
+  totals <- tail(df,n=1)
+  N <- length(df[[1]])-1
+  
+  df <- head(df,n=N)
+  N <- length(df$x-1) # -1 bc row totals amended
+  
+  beta1 <- (N*totals$xy - (totals$x*totals$y))/((N*totals$xsquared)-(totals$x)^2)
+  return(beta1)
+}
+
+calc_beta0 <- function(df, beta1){
+  totals <- tail(df,n=1)
+  N <- length(df[[1]])-1
+  
+  beta0 <- (totals$y - (beta1*totals$x))/N
+  return(beta0)
+}
+
+beta1 <- calc_beta1(df=df_step1)
+beta1
+
+beta0 <- calc_beta0(df=df_step1, beta1=beta1)
+beta0
+
+# check with:
+# lm(y~x)
+```
+#### Step 3
+
+Next, calculate $x-\bar x$, $(x- \bar x)^2$, $y-\bar y$, $(y-\bar y)^2$, and $(x-\bar x)(y-\bar y)$.
+
+```{r}
+calc_r_table <- function(x, y){
+  N <- length(x)
+  df <- data.frame(x=x,y=y)
+  
+  df$x_minus_xbar <- df$x -  mean(x)
+  df$x_minus_xbar_sq <- (df$x_minus_xbar)^2
+  
+  df$y_minus_ybar <- df$y -  mean(y)
+  df$y_minus_ybar_sq <- (df$y_minus_ybar)^2
+  
+  df$x_minus_xbar_y_minus_ybar <- df$x_minus_xbar*df$y_minus_ybar
+  
+  return(df)
+}
+
+calc_rsquared <- function(x, y){
+  df <- calc_r_table(x,y)
+  N <- length(x)
+  
+  sd_x <- sqrt((sum(df$x_minus_xbar_sq))/(N-1))
+  sd_y <- sqrt((sum(df$y_minus_ybar_sq))/(N-1))
+  
+  r <- (sum(df$x_minus_xbar_y_minus_ybar))/((N-1)*sd_x*sd_y)
+  
+  return(r^2)
+}
+
+calc_r_table(x=x,y=y)
+
+calc_rsquared(x=x,y=y)
+
+# check with:
+#summary(lm(y~x))$r.squared
+```
+#### Step 4
+Calculate the residuals, their square, and from that the estimated standard error
+$$e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i$$
+$$\hat\sigma=\sqrt{\frac{\sum e_i^2}{N-2}}$$
+```{r}
+calc_residuals <- function(x, y, beta0, beta1){
+  df <- data.frame(e=y-beta0-(beta1*x))
+  df$e_squared <- df$e^2
+  
+  return(df)
+}
+
+calc_sigma <- function(e_squared, N){
+  return(sqrt(sum(e_squared)/(N-2)))
+}
+
+residuals <- calc_residuals(x, y, beta0, beta1)
+residuals
+
+# check with:
+#resid(lm(y~x))
+
+sigma <- calc_sigma(residuals$e_squared, N=length(x))
+sigma
+
+# check with:
+#summary(lm(y~x))$sigma
+
+
+```
+
+### Calculating bivariate regression by hand (matrix method)
+
+Just calculate $\hat\beta=(X'X)^{-1}X'Y$
+
+```{r}
+x <- rnorm(n=7, mean=2, sd=3)
+y <- rnorm(n=7, mean=-3, sd=2)
+
+print("Append ones to X")
+X <- matrix(c(rep(1, length(x)),x), nrow=length(x))
+X
+
+print("Define Y")
+Y <- as.matrix(y)
+Y
+
+print("Get X'X")
+t(X) %*% X
+
+print("Get the inversion of X'X")
+solve(t(X) %*% X)
+
+print("Get X'Y")
+t(X) %*% Y
+
+print("Get beta")
+solve(t(X) %*% X) %*% t(X) %*% Y
+
+# check with:
+#lm(y~x)
+```
+
+
+## Multiple Regression
+
+We now have multiple $X$s we need to fit to:
+
+$$Y=\beta_0+\beta_1X_1+\beta_2X_2+\epsilon$$
+
+We want to find the values of $\beta_0$, $\beta_1$, and $\beta_2$ that
+**minimizes** the sum of squared residuals (RSS):
+
+$$RSS=\sum(\hat{y_i}-\bar{y})^2=\sum(\hat{y_i}-(\hat{\beta_0}+\hat\beta_1X_1+\hat\beta_2X_2)^2$$
 
 ## Regression Inference
 
