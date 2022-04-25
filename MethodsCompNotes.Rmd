@@ -11,6 +11,8 @@ editor_options:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 
+library(olsrr)
+library(car)
 library(sjPlot)
 library(tidyverse)
 library(fixest)
@@ -222,6 +224,7 @@ rsquared <- function(y, y_hat){
 
 rsquared(y, y_hat)
 ```
+
 ### Calculating bivariate regression by hand (linear method)
 
 #### Step 1
@@ -406,14 +409,19 @@ $$RSS=\sum(\hat{y_i}-\bar{y})^2=\sum(\hat{y_i}-(\hat{\beta_0}+\hat\beta_1X_1+\ha
 
 ## Categorical Variables
 
-When regressing on a categorical variable you leave one category out. Coefficients are the impact of being $X$ vs. the excluded category, all else equal.
+When regressing on a categorical variable you leave one category out.
+Coefficients are the impact of being $X$ vs. the excluded category, all
+else equal.
 
 ## Fixed Effects
 
-Suppose we have data on 100 individuals in each of 100 countries ($n=10,000$).
+Suppose we have data on 100 individuals in each of 100 countries
+($n=10,000$).
 
-If we include a dummy to "soak up" the country effects we can "isolate" the differences between the individuals across countries.
-- The estimated coefficients for each country typically aren't reported bc they aren't relevant to our RQ
+If we include a dummy to "soak up" the country effects we can "isolate"
+the differences between the individuals across countries. - The
+estimated coefficients for each country typically aren't reported bc
+they aren't relevant to our RQ
 
 ```{r}
 data(trade)
@@ -431,19 +439,24 @@ summary(fe_ols)
 
 ## Interactions
 
-Case 1: Interacting a dummy with another dummy
-- Coefficient is the (estimated) change in the *intercept* of the line of best fit between units where both dummies are zero vs. where they are both 1.
+Case 1: Interacting a dummy with another dummy - Coefficient is the
+(estimated) change in the *intercept* of the line of best fit between
+units where both dummies are zero vs. where they are both 1.
 
-Case 2: Interacting a dummy with a continuous variable
-- Coefficient is the difference in coefficient on the continuous variable when dummy is on vs. off.
+Case 2: Interacting a dummy with a continuous variable - Coefficient is
+the difference in coefficient on the continuous variable when dummy is
+on vs. off.
 
-Case 3: Interacting a continuous variable with another continuous variable.
-- Don't try to interpret coefficient, look at an interaction plot
+Case 3: Interacting a continuous variable with another continuous
+variable. - Don't try to interpret coefficient, look at an interaction
+plot
 
-Overall, an interaction tells us the *impact* one variable has on another variable's effect on the outcome.
-- Only include them when you have a theoretical reason for doing so
+Overall, an interaction tells us the *impact* one variable has on
+another variable's effect on the outcome. - Only include them when you
+have a theoretical reason for doing so
 
 ### Interaction plots
+
 ```{r}
 set.seed(10)
 
@@ -501,8 +514,8 @@ Pretty self-explanatory
 
 ### Coefficient Plots
 
-Easier to read than a Big Ugly Table of Numbers (BUTON)
-- Always include 95% CI
+Easier to read than a Big Ugly Table of Numbers (BUTON) - Always include
+95% CI
 
 ```{r}
 # Source: https://bookdown.org/paul/applied-data-visualization/graph-coefficient-plots.html
@@ -542,9 +555,11 @@ ggplot(results, aes(x = Variable, y = Coefficient)) +
         coord_flip() +
   theme_light()
 ```
+
 ### Predicted Value Plots
 
-These plots convey the substantive importance of your findings; the magnitude of the impact of your IVs on your DV
+These plots convey the substantive importance of your findings; the
+magnitude of the impact of your IVs on your DV
 
 ```{r}
 df <- data.frame(x1=c(3, 4, 4, 5, 5, 6, 7, 8, 11, 12),
@@ -563,9 +578,11 @@ ggplot(df, aes(x=predict(model), y=y)) +
        title='Predicted vs. Actual Values') +
   theme_light()
 ```
+
 ### Marginal Effects Plot
 
-Another way to visualize the substantive meaning of your regression coefficients, especially when interactions are involved.
+Another way to visualize the substantive meaning of your regression
+coefficients, especially when interactions are involved.
 
 ```{r}
 data(efc)
@@ -582,7 +599,9 @@ ggplot(df_predict, aes(x, predicted)) +
 plot_model(model, type = "pred", terms = c("c12hour")) +
   theme_light()
 ```
-## Regression Assumptions
+
+## Regression Assumptions and Diagnostics
+
 ### Four assumptions of regression
 
 1.  *Linearity*: The relationship between $X$ and the mean of $Y$ is
@@ -594,11 +613,231 @@ plot_model(model, type = "pred", terms = c("c12hour")) +
 3.  *Independence*: Observations are independent of each other
 
 4.  *Normality*: For any fixed value of $X$, $Y$ is normally distributed
-## Regression Diagnostics
+    ## Regression Diagnostics ##\# Residual Plots Residuals are the
+    variance in $Y$ that is unexplained by $X$
+    $$\hat{e_i}=Y_i-\hat{Y_i}$$
+
+```{r}
+fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
+
+
+# Residuals vs. X
+# Ideally want a "cloud" without a large amount of values at the extremes of X, we want it to look basically random
+
+# If we have a U-shape or an inverted U then that indicates the data may be better suited for a nonlinear model
+
+# We also want to check for any major outliers, is there a point that's super far away from the rest?
+ggplot(data=fit, aes(x=Agriculture, y=.resid)) + 
+  geom_point() +
+  theme_light()
+```
+
+### Leverages
+
+Leverages tell us how much influence each value of $X$ have
+
+```{r}
+fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
+
+leveragePlot(model=fit, term.name="Catholic")
+```
+
+### Studentized and Standardized Residuals
+
+Standardized measurements of residuals, helps you see outliers.
+
+```{r}
+fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
+
+# Regular ole residuals
+ggplot(data=fit, aes(x=.fitted, y=.resid)) +
+  geom_point() +
+  theme_light()
+
+# Studentized residuals
+ggplot(data=fit, aes(x=.fitted, y=rstudent(fit))) +
+  geom_point() +
+  theme_light()
+
+# Standardized residuals
+ggplot(data=fit, aes(x=.fitted, y=rstandard(fit))) +
+  geom_point() +
+  theme_light()
+```
+
+### DFBETA
+
+Helps assess how influential each observation is. Essentially calculates
+how much the slope changes when an observation is removed from the model
+
+```{r}
+fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
+
+ols_plot_dfbetas(fit)
+
+# OR from car
+
+dfbetasPlots(fit)
+```
+
+### Cook's Distance
+
+Tells you how far, on average, the predicted y-values will move if an
+observation is dropped (note DFBeta is concerned with change in slope
+but also shows you outliers)
+
+Especially helpful for multivariate regression b/c combos of $X$s could
+yield an influential point a residual plot won't catch.
+
+```{r}
+fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
+
+ggplot(data=fit, aes(x=Catholic, y=cooks.distance(fit))) +
+  geom_point() +
+  theme_light()
+
+ggplot(data=fit, aes(x=Agriculture, y=cooks.distance(fit))) +
+  geom_point() +
+  theme_light()
+```
+
+### Multicollinearity
+
+The symptoms:
+
+-   Instability of estimates when adding or dropping variables
+
+-   Massive coefficients or t-statistics
+
+-   Two or more variables that are similar but with opposite signs
+
+What do to:
+
+-   More data!
+
+-   Simplify the model
+
+    -   Do we need all the variables that are collinear?
+
+    -   Could we combine two or more variables to create some sort of
+        index?
 
 # POLI 271
 
 ## Likelihood Theory
+
+### Deriving the log likelihood
+
+Given some probability density function (our stochastic component),
+$f(y;\theta)$ (could be normal, Gaussian, etc.):
+
+1.  Get the joint probability of the data. If the probabilities are
+    independent then we have:
+
+$$Pr(y_i,. . ., y_n|\theta_1, . . ., \theta_n)=Pr(y;\theta)=\prod_{i=1}^nf(y_i;\theta_i)$$
+
+2.  Convert the joint probability to a likelihood. Take the joint
+    probability, multiply it by some constant scalar, $h(y)$.
+
+$$\mathcal{L}(\theta|y)=h(y)\times Pr(y;\theta)$$
+
+3.  Plug in our $f(y;\theta)$ and simplify $\mathcal{L}(\theta|y)$
+
+4.  Simplify further by taking the log of $\mathcal{L}(\theta|y)$
+
+5.  Find the critical points by taking the first derivative w.r.t
+    $\theta$
+
+6.  Check whether they are maxima or minima by taking the second
+    derivative w.r.t. $\theta$
+
+An example:
+
+The exponential probability density function is defined as:
+$f_e(x;\theta)=\theta e^{-\theta x}$.
+
+First, note that since $X~f_e(x;\theta)$ the support (possible values of
+$X$) is $\mathbb{R}\in [0, \infty]$
+
+1.  Get the joint probability
+
+$$f_{\mathrm{joint}}(x,\theta)=\prod_{i=1}^n(\theta e^{-\theta x_i})=\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
+
+2. Define the likelihood function
+
+$$\mathcal{L}(\theta|x)=h(x)\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
+
+Let $h(x)=1$
+
+$$\mathcal{L}(\theta|x)=\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
+
+3. Take the log
+
+$$\ln(\mathcal{L}(\theta|x))=\ln(\theta^n\prod_{i=1}^n( e^{-\theta x_i}))$$
+$$\ln(\mathcal{L}(\theta|x))=n\ln(\theta)-\theta\sum_{i=1}^nx_i$$
+
+4. Take the first derivative and identify the critical points
+
+$$\frac{d\ln(\mathcal{L}(\theta|x))}{d\theta}=\frac{n}{\theta}-\sum_{i=1}^nx_i$$
+
+Set the derivative equal to zero to find the critical values of $\theta$:
+
+$$\frac{n}{\theta}-\sum_{i=1}^nx_i=0$$
+
+$$\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$$
+
+5. Take the second derivative and substitute $\hat{\theta}$ for $\theta$. If the result is positive the critical point is a minumum, if zero then it's a saddle, if negative it's a maximum.
+
+$$\frac{d^2ln(\mathcal{L}(\theta|x))}{d\theta}}{d\theta^2}=\frac{-n}{\theta^2}$$
+
+Plugging in $\hat{\theta}$:
+
+
+$$\frac{d^2ln(\mathcal{L}(\theta=\hat{\theta}|x))}{d\theta}}{d\theta^2}=\frac{-n\sum_{i=1}^nx_i}{n}=-\sum_{i=1}^nx_i$$
+
+What's the sign of $-\sum_{i=1}^nx_i$?
+
+We know $-\sum_{i=1}^nx_i<0$ because $\sum_{i=1}^nx_i>0$ given the $X$ is bounded between $[0, \infty]$ therefore it is a maximum and thus $\hat{\theta}$ is a maximum and the MLE is $\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$.
+
+Now in R:
+```{r}
+# Sets the seed for R's baked in random number generation for easy replication
+set.seed(2)
+
+# Assigns x to be a vector of 1000 observations drawn from the exponential distribution
+# with lambda=3
+x <- rexp(1000, 3)
+
+# Returns the log likelihood for some parameter, theta, given data, x
+exp.ll <- function(theta, x){return((length(x)*log(theta))-(theta*sum(x)))}
+
+thetas = seq(0,25,0.1)
+
+y <- c()
+
+for(theta in thetas){
+  y <- c(y,exp.ll(theta=theta,x=x))
+}
+
+theta_hat <- length(x)/sum(x)
+paste("For the given x, theta_hat is: ", theta_hat)
+
+df <- data.frame(y,thetas)
+
+ggplot(data=df,aes(x=thetas,y=y)) +
+  geom_point(size=0.5) +
+  geom_vline(xintercept=theta_hat, color="red", linetype="dashed") +
+  ggtitle("Log likelihood vs. theta") +
+  xlab("theta") +
+  ylab("Log likelihood") +
+  theme_bw()
+```
+
+Note: See MLE Problem Set 2 for a derivation of the MLE of the normal variance.
+
+## Regularity
+
+In order to find the MLE as we did above, the likelihood function must demonstrate "regularity", i.e. it must be continuous and twice differentiable.
 
 ## Binary Data
 
