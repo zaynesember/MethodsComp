@@ -10,7 +10,12 @@ editor_options:
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
-
+library(cvTools)
+library(separationplot)
+library(kableExtra)
+library(ROCR)
+library(boot)
+library(MASS)
 library(olsrr)
 library(car)
 library(sjPlot)
@@ -554,6 +559,10 @@ ggplot(results, aes(x = Variable, y = Coefficient)) +
         ggtitle("Outcome: Fertility") +
         coord_flip() +
   theme_light()
+
+# OR
+
+coefplot(fit)
 ```
 
 ### Predicted Value Plots
@@ -989,16 +998,326 @@ more nuanced for 2 reasons:
 ### Interpreting Logit with Plots
 
 ```{r}
-data("mtcars")
+# Read in and clean up the data
+impeach <- read_csv("Data/impeach.csv")
+#impeach <- impeach %>% select(-ccoal98)
+impeach <- na.omit(impeach)
+attach(impeach)
+
+# Make our DV binary
+impeach$votebin[votesum != 0] <- 1
+impeach$votebin[votesum == 0] <- 0
 
 # Estimate the model
-model <- glm(vs ~ cyl + disp + hp, family = binomial(link = "logit"), data = mtcars)
+model <- glm(votebin ~ partyid + clint96, family=binomial(link="logit"), data=impeach)
+
+summary(model)
+
+# Tidy the model
+results <- tidy(model)
+
+# Get the 95% CI
+fit_cis_95 <- confint(model, level = 0.95) %>% 
+  data.frame() %>%
+  rename("conf.low_95" = "X2.5..",
+         "conf.high_95" = "X97.5..")
+
+# Get the 90% CI
+fit_cis_90 <- confint(model, level = 0.90) %>% 
+  data.frame() %>%
+  rename("conf.low_90" = "X5..",
+         "conf.high_90" = "X95..")
+
+# Bind it together
+results <- bind_cols(results, 
+                     fit_cis_95, 
+                     fit_cis_90) %>%
+           rename(Variable = term,
+                  Coefficient = estimate,
+                  SE = std.error) %>%
+           filter(Variable != "(Intercept)")
+
+# Plot it!
+ggplot(results, aes(x = Variable, y = Coefficient)) +
+        geom_hline(yintercept = 0, color = "red", lty = 2) +
+        geom_point(aes(x = Variable, 
+                    y = Coefficient)) + 
+        # geom_linerange(aes(x = Variable, 
+        #              ymin = conf.low_90,
+        #              ymax = conf.high_90),
+        #            lwd = 1) +
+        geom_errorbar(aes(x = Variable, 
+                     ymin = conf.low_95,
+                     ymax = conf.high_95),
+                     width=.1) + 
+        ggtitle("Coefficient Plot") +
+        coord_flip() +
+  theme_light()
+
+# Now a predicted probability plot
+
+# Say we want to know the difference in predicted probability
+# of a Republican vs. a Democrat voting to impeach Clinton
+
+# Create a sequence of the range of values for the 96 vote share
+clint96.range <- seq(min(impeach$clint96),max(impeach$clint96),.1)
+
+# Construct the Democratic scenario
+x.lo <- c(1, 0, median(impeach$clint96)) # Democrat scenario
+X.lo <- matrix(x.lo, nrow=length(x.lo), ncol=length(clint96.range))
+X.lo[3,] <- clint96.range
+
+# Construct the Republican scenario
+x.hi <- c(1, 1, median(impeach$clint96)) # Republican scenario
+X.hi <- matrix(x.hi, nrow=length(x.hi), ncol=length(clint96.range))
+X.hi[3,] <- clint96.range
+
+# Generate a multivariate normal distribution
+B.tilde <- mvrnorm(1000, coef(model), vcov(model))
+
+# Generate the predicted probabilities
+s.lo <- inv.logit(B.tilde %*% X.lo)
+s.hi <- inv.logit(B.tilde %*% X.hi)
+s.lo <- apply(s.lo, 2, quantile, c(0.025, 0.5, 0.975))
+s.hi <- apply(s.hi, 2, quantile, c(0.025, 0.5, 0.975))
 
 
+# Now tidy the data and plot with ggplot
+pred.prob.df <- data.frame(xrange=rep(clint96.range,2), 
+                           y=c(s.lo[2,],s.hi[2,]),
+                           conf.low = c(s.lo[1,], s.hi[1,]),
+                           conf.high = c(s.lo[3,], s.hi[3,]),
+                           scenario = rep(c("Democrat", "Republican"), 
+                                          each=length(clint96.range)))
+
+ggplot(data=pred.prob.df, aes(x=xrange, y=y,
+                              ymin=conf.low,
+                              ymax=conf.high,
+                              fill=factor(scenario),
+                              linetype=factor(scenario))) +
+  geom_line(size=.8) +
+  geom_ribbon(alpha=0.25, color="gray") +
+  labs(x="1996 Vote Share for Clinton", y="Predicted Probability",
+       title="Predicted Probability Plot", linetype="Scenario") +
+  scale_fill_manual(labels=c("Democrat", "Republican"), 
+                    values=c("blue", "red")) +
+  theme_minimal() +
+  guides(fill="none", color="none")
+
+# Or use base graphics (ew)
+
+#jpeg(file="pred_prob.jpeg")
+
+# Get our blank plot
+plot(clint96.range, s.lo[2,], ylim=c(0,1),
+     xlab="Clinton 1996 District Vote Share",
+     ylab="Predicted Probability of Voting for Impeachment",
+     main="Impeachment Vote, Party ID, and 1996 Clinton Vote Share",
+     bty="n", col="white")
+
+# Plot the confidence bands
+polygon(x=c(clint96.range, rev(clint96.range)),
+        y=c(s.lo[1,],rev(s.lo[3,])),
+        col=grey(0.8), border=NA)
+
+polygon(x=c(clint96.range, rev(clint96.range)),
+        y=c(s.hi[1,],rev(s.hi[3,])),
+        col=grey(0.8), border=NA)
+
+#Plot the predicted probability curves
+lines(clint96.range, s.hi[2,], lty=3, lwd=2)
+
+lines(clint96.range, s.lo[2,], lwd=2)
+
+legend(70, 1, legend=c("Democrat", "Republican"), lty=c(1,3),lwd=3)
+#dev.off()
 ```
 
+### Comparing Models
+
+### ROC Plots
+
+Use these to assess model fit heuristically. We want our model's curve to be as close to a straight diagonal line as possible.
+
+In the below example, because the simpler model performs about as well as the more complicated one we would opt for the simpler model (assuming AIC, BIC, etc. are similar)
+
+Note: We can also calculate and compare the Area Under the Curve (AUC) for each model's ROC curve; smaller is better.
+```{r}
+# Read in and clean up the data
+impeach <- read_csv("Data/impeach.csv")
+impeach <- na.omit(impeach)
+attach(impeach)
+
+# Make our DV binary
+impeach$votebin[votesum != 0] <- 1
+impeach$votebin[votesum == 0] <- 0
+
+# Define two models to compare, one without aflcio97, one with
+model1 <- glm(votebin ~ partyid + clint96, family=binomial(link="logit"), data=impeach)
+
+model2 <- glm(votebin ~ partyid + clint96 + aflcio97, family=binomial(link="logit"), data=impeach)
+
+# Get out predicted values for each model
+model1_pred <- predict(model1, impeach, type = "response")
+model2_pred <- predict(model2, impeach, type = "response")
+preds_list <- cbind(model1_pred, model2_pred)
+
+
+m <- length(preds_list)
+actual_values <- rep(list(impeach$votebin),2)
+
+pred <- prediction(preds_list, actual_values)
+rocs <- performance(pred, "tpr", "fpr")
+#jpeg(file="ROCplot.jpeg")
+
+# Plot it
+plot(rocs, col = as.list(1:m), main = "Model 1 and 2 ROC Comparison")
+     legend(x = "bottomright",
+            legend = c("Model 1", "Model 2"),
+            fill = 1:m)
+#dev.off()
+
+# Calculating the AUC from the predicted values calculated above
+AUC_in <- performance(pred, measure="auc")
+
+AUC_labels <- c("Model 1", "Model 2")
+
+knitr::kable(cbind(AUC_labels, round(as.numeric(AUC_in@y.values), 3)), col.names = c("", "AUC"),
+      caption = "Model AUCs")
+     
+```
+### Separation Plots
+```{r}
+# Note: the separationplot library doesn't seem to allow multiple plots in the same chunk or like any attempts to save the plots using R functions
+separationplot(model1_pred, ms$deaths, heading="Model 1 Separation Plot")
+```
+```{r}
+separationplot(model2_pred, ms$deaths, heading="Model 2 Separation Plot")
+```
+```{r}
+separationplot(model3_pred, ms$deaths, heading="Model 3 Separation Plot")
+```
 
 ## Out-of-sample Prediction
+
+We assess out-of-sample prediction because our model might be overfitted to the data we feed it. When a model can predict both in-sample and out-of-sample well then it's more in line with the data generating process.
+
+What we need to evaluate a model's prediction error (AKA generalization error, generalization performance):
+- Training set
+- Test set
+- A model
+- A loss function to measure deviation from the actual value in the test set
+
+What we want:
+- Good performance in both the test and training sets
+
+```{r}
+# Load in some data
+ms<-read.table("Data/Msrepl87.asc", header=TRUE, 
+    colClasses=c("character",rep("numeric",22)))
+rownames(ms) <- ms$country
+
+
+# Create a new variables of interest
+ms$sanctions <- (ms$sanctions70 + ms$sanctions75)/2
+ms$deaths <- ifelse(ms$deaths75 > 0, 1, 0)
+
+
+# Create 3 competing logit models
+model1 <- glm(deaths ~ sanctions, family=binomial(link="logit"), data=ms)
+
+model2 <- glm(deaths ~ sanctions + pop75 + civlib76, 
+              family=binomial(link="logit"), data=ms)
+
+model3 <- glm(deaths ~ sanctions + civlib76 + pop75 + sanctions:civlib76,
+              family=binomial(link="logit"), data=ms)
+
+modelsummary(list("Model 1"=model1, "Model 2"=model2, "Model 3"=model3))
+
+# Based on the AIC and BIC Model 1 has the best in-sample fit
+# Now let's use cross-validation to assess out-of-sample fit
+
+set.seed(1234)
+
+# Define number of folds we want
+k <- 10
+
+# Make the fold assignments, order them, and attach them to the dataset
+folds <- cvFolds(n=NROW(ms), K=k, type="random")
+folds <- data.frame(cbind(folds$subsets, folds$which))
+colnames(folds) <- c("index", "fold")
+folds <- folds[order(folds$index),]
+
+ms$fold <- folds$fold
+
+data <- ms %>%
+  mutate(preds1 = rep(0, nrow(ms)),
+         preds2 = rep(0, nrow(ms)),
+         preds3 = rep(0, nrow(ms)))
+
+# Loop through each fold
+for(k_i in 1:k){
+   
+   # Get the training data
+   train_data <- ms %>% filter(fold != k_i)
+   
+   # Get the testing data
+   test_data <- ms %>% filter(fold == k_i)
+   
+   # Train model 1 and get predictions
+   trained_model1 <- glm(deaths ~ sanctions, family=binomial(link="logit"),
+                         data=train_data)
+   
+   preds1.vals <- predict(trained_model1, test_data, type = "response")
+   
+   data[data$fold == k_i,]$preds1 <- preds1.vals
+
+   # Train model 2 and get predictions
+   trained_model2 <- glm(deaths ~ sanctions + pop75 + civlib76,
+                         family=binomial(link="logit"), data=ms)
+   
+   preds2.vals <- predict(trained_model2, test_data, type = "response")
+   
+   data[data$fold == k_i,]$preds2 <- preds2.vals
+
+   # Train model 3 and get predictions  
+   trained_model3 <- glm(deaths ~ sanctions + civlib76 + pop75 + sanctions:civlib76,
+                         family=binomial(link="logit"), data=ms)
+   
+   preds3.vals <- predict(trained_model3, test_data, type = "response")
+   
+   data[data$fold == k_i,]$preds3 <- preds3.vals
+
+}
+
+
+preds <- list(data$preds1, data$preds2, data$preds3)
+n <- length(preds)
+
+# Get the actual values
+actual_vals <- rep(list(data$deaths), n)
+
+# Make the ROC plot
+pred_instance <- prediction(preds, actual_vals)
+
+# how to get the actual 
+AUC_out <- performance(pred_instance, measure="auc")
+
+AUC_labels <- c("Model 1", "Model 2", "Model 3")
+
+kable(cbind(AUC_labels, round(as.numeric(AUC_out@y.values), 3)), col.names = c("", "AUC"),
+      caption = "Out-of-sample AUCs")
+
+
+rocs <- performance(pred_instance, "tpr", "fpr")
+plot(rocs, col = as.list(1:n), main = "Out-of-sample ROC Curves from 10-fold CV")
+legend(x = "bottomright", legend = c("Model 1", "Model 2", "Model 3"),
+       fill = 1:n)
+
+cvFit(model1, data=ms, y=ms$deaths, K=10)
+cvFit(model2, data=ms, y=ms$deaths, K=10)
+cvFit(model3, data=ms, y=ms$deaths, K=10)
+```
 
 ## Model Selection
 
