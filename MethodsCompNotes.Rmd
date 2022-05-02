@@ -763,7 +763,7 @@ $X$) is $\mathbb{R}\in [0, \infty]$
 
 $$f_{\mathrm{joint}}(x,\theta)=\prod_{i=1}^n(\theta e^{-\theta x_i})=\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
 
-2. Define the likelihood function
+2.  Define the likelihood function
 
 $$\mathcal{L}(\theta|x)=h(x)\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
 
@@ -771,35 +771,41 @@ Let $h(x)=1$
 
 $$\mathcal{L}(\theta|x)=\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
 
-3. Take the log
+3.  Take the log
 
 $$\ln(\mathcal{L}(\theta|x))=\ln(\theta^n\prod_{i=1}^n( e^{-\theta x_i}))$$
 $$\ln(\mathcal{L}(\theta|x))=n\ln(\theta)-\theta\sum_{i=1}^nx_i$$
 
-4. Take the first derivative and identify the critical points
+4.  Take the first derivative and identify the critical points
 
 $$\frac{d\ln(\mathcal{L}(\theta|x))}{d\theta}=\frac{n}{\theta}-\sum_{i=1}^nx_i$$
 
-Set the derivative equal to zero to find the critical values of $\theta$:
+Set the derivative equal to zero to find the critical values of
+$\theta$:
 
 $$\frac{n}{\theta}-\sum_{i=1}^nx_i=0$$
 
 $$\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$$
 
-5. Take the second derivative and substitute $\hat{\theta}$ for $\theta$. If the result is positive the critical point is a minumum, if zero then it's a saddle, if negative it's a maximum.
+5.  Take the second derivative and substitute $\hat{\theta}$ for
+    $\theta$. If the result is positive the critical point is a minumum,
+    if zero then it's a saddle, if negative it's a maximum.
 
-$$\frac{d^2ln(\mathcal{L}(\theta|x))}{d\theta}}{d\theta^2}=\frac{-n}{\theta^2}$$
+$$\frac{d^2\ln(\mathcal{L}(\theta|x))}{d\theta^2}=\frac{-n}{\theta^2}$$
 
 Plugging in $\hat{\theta}$:
 
-
-$$\frac{d^2ln(\mathcal{L}(\theta=\hat{\theta}|x))}{d\theta}}{d\theta^2}=\frac{-n\sum_{i=1}^nx_i}{n}=-\sum_{i=1}^nx_i$$
+$$\frac{d^2ln(\mathcal{L}(\theta=\hat{\theta}|x))}{d\theta^2}=\frac{-n\sum_{i=1}^nx_i}{n}=-\sum_{i=1}^nx_i$$
 
 What's the sign of $-\sum_{i=1}^nx_i$?
 
-We know $-\sum_{i=1}^nx_i<0$ because $\sum_{i=1}^nx_i>0$ given the $X$ is bounded between $[0, \infty]$ therefore it is a maximum and thus $\hat{\theta}$ is a maximum and the MLE is $\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$.
+We know $-\sum_{i=1}^nx_i<0$ because $\sum_{i=1}^nx_i>0$ given the $X$
+is bounded between $[0, \infty]$ therefore it is a maximum and thus
+$\hat{\theta}$ is a maximum and the MLE is
+$\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$.
 
 Now in R:
+
 ```{r}
 # Sets the seed for R's baked in random number generation for easy replication
 set.seed(2)
@@ -833,13 +839,164 @@ ggplot(data=df,aes(x=thetas,y=y)) +
   theme_bw()
 ```
 
-Note: See MLE Problem Set 2 for a derivation of the MLE of the normal variance.
+Note: See MLE Problem Set 2 for a derivation of the MLE of the normal
+variance.
 
 ## Regularity
 
-In order to find the MLE as we did above, the likelihood function must demonstrate "regularity", i.e. it must be continuous and twice differentiable.
+In order to find the MLE as we did above, the likelihood function must
+demonstrate "regularity", i.e. it must be continuous and twice
+differentiable.
 
 ## Binary Data
+
+### Why not just use OLS?
+
+-   Nonsensical predictions: predicted probabilites using a linear
+    probability model on a binary outcome can fall outside $[0,1]$,
+    meaning the OLS estimate is biased and inconsistent.
+-   Assumes the relationship between a covariate and the probability of
+    1 as the outcome is constant across all values of the covariate
+-   Can give you heteroskedastic residuals that give biased confidence
+    intervals
+
+### The Logit Model
+
+Logit allows for mapping probabilities onto the unbounded real line
+using odds. We transform a probability, $p$, to logit by taking the log
+of the odds ratio:
+
+$$\mathrm{logit}(p)=\log(\frac{p}{1-p})$$
+
+And the inverse mapping:\
+
+$$
+\mathrm{logit}^{-1}(x)=\frac{e^x}{1+e^x}=\frac{1}{1+e^{-x}}
+$$
+
+We model binary outcomes as Bernoulli trials so our stochastic component
+is:
+
+$$
+f_B(y_i;\theta_i)=\theta_i^{y_i}(1-\theta_i)^{1-y_i}= 
+   \left\{
+\begin{array}{ll}
+      \theta_i & y_i=1 \\
+      1-\theta_i & y_i=0
+\end{array} 
+\right. 
+$$
+
+And our systematic component is:
+
+$$
+\theta_i=\mathrm{logit}^{-1}(x_i^T\beta)=\frac{1}{1+e^{-x_i^T\beta}}
+$$
+
+As we do above we can then get the joint probability distribution:
+
+$$
+Pr(y|\theta)=\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}
+$$
+
+And the log-likelihood:
+
+$$
+\log\mathcal{L}(\theta|y)=\sum_{i=1}^n\log(\frac{e^{-x_i^T\beta^{1-y_i}}}{1+e^{-x_i^T\beta}})
+$$
+
+Finding the MLE with R (Ward and Ahlquist code):
+
+```{r}
+#function for optimization of logit
+binreg<- function(X,y,method="BFGS"){
+  X<- cbind(1,X)
+  
+  # Get the log-likelihood
+  negLL<- function(b,X,y){
+    p<-as.vector(1/(1+exp(-X %*% b)))
+    - sum(y*log(p) + (1-y)*log(1-p))
+  }
+  
+  # Get the gradient
+  gradient<- function(b,X,y){
+    p <- as.vector(1/(1+exp(-X %*% b))) - 
+      apply(((y - p)*X),
+            2,
+            sum)
+  }
+  
+  # Pass our data, log-likelihood, and gradient to optim() 
+  # which will find the maximum likelihood
+  results<- optim(par=rep(0,ncol(X)), 
+                  fn=negLL,
+                  gr=gradient, 
+                  hessian=T, 
+                  method=method,
+                  X=X,
+                  y=y)
+  
+  # Pull out the stuff we want
+  list(coefficients=results$par,
+       var=solve(results$hessian),
+       deviance=2*results$value,
+       converged=results$convergence==0)
+}
+
+data("mtcars")
+
+# set the DV to the binary variable for V-shaped vs. straight engine type
+DV <- mtcars$vs
+
+IVs <- as.matrix(mtcars %>% select(cyl, disp, hp))
+
+mlebin.fit<-binreg(X=IVs, y=DV)
+
+# Get our logit coefficients
+round(mlebin.fit$coefficients,2)
+
+
+# Compare to R's baked in logit estimation
+fit.glm <- glm(vs ~ cyl + disp + hp,
+               family = binomial(link = "logit"), 
+               data = mtcars)
+summary(fit.glm, signif.stars=FALSE)
+```
+
+### Interpreting Logit
+
+While the output of logit is similar to OLS, interpretation is a bit
+more nuanced for 2 reasons:
+
+1.  The model is nonlinear so the effect of a particular covariate on
+    the DV is not constant across all levels of the covariate. This can
+    be seen by deriving the marginal effect of a covariate, $x_k$, on
+    the expected value of $Y$:
+
+    $$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}$$
+
+    As a quick trick, you can divide a coefficient by 4 to get an
+    estimate of a maximum effect a 1 unit increase in the covariate can
+    have on the probability of the DV being 1. i.e. if we have a
+    coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
+
+2.  The logit model is a linear regression on the log odds so the
+    exponentiated coefficients are odds ratios. If we have a coefficient
+    greater than 1 then a 1 unit increase in that covariate corresponds
+    to an *increase* in the relative probability of obtaining a 1 in the
+    outcome variable. Less than 1 represents a decrease.
+    
+### Interpreting Logit with Plots
+
+```{r}
+data("mtcars")
+
+# Estimate the model
+model <- glm(vs ~ cyl + disp + hp, family = binomial(link = "logit"), data = mtcars)
+
+
+```
+
 
 ## Out-of-sample Prediction
 
