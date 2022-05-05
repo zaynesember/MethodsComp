@@ -1,0 +1,2648 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\title{Methods Comp Notes}
+\author{Zayne Sember}
+\date{3/29/2022}
+
+\usepackage{amsmath,amssymb}
+\usepackage{lmodern}
+\usepackage{iftex}
+\ifPDFTeX
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Methods Comp Notes},
+  pdfauthor={Zayne Sember},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+\usepackage{siunitx}
+\newcolumntype{d}{S[input-symbols = ()]}
+\ifLuaTeX
+  \usepackage{selnolig}  % disable illegal ligatures
+\fi
+
+\begin{document}
+\maketitle
+
+\hypertarget{poli-204b}{%
+\section{POLI 204B}\label{poli-204b}}
+
+\hypertarget{hypothesis-testing}{%
+\subsection{Hypothesis Testing}\label{hypothesis-testing}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Set some threshold, \(\alpha\), at or below which you deem a p-value
+  significant
+\item
+  Define the null hypothesis, \(H_0\)
+\item
+  Define the alternative hypothesis, \(H_A\), either two-tailed or
+  one-tailed
+\item
+  Calculate a test statistic such as Z-score or t-test and check the
+  p-value
+\item
+  Draw conclusions
+\end{enumerate}
+
+Some hypothesis tests in R
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# ONE SAMPLE T{-}}\AlertTok{TEST}
+\CommentTok{\# How likely is it that the mean of some population from which we take a normal sample, x, is greater than some number, mu?}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+\FunctionTok{t.test}\NormalTok{(x, }\AttributeTok{mu=}\DecValTok{5}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  One Sample t-test
+## 
+## data:  x
+## t = -49.521, df = 99, p-value < 2.2e-16
+## alternative hypothesis: true mean is not equal to 5
+## 95 percent confidence interval:
+##  0.007626801 0.392281568
+## sample estimates:
+## mean of x 
+## 0.1999542
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# WELCH TWO{-}SAMPLE T{-}}\AlertTok{TEST}
+\CommentTok{\# How likely is it that the means of two populations differ based on two normal samples of equal variance, x and y?}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+
+\FunctionTok{t.test}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Welch Two Sample t-test
+## 
+## data:  x and y
+## t = 0.31687, df = 192.26, p-value = 0.7517
+## alternative hypothesis: true difference in means is not equal to 0
+## 95 percent confidence interval:
+##  -0.2513670  0.3475923
+## sample estimates:
+## mean of x mean of y 
+## 0.1492472 0.1011345
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# TWO PROPORTION Z{-}}\AlertTok{TEST}
+\CommentTok{\# Is there a significant difference in proportions between two populations given normal samples of them, x and y?}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{)}
+
+\CommentTok{\# Assuming we want to test whether the share of values greater than zero differs between the two populations}
+\NormalTok{x\_count }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x[x}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}
+\NormalTok{y\_count }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(y[y}\SpecialCharTok{\textgreater{}}\DecValTok{0}\NormalTok{])}
+
+\FunctionTok{prop.test}\NormalTok{(}\AttributeTok{x=}\FunctionTok{c}\NormalTok{(x\_count,y\_count), }\AttributeTok{n=}\FunctionTok{c}\NormalTok{(}\FunctionTok{length}\NormalTok{(x), }\FunctionTok{length}\NormalTok{(y)), }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  2-sample test for equality of proportions with continuity correction
+## 
+## data:  c(x_count, y_count) out of c(length(x), length(y))
+## X-squared = 0.98631, df = 1, p-value = 0.3206
+## alternative hypothesis: two.sided
+## 95 percent confidence interval:
+##  -0.22770055  0.06770055
+## sample estimates:
+## prop 1 prop 2 
+##   0.50   0.58
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# CHI{-}SQUARED }\AlertTok{TEST}
+\CommentTok{\# Are two variables independent? Useful for testing relationships between categorical variables}
+
+\CommentTok{\#  For example, if you were investigating the relationship between occupation and party preference, and 35\% of voters were Democrats, 32\% were Independents, and 33\% were Republicans, independence implies the same partisan breakdown across all occupational categories (35, 32, and 33).}
+
+\NormalTok{data\_frame }\OtherTok{\textless{}{-}} \FunctionTok{read.csv}\NormalTok{(}\StringTok{"https://goo.gl/j6lRXD"}\NormalTok{)}
+
+\FunctionTok{table}\NormalTok{(data\_frame}\SpecialCharTok{$}\NormalTok{treatment, data\_frame}\SpecialCharTok{$}\NormalTok{improvement)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              
+##               improved not-improved
+##   not-treated       26           29
+##   treated           35           15
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{chisq.test}\NormalTok{(data\_frame}\SpecialCharTok{$}\NormalTok{treatment, data\_frame}\SpecialCharTok{$}\NormalTok{improvement, }\AttributeTok{correct=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Pearson's Chi-squared test
+## 
+## data:  data_frame$treatment and data_frame$improvement
+## X-squared = 5.5569, df = 1, p-value = 0.01841
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# DIFFERENCE BETWEEN VARIANCES }\AlertTok{TEST}
+\CommentTok{\# Is the variance between two normal samples, x and y, drawn from populations significantly different?}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{100}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\DecValTok{121}\NormalTok{, }\AttributeTok{sd=}\FloatTok{3.5}\NormalTok{)}
+
+\FunctionTok{var.test}\NormalTok{(x, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  F test to compare two variances
+## 
+## data:  x and y
+## F = 1.1867, num df = 99, denom df = 120, p-value = 0.3696
+## alternative hypothesis: true ratio of variances is not equal to 1
+## 95 percent confidence interval:
+##  0.8156903 1.7383726
+## sample estimates:
+## ratio of variances 
+##           1.186658
+\end{verbatim}
+
+\hypertarget{properties-of-estimators}{%
+\subsection{Properties of Estimators}\label{properties-of-estimators}}
+
+\hypertarget{unbiasedness}{%
+\subsubsection{Unbiasedness}\label{unbiasedness}}
+
+\(E(\hat{\theta}) - \theta = 0\)
+
+\hypertarget{asymptotic-unbiasedness}{%
+\subsubsection{Asymptotic Unbiasedness}\label{asymptotic-unbiasedness}}
+
+As \(n\) gets bigger, the estimator's biasedness goes to zero
+\(\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0\)
+
+\hypertarget{efficiency}{%
+\subsubsection{Efficiency}\label{efficiency}}
+
+The estimator needs fewer observations to achieve better error
+performance \(\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}\)
+
+\hypertarget{consistency}{%
+\subsubsection{Consistency}\label{consistency}}
+
+The distribution of estimates converges on the true value as \(n\) gets
+bigger
+\(\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0\)
+
+\hypertarget{correlation}{%
+\subsection{Correlation}\label{correlation}}
+
+We define the correlation, \(r\), between two variables, \(x\) and
+\(y\), to be:
+
+\[r=\frac{\sum{Z_{xi}Z_{yi}}}{n-1}=\frac{\sum{(x_i-\bar{x})(y_i-\bar{y})}}{s_xs_y(n-1)}\]
+where the standard deviation of \(x\) (and same for \(y\)) is:
+
+\[s_x=\sqrt{\frac{\sum{(x_i-\bar{x})^2}}{n-1}}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\FunctionTok{cor}\NormalTok{(x,y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.0008780174
+\end{verbatim}
+
+\hypertarget{regression-basics}{%
+\subsection{Regression Basics}\label{regression-basics}}
+
+Ordinary least squares regression seeks to minimize the the vertical
+distances, \(\epsilon\), between the data being fitted and some line of
+best fit with some slope (in the bivariate case), \(\beta_1\), and some
+intercept, \(\beta_0\).
+
+The model we want to fit to:
+
+\[y_i=\beta_0+\beta_1x_i+\epsilon_i\]
+
+The model we estimate:
+
+\[y_i=\hat{\beta_0}+\hat{\beta_1}x_i+e_i\] The residuals, \(e_i\), are
+an estimate of the error (distance between true line and y\_i).
+
+The residual sum of squares (RSS) is defined as:
+\[RSS=\sum e_i^2=\sum(y_i-\hat{y_i})^2\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# If we have some lm model we can get the RSS as follows:}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x)}
+
+\FunctionTok{deviance}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 405.485
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# or}
+
+\FunctionTok{sum}\NormalTok{(}\FunctionTok{resid}\NormalTok{(model)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 405.485
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Or without an lm model:}
+
+\NormalTok{rss }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y, y\_hat)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{((y}\SpecialCharTok{{-}}\NormalTok{y\_hat)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))}
+\NormalTok{\}}
+
+\NormalTok{y\_hat }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)}
+
+\FunctionTok{rss}\NormalTok{(y, y\_hat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 405.485
+\end{verbatim}
+
+The regression sum of squares (RSS) (AKA sum of squares of regression
+(SSR), explained sum of squares (ESS)) is defined as:
+\[RegSS=\sum(\hat{y_i}-\bar{y})^2\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x)}
+
+\NormalTok{y\_hat }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)}
+
+\NormalTok{regSS }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y\_hat, y)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{((y\_hat}\SpecialCharTok{{-}}\FunctionTok{mean}\NormalTok{(y))}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))}
+\NormalTok{\}}
+
+\FunctionTok{regSS}\NormalTok{(y\_hat, y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 6.941426
+\end{verbatim}
+
+The total sum of squares (TSS) is defined as:
+\[TSS=\sum(y_i-\bar{y})^2\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{TSS }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{((y}\SpecialCharTok{{-}}\FunctionTok{mean}\NormalTok{(y))}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))}
+\NormalTok{\}}
+
+\FunctionTok{TSS}\NormalTok{(y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 453.6135
+\end{verbatim}
+
+The ratio of RegSS to TSS is our \(r^2\), the share of variance in \(y\)
+that is explained by \(x\):
+\[r^2=\frac{RegSS}{TSS}=\frac{\sum(\hat{y_i}-\bar{y})^2}{\sum(y_i-\bar{y})^2}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{100}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x)}
+
+\FunctionTok{summary}\NormalTok{(model)}\SpecialCharTok{$}\NormalTok{r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01235521
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# or}
+
+\NormalTok{y\_hat }\OtherTok{\textless{}{-}} \FunctionTok{fitted}\NormalTok{(model)}
+
+\NormalTok{rsquared }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(y, y\_hat)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sum}\NormalTok{((y\_hat}\SpecialCharTok{{-}}\FunctionTok{mean}\NormalTok{(y))}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{((y}\SpecialCharTok{{-}}\FunctionTok{mean}\NormalTok{(y))}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{))}
+\NormalTok{\}}
+
+\FunctionTok{rsquared}\NormalTok{(y, y\_hat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.01235521
+\end{verbatim}
+
+\hypertarget{calculating-bivariate-regression-by-hand-linear-method}{%
+\subsubsection{Calculating bivariate regression by hand (linear
+method)}\label{calculating-bivariate-regression-by-hand-linear-method}}
+
+\hypertarget{step-1}{%
+\paragraph{Step 1}\label{step-1}}
+
+Given the vectors \(X\) and \(Y\), find \(X^2\), \(XY\), and the sums of
+all of the preceding vectors
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_x2xy }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y)\{}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y)}
+  
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{xsquared }\OtherTok{\textless{}{-}}\NormalTok{ x}\SpecialCharTok{\^{}}\DecValTok{2}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{xy }\OtherTok{\textless{}{-}}\NormalTok{ x}\SpecialCharTok{*}\NormalTok{y}
+  
+\NormalTok{  totals }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\FunctionTok{sum}\NormalTok{(x), }\FunctionTok{sum}\NormalTok{(y), }\FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{xsquared), }\FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{xy))}
+  
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{rbind}\NormalTok{(df, totals)}
+  \FunctionTok{rownames}\NormalTok{(df) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(x),}\StringTok{"total"}\NormalTok{)}
+  
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{7}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{7}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{df\_step1 }\OtherTok{\textless{}{-}} \FunctionTok{calc\_x2xy}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y)}
+\NormalTok{df\_step1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##               x           y   xsquared         xy
+## 1     -1.767347   0.7195615   3.123516  -1.271715
+## 2      3.416346  -0.5409233  11.671422  -1.847981
+## 3      4.044545  -3.8825557  16.358343 -15.703170
+## 4      2.872654  -1.5697349   8.252139  -4.509305
+## 5      8.055635  -3.1979392  64.893254 -25.761431
+## 6      6.718193  -3.5025679  45.134122 -23.530928
+## 7     -2.256267  -3.8162410   5.090739   8.610457
+## total 21.083759 -15.7904005 154.523536 -64.014073
+\end{verbatim}
+
+\hypertarget{step-2}{%
+\paragraph{Step 2}\label{step-2}}
+
+Calculate \(\hat\beta_1\) and \(\hat\beta_0\):
+\[\hat\beta_1=\frac{N\sum x_iy_i-\sum x_i\sum y_i}{N\sum x_i^2-(\sum x_i)^2}\]
+\[\hat\beta_0=\frac{\sum y_i -\hat\beta_1\sum x_i}{N}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_beta1 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df)\{}
+\NormalTok{  totals }\OtherTok{\textless{}{-}} \FunctionTok{tail}\NormalTok{(df,}\AttributeTok{n=}\DecValTok{1}\NormalTok{)}
+\NormalTok{  N }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(df[[}\DecValTok{1}\NormalTok{]])}\SpecialCharTok{{-}}\DecValTok{1}
+  
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{head}\NormalTok{(df,}\AttributeTok{n=}\NormalTok{N)}
+\NormalTok{  N }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{x}\DecValTok{{-}1}\NormalTok{) }\CommentTok{\# {-}1 bc row totals amended}
+  
+\NormalTok{  beta1 }\OtherTok{\textless{}{-}}\NormalTok{ (N}\SpecialCharTok{*}\NormalTok{totals}\SpecialCharTok{$}\NormalTok{xy }\SpecialCharTok{{-}}\NormalTok{ (totals}\SpecialCharTok{$}\NormalTok{x}\SpecialCharTok{*}\NormalTok{totals}\SpecialCharTok{$}\NormalTok{y))}\SpecialCharTok{/}\NormalTok{((N}\SpecialCharTok{*}\NormalTok{totals}\SpecialCharTok{$}\NormalTok{xsquared)}\SpecialCharTok{{-}}\NormalTok{(totals}\SpecialCharTok{$}\NormalTok{x)}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+  \FunctionTok{return}\NormalTok{(beta1)}
+\NormalTok{\}}
+
+\NormalTok{calc\_beta0 }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(df, beta1)\{}
+\NormalTok{  totals }\OtherTok{\textless{}{-}} \FunctionTok{tail}\NormalTok{(df,}\AttributeTok{n=}\DecValTok{1}\NormalTok{)}
+\NormalTok{  N }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(df[[}\DecValTok{1}\NormalTok{]])}\SpecialCharTok{{-}}\DecValTok{1}
+  
+\NormalTok{  beta0 }\OtherTok{\textless{}{-}}\NormalTok{ (totals}\SpecialCharTok{$}\NormalTok{y }\SpecialCharTok{{-}}\NormalTok{ (beta1}\SpecialCharTok{*}\NormalTok{totals}\SpecialCharTok{$}\NormalTok{x))}\SpecialCharTok{/}\NormalTok{N}
+  \FunctionTok{return}\NormalTok{(beta0)}
+\NormalTok{\}}
+
+\NormalTok{beta1 }\OtherTok{\textless{}{-}} \FunctionTok{calc\_beta1}\NormalTok{(}\AttributeTok{df=}\NormalTok{df\_step1)}
+\NormalTok{beta1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -0.1807727
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{beta0 }\OtherTok{\textless{}{-}} \FunctionTok{calc\_beta0}\NormalTok{(}\AttributeTok{df=}\NormalTok{df\_step1, }\AttributeTok{beta1=}\NormalTok{beta1)}
+\NormalTok{beta0}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] -1.71129
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# check with:}
+\CommentTok{\# lm(y\textasciitilde{}x)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-3}{%
+\paragraph{Step 3}\label{step-3}}
+
+Next, calculate \(x-\bar x\), \((x- \bar x)^2\), \(y-\bar y\),
+\((y-\bar y)^2\), and \((x-\bar x)(y-\bar y)\).
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_r\_table }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y)\{}
+\NormalTok{  N }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y)}
+  
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{x }\SpecialCharTok{{-}}  \FunctionTok{mean}\NormalTok{(x)}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar\_sq }\OtherTok{\textless{}{-}}\NormalTok{ (df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar)}\SpecialCharTok{\^{}}\DecValTok{2}
+  
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{y\_minus\_ybar }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{y }\SpecialCharTok{{-}}  \FunctionTok{mean}\NormalTok{(y)}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{y\_minus\_ybar\_sq }\OtherTok{\textless{}{-}}\NormalTok{ (df}\SpecialCharTok{$}\NormalTok{y\_minus\_ybar)}\SpecialCharTok{\^{}}\DecValTok{2}
+  
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar\_y\_minus\_ybar }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar}\SpecialCharTok{*}\NormalTok{df}\SpecialCharTok{$}\NormalTok{y\_minus\_ybar}
+  
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+
+\NormalTok{calc\_rsquared }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y)\{}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{calc\_r\_table}\NormalTok{(x,y)}
+\NormalTok{  N }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}
+  
+\NormalTok{  sd\_x }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{((}\FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar\_sq))}\SpecialCharTok{/}\NormalTok{(N}\DecValTok{{-}1}\NormalTok{))}
+\NormalTok{  sd\_y }\OtherTok{\textless{}{-}} \FunctionTok{sqrt}\NormalTok{((}\FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{y\_minus\_ybar\_sq))}\SpecialCharTok{/}\NormalTok{(N}\DecValTok{{-}1}\NormalTok{))}
+  
+\NormalTok{  r }\OtherTok{\textless{}{-}}\NormalTok{ (}\FunctionTok{sum}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{x\_minus\_xbar\_y\_minus\_ybar))}\SpecialCharTok{/}\NormalTok{((N}\DecValTok{{-}1}\NormalTok{)}\SpecialCharTok{*}\NormalTok{sd\_x}\SpecialCharTok{*}\NormalTok{sd\_y)}
+  
+  \FunctionTok{return}\NormalTok{(r}\SpecialCharTok{\^{}}\DecValTok{2}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{calc\_r\_table}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           x          y x_minus_xbar x_minus_xbar_sq y_minus_ybar
+## 1 -1.767347  0.7195615   -4.7793128      22.8418310    2.9753330
+## 2  3.416346 -0.5409233    0.4043807       0.1635238    1.7148482
+## 3  4.044545 -3.8825557    1.0325792       1.0662198   -1.6267842
+## 4  2.872654 -1.5697349   -0.1393119       0.0194078    0.6860366
+## 5  8.055635 -3.1979392    5.0436693      25.4386003   -0.9421677
+## 6  6.718193 -3.5025679    3.7062277      13.7361240   -1.2467964
+## 7 -2.256267 -3.8162410   -5.2682323      27.7542715   -1.5604695
+##   y_minus_ybar_sq x_minus_xbar_y_minus_ybar
+## 1       8.8526062              -14.22004690
+## 2       2.9407043                0.69345155
+## 3       2.6464267               -1.67978352
+## 4       0.4706462               -0.09557305
+## 5       0.8876800               -4.75198227
+## 6       1.5545013               -4.62091139
+## 7       2.4350651                8.22091581
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{calc\_rsquared}\NormalTok{(}\AttributeTok{x=}\NormalTok{x,}\AttributeTok{y=}\NormalTok{y)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.1503172
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# check with:}
+\CommentTok{\#summary(lm(y\textasciitilde{}x))$r.squared}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{step-4}{%
+\paragraph{Step 4}\label{step-4}}
+
+Calculate the residuals, their square, and from that the estimated
+standard error \[e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i\]
+\[\hat\sigma=\sqrt{\frac{\sum e_i^2}{N-2}}\]
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{calc\_residuals }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(x, y, beta0, beta1)\{}
+\NormalTok{  df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{e=}\NormalTok{y}\SpecialCharTok{{-}}\NormalTok{beta0}\SpecialCharTok{{-}}\NormalTok{(beta1}\SpecialCharTok{*}\NormalTok{x))}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{e\_squared }\OtherTok{\textless{}{-}}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{e}\SpecialCharTok{\^{}}\DecValTok{2}
+  
+  \FunctionTok{return}\NormalTok{(df)}
+\NormalTok{\}}
+
+\NormalTok{calc\_sigma }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(e\_squared, N)\{}
+  \FunctionTok{return}\NormalTok{(}\FunctionTok{sqrt}\NormalTok{(}\FunctionTok{sum}\NormalTok{(e\_squared)}\SpecialCharTok{/}\NormalTok{(N}\DecValTok{{-}2}\NormalTok{)))}
+\NormalTok{\}}
+
+\NormalTok{residuals }\OtherTok{\textless{}{-}} \FunctionTok{calc\_residuals}\NormalTok{(x, y, beta0, beta1)}
+\NormalTok{residuals}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             e    e_squared
+## 1  2.11136354 4.4578559817
+## 2  1.78794920 3.1967623314
+## 3 -1.44012201 2.0739513919
+## 4  0.66085282 0.4367264545
+## 5 -0.03040982 0.0009247573
+## 6 -0.57681150 0.3327115111
+## 7 -2.51282222 6.3142755311
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# check with:}
+\CommentTok{\#resid(lm(y\textasciitilde{}x))}
+
+\NormalTok{sigma }\OtherTok{\textless{}{-}} \FunctionTok{calc\_sigma}\NormalTok{(residuals}\SpecialCharTok{$}\NormalTok{e\_squared, }\AttributeTok{N=}\FunctionTok{length}\NormalTok{(x))}
+\NormalTok{sigma}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 1.833751
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# check with:}
+\CommentTok{\#summary(lm(y\textasciitilde{}x))$sigma}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{calculating-bivariate-regression-by-hand-matrix-method}{%
+\subsubsection{Calculating bivariate regression by hand (matrix
+method)}\label{calculating-bivariate-regression-by-hand-matrix-method}}
+
+Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{7}\NormalTok{, }\AttributeTok{mean=}\DecValTok{2}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)}
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{7}\NormalTok{, }\AttributeTok{mean=}\SpecialCharTok{{-}}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{2}\NormalTok{)}
+
+\FunctionTok{print}\NormalTok{(}\StringTok{"Append ones to X"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Append ones to X"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\FunctionTok{rep}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{length}\NormalTok{(x)),x), }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x))}
+\NormalTok{X}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##      [,1]       [,2]
+## [1,]    1 -1.2842908
+## [2,]    1 -1.8017344
+## [3,]    1 -1.0305580
+## [4,]    1 -0.4927654
+## [5,]    1 -2.1837009
+## [6,]    1  7.1661952
+## [7,]    1  6.2197928
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Define Y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Define Y"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{Y }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(y)}
+\NormalTok{Y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##            [,1]
+## [1,]  0.8321089
+## [2,] -1.8767308
+## [3,] -3.3227808
+## [4,] -2.5848674
+## [5,] -2.9854110
+## [6,] -2.3845586
+## [7,] -2.3702480
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Get X\textquotesingle{}X"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Get X'X"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ X}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##          [,1]       [,2]
+## [1,] 7.000000   6.592938
+## [2,] 6.592938 101.009243
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Get the inversion of X\textquotesingle{}X"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Get the inversion of X'X"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ X)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##              [,1]         [,2]
+## [1,]  0.152214539 -0.009935141
+## [2,] -0.009935141  0.010548557
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Get X\textquotesingle{}Y"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Get X'Y"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ Y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##           [,1]
+## [1,] -14.69249
+## [2,] -18.30067
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{print}\NormalTok{(}\StringTok{"Get beta"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "Get beta"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{solve}\NormalTok{(}\FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ X) }\SpecialCharTok{\%*\%} \FunctionTok{t}\NormalTok{(X) }\SpecialCharTok{\%*\%}\NormalTok{ Y}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##             [,1]
+## [1,] -2.05459055
+## [2,] -0.04707369
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# check with:}
+\CommentTok{\#lm(y\textasciitilde{}x)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{multiple-regression}{%
+\subsection{Multiple Regression}\label{multiple-regression}}
+
+We now have multiple \(X\)s we need to fit to:
+
+\[Y=\beta_0+\beta_1X_1+\beta_2X_2+\epsilon\]
+
+We want to find the values of \(\beta_0\), \(\beta_1\), and \(\beta_2\)
+that \textbf{minimizes} the sum of squared residuals (RSS):
+
+\[RSS=\sum(\hat{y_i}-\bar{y})^2=\sum(\hat{y_i}-(\hat{\beta_0}+\hat\beta_1X_1+\hat\beta_2X_2)^2\]
+
+\hypertarget{categorical-variables}{%
+\subsection{Categorical Variables}\label{categorical-variables}}
+
+When regressing on a categorical variable you leave one category out.
+Coefficients are the impact of being \(X\) vs.~the excluded category,
+all else equal.
+
+\hypertarget{fixed-effects}{%
+\subsection{Fixed Effects}\label{fixed-effects}}
+
+Suppose we have data on 100 individuals in each of 100 countries
+(\(n=10,000\)).
+
+If we include a dummy to ``soak up'' the country effects we can
+``isolate'' the differences between the individuals across countries. -
+The estimated coefficients for each country typically aren't reported bc
+they aren't relevant to our RQ
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(trade)}
+
+\CommentTok{\# Without fixed effects}
+\NormalTok{ols }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(Euros) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(dist\_km), }\AttributeTok{data=}\NormalTok{trade)}
+
+\FunctionTok{summary}\NormalTok{(ols)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log(Euros) ~ log(dist_km), data = trade)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -15.6809  -1.7347   0.5372   2.1699   7.1905 
+## 
+## Coefficients:
+##              Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)  28.32169    0.16962  166.97   <2e-16 ***
+## log(dist_km) -1.90965    0.02401  -79.54   <2e-16 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.977 on 38323 degrees of freedom
+## Multiple R-squared:  0.1417, Adjusted R-squared:  0.1417 
+## F-statistic:  6326 on 1 and 38323 DF,  p-value: < 2.2e-16
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# With fixed effects by country of origin and destination, product, and year}
+\NormalTok{fe\_ols }\OtherTok{\textless{}{-}} \FunctionTok{feols}\NormalTok{(}\FunctionTok{log}\NormalTok{(Euros) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(dist\_km) }\SpecialCharTok{|}\NormalTok{ Origin }\SpecialCharTok{+}\NormalTok{ Destination }\SpecialCharTok{+}\NormalTok{ Product }\SpecialCharTok{+}\NormalTok{ Year, trade)}
+
+\FunctionTok{summary}\NormalTok{(fe\_ols)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## OLS estimation, Dep. Var.: log(Euros)
+## Observations: 38,325 
+## Fixed-effects: Origin: 15,  Destination: 15,  Product: 20,  Year: 10
+## Standard-errors: Clustered (Origin) 
+##              Estimate Std. Error  t value   Pr(>|t|)    
+## log(dist_km) -2.16988   0.154283 -14.0642 1.1898e-09 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## RMSE: 1.74337     Adj. R2: 0.705139
+##                 Within R2: 0.219322
+\end{verbatim}
+
+\hypertarget{interactions}{%
+\subsection{Interactions}\label{interactions}}
+
+Case 1: Interacting a dummy with another dummy - Coefficient is the
+(estimated) change in the \emph{intercept} of the line of best fit
+between units where both dummies are zero vs.~where they are both 1.
+
+Case 2: Interacting a dummy with a continuous variable - Coefficient is
+the difference in coefficient on the continuous variable when dummy is
+on vs.~off.
+
+Case 3: Interacting a continuous variable with another continuous
+variable. - Don't try to interpret coefficient, look at an interaction
+plot
+
+Overall, an interaction tells us the \emph{impact} one variable has on
+another variable's effect on the outcome. - Only include them when you
+have a theoretical reason for doing so
+
+\hypertarget{interaction-plots}{%
+\subsubsection{Interaction plots}\label{interaction-plots}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{10}\NormalTok{)}
+
+\CommentTok{\#create data frame}
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{gender =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{),}
+                 \AttributeTok{exercise =} \FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{,}\DecValTok{0}\NormalTok{,}\DecValTok{2}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+                 \AttributeTok{weight\_loss =} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{,}\AttributeTok{mean=}\DecValTok{2}\NormalTok{,}\AttributeTok{sd=}\DecValTok{3}\NormalTok{)) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{motivation =}\NormalTok{ (}\FloatTok{2.5}\SpecialCharTok{*}\NormalTok{weight\_loss }\SpecialCharTok{+} \FunctionTok{rnorm}\NormalTok{(}\AttributeTok{n=}\DecValTok{10}\NormalTok{, }\AttributeTok{mean=}\DecValTok{3}\NormalTok{, }\AttributeTok{sd=}\DecValTok{3}\NormalTok{)))}
+  
+\FunctionTok{head}\NormalTok{(df)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+##   gender exercise weight_loss motivation
+## 1      0        0   2.0562385  11.445935
+## 2      0        0   1.4472424   8.885450
+## 3      0        2  -2.1139916  -2.999680
+## 4      1        1   0.2024969   6.468576
+## 5      0        2   2.8836354  12.433259
+## 6      1        0   3.1693829  11.191499
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(weight\_loss }\SpecialCharTok{\textasciitilde{}}\NormalTok{ gender}\SpecialCharTok{*}\NormalTok{exercise, }\AttributeTok{data=}\NormalTok{df)}
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight_loss ~ gender * exercise, data = df)
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -2.5614 -0.4690  0.3392  0.4711  2.4362 
+## 
+## Coefficients:
+##                 Estimate Std. Error t value Pr(>|t|)
+## (Intercept)       1.5126     0.8989   1.683    0.143
+## gender            1.2290     1.6616   0.740    0.487
+## exercise         -0.5326     0.7340  -0.726    0.495
+## gender:exercise  -2.4921     1.3567  -1.837    0.116
+## 
+## Residual standard error: 1.614 on 6 degrees of freedom
+## Multiple R-squared:  0.6062, Adjusted R-squared:  0.4094 
+## F-statistic: 3.079 on 3 and 6 DF,  p-value: 0.1119
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Plot interaction of gender*exercise}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{exercise, }\AttributeTok{y=}\NormalTok{weight\_loss, }\AttributeTok{color=}\FunctionTok{as.factor}\NormalTok{(gender))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method=}\StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Interaction between gender and exercise"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-13-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(weight\_loss }\SpecialCharTok{\textasciitilde{}}\NormalTok{ exercise}\SpecialCharTok{*}\NormalTok{motivation, }\AttributeTok{data=}\NormalTok{df)}
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = weight_loss ~ exercise * motivation, data = df)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.71869 -0.35043 -0.00051  0.32748  0.86701 
+## 
+## Coefficients:
+##                     Estimate Std. Error t value Pr(>|t|)  
+## (Intercept)         -0.06532    0.74069  -0.088   0.9326  
+## exercise            -0.80760    0.46780  -1.726   0.1350  
+## motivation           0.21156    0.08136   2.600   0.0406 *
+## exercise:motivation  0.06580    0.05181   1.270   0.2511  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.6528 on 6 degrees of freedom
+## Multiple R-squared:  0.9356, Adjusted R-squared:  0.9033 
+## F-statistic: 29.04 on 3 and 6 DF,  p-value: 0.0005709
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# To visualize an interaction between continuous variables you have to discretize}
+\CommentTok{\# one of them, i.e. group those above and below the mean}
+\NormalTok{df}\SpecialCharTok{$}\NormalTok{motivation\_groups }\OtherTok{\textless{}{-}} \FunctionTok{case\_when}\NormalTok{(}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{motivation }\SpecialCharTok{\textgreater{}} \FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation)}\SpecialCharTok{+}\FunctionTok{sd}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation) }\SpecialCharTok{\textasciitilde{}} \StringTok{"high"}\NormalTok{,}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{motivation }\SpecialCharTok{\textless{}} \FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation)}\SpecialCharTok{+}\FunctionTok{sd}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation) }\SpecialCharTok{\&}\NormalTok{ df}\SpecialCharTok{$}\NormalTok{motivation }\SpecialCharTok{\textgreater{}} \FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation)}\SpecialCharTok{{-}}\FunctionTok{sd}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation) }\SpecialCharTok{\textasciitilde{}} \StringTok{"medium"}\NormalTok{,}
+\NormalTok{  df}\SpecialCharTok{$}\NormalTok{motivation }\SpecialCharTok{\textless{}} \FunctionTok{mean}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation)}\SpecialCharTok{{-}}\FunctionTok{sd}\NormalTok{(df}\SpecialCharTok{$}\NormalTok{motivation) }\SpecialCharTok{\textasciitilde{}} \StringTok{"low"}
+\NormalTok{)}
+
+\CommentTok{\# Can plot the interactions manually}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{exercise, }\AttributeTok{y=}\NormalTok{weight\_loss, }\AttributeTok{color=}\FunctionTok{as.factor}\NormalTok{(motivation\_groups))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_smooth}\NormalTok{(}\AttributeTok{method=}\StringTok{"lm"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{title=}\StringTok{"Interaction between motivation and exercise"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## `geom_smooth()` using formula 'y ~ x'
+\end{verbatim}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-13-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# OR with plot\_model}
+\FunctionTok{plot\_model}\NormalTok{(model, }\AttributeTok{type =} \StringTok{"pred"}\NormalTok{, }\AttributeTok{terms =} \FunctionTok{c}\NormalTok{(}\StringTok{"exercise"}\NormalTok{, }\StringTok{"motivation"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-13-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{plot\_model}\NormalTok{(model, }\AttributeTok{type =} \StringTok{"int"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-13-4.pdf}
+
+\hypertarget{regression-presentation}{%
+\subsection{Regression Presentation}\label{regression-presentation}}
+
+\hypertarget{regression-tables}{%
+\subsubsection{Regression tables}\label{regression-tables}}
+
+Pretty self-explanatory
+
+\hypertarget{coefficient-plots}{%
+\subsubsection{Coefficient Plots}\label{coefficient-plots}}
+
+Easier to read than a Big Ugly Table of Numbers (BUTON) - Always include
+95\% CI
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Source: https://bookdown.org/paul/applied{-}data{-}visualization/graph{-}coefficient{-}plots.html}
+
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss) }\CommentTok{\# see ?swiss}
+\NormalTok{results }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(fit)}
+\NormalTok{fit\_cis\_95 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(fit, }\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"conf.low\_95"} \OtherTok{=} \StringTok{"X2.5.."}\NormalTok{,}
+         \StringTok{"conf.high\_95"} \OtherTok{=} \StringTok{"X97.5.."}\NormalTok{)}
+\NormalTok{fit\_cis\_90 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(fit, }\AttributeTok{level =} \FloatTok{0.90}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"conf.low\_90"} \OtherTok{=} \StringTok{"X5.."}\NormalTok{,}
+         \StringTok{"conf.high\_90"} \OtherTok{=} \StringTok{"X95.."}\NormalTok{)}
+\NormalTok{results }\OtherTok{\textless{}{-}} \FunctionTok{bind\_cols}\NormalTok{(results, }
+\NormalTok{                     fit\_cis\_95, }
+\NormalTok{                     fit\_cis\_90) }\SpecialCharTok{\%\textgreater{}\%}
+           \FunctionTok{rename}\NormalTok{(}\AttributeTok{Variable =}\NormalTok{ term,}
+                  \AttributeTok{Coefficient =}\NormalTok{ estimate,}
+                  \AttributeTok{SE =}\NormalTok{ std.error) }\SpecialCharTok{\%\textgreater{}\%}
+           \FunctionTok{filter}\NormalTok{(Variable }\SpecialCharTok{!=} \StringTok{"(Intercept)"}\NormalTok{)}
+
+
+\FunctionTok{ggplot}\NormalTok{(results, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }\AttributeTok{y =}\NormalTok{ Coefficient)) }\SpecialCharTok{+}
+        \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{colour =} \FunctionTok{gray}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\DecValTok{2}\NormalTok{), }\AttributeTok{lty =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+        \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }
+                    \AttributeTok{y =}\NormalTok{ Coefficient)) }\SpecialCharTok{+} 
+        \CommentTok{\# geom\_linerange(aes(x = Variable, }
+        \CommentTok{\#              ymin = conf.low\_90,}
+        \CommentTok{\#              ymax = conf.high\_90),}
+        \CommentTok{\#            lwd = 1) +}
+        \FunctionTok{geom\_linerange}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }
+                     \AttributeTok{ymin =}\NormalTok{ conf.low\_95,}
+                     \AttributeTok{ymax =}\NormalTok{ conf.high\_95),}
+                   \AttributeTok{lwd =} \DecValTok{1}\SpecialCharTok{/}\DecValTok{2}\NormalTok{) }\SpecialCharTok{+} 
+        \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Outcome: Fertility"}\NormalTok{) }\SpecialCharTok{+}
+        \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-14-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# OR}
+
+\FunctionTok{coefplot}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-14-2.pdf}
+
+\hypertarget{predicted-value-plots}{%
+\subsubsection{Predicted Value Plots}\label{predicted-value-plots}}
+
+These plots convey the substantive importance of your findings; the
+magnitude of the impact of your IVs on your DV
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{x1=}\FunctionTok{c}\NormalTok{(}\DecValTok{3}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{4}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{12}\NormalTok{),}
+                 \AttributeTok{x2=}\FunctionTok{c}\NormalTok{(}\DecValTok{6}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{7}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{11}\NormalTok{, }\DecValTok{13}\NormalTok{, }\DecValTok{14}\NormalTok{, }\DecValTok{14}\NormalTok{),}
+                 \AttributeTok{x3=}\FunctionTok{c}\NormalTok{(}\DecValTok{15}\NormalTok{, }\DecValTok{12}\NormalTok{, }\DecValTok{8}\NormalTok{, }\DecValTok{9}\NormalTok{, }\DecValTok{6}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{5}\NormalTok{, }\DecValTok{2}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{),}
+                 \AttributeTok{y=}\FunctionTok{c}\NormalTok{(}\DecValTok{22}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{24}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{25}\NormalTok{, }\DecValTok{27}\NormalTok{, }\DecValTok{29}\NormalTok{, }\DecValTok{31}\NormalTok{, }\DecValTok{32}\NormalTok{, }\DecValTok{36}\NormalTok{))}
+
+\CommentTok{\#fit multiple linear regression model}
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(y }\SpecialCharTok{\textasciitilde{}}\NormalTok{ x1 }\SpecialCharTok{+}\NormalTok{ x2 }\SpecialCharTok{+}\NormalTok{x3, }\AttributeTok{data=}\NormalTok{df)}
+
+\CommentTok{\#plot predicted vs. actual values}
+\FunctionTok{ggplot}\NormalTok{(df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\FunctionTok{predict}\NormalTok{(model), }\AttributeTok{y=}\NormalTok{y)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_abline}\NormalTok{(}\AttributeTok{intercept=}\DecValTok{0}\NormalTok{, }\AttributeTok{slope=}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{\textquotesingle{}Predicted Values\textquotesingle{}}\NormalTok{, }\AttributeTok{y=}\StringTok{\textquotesingle{}Actual Values\textquotesingle{}}\NormalTok{, }
+       \AttributeTok{title=}\StringTok{\textquotesingle{}Predicted vs. Actual Values\textquotesingle{}}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-15-1.pdf}
+
+\hypertarget{marginal-effects-plot}{%
+\subsubsection{Marginal Effects Plot}\label{marginal-effects-plot}}
+
+Another way to visualize the substantive meaning of your regression
+coefficients, especially when interactions are involved.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{data}\NormalTok{(efc)}
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(barthtot }\SpecialCharTok{\textasciitilde{}}\NormalTok{ c12hour }\SpecialCharTok{+}\NormalTok{ neg\_c\_7 }\SpecialCharTok{*}\NormalTok{ c161sex }\SpecialCharTok{+}\NormalTok{ e42dep, }\AttributeTok{data =}\NormalTok{ efc)}
+
+\FunctionTok{ggpredict}\NormalTok{(model, }\AttributeTok{terms =} \StringTok{"c12hour"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## # Predicted values of Total score BARTHEL INDEX
+## 
+## c12hour | Predicted |         95% CI
+## ------------------------------------
+##       0 |     69.02 | [67.30, 70.73]
+##      20 |     66.98 | [65.59, 68.37]
+##      45 |     64.44 | [63.19, 65.69]
+##      65 |     62.41 | [61.00, 63.81]
+##      85 |     60.37 | [58.64, 62.10]
+##     105 |     58.34 | [56.17, 60.50]
+##     125 |     56.30 | [53.66, 58.94]
+##     170 |     51.72 | [47.92, 55.52]
+## 
+## Adjusted for:
+## * neg_c_7 = 11.83
+## * c161sex =  1.76
+## *  e42dep =  2.93
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df\_predict }\OtherTok{\textless{}{-}} \FunctionTok{ggpredict}\NormalTok{(model, }\AttributeTok{terms =} \StringTok{"c12hour"}\NormalTok{)}
+\FunctionTok{ggplot}\NormalTok{(df\_predict, }\FunctionTok{aes}\NormalTok{(x, predicted)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{ymin =}\NormalTok{ conf.low, }\AttributeTok{ymax =}\NormalTok{ conf.high), }\AttributeTok{alpha =}\NormalTok{ .}\DecValTok{1}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-16-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# OR use plot\_model}
+\FunctionTok{plot\_model}\NormalTok{(model, }\AttributeTok{type =} \StringTok{"pred"}\NormalTok{, }\AttributeTok{terms =} \FunctionTok{c}\NormalTok{(}\StringTok{"c12hour"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-16-2.pdf}
+
+\hypertarget{regression-assumptions-and-diagnostics}{%
+\subsection{Regression Assumptions and
+Diagnostics}\label{regression-assumptions-and-diagnostics}}
+
+\hypertarget{four-assumptions-of-regression}{%
+\subsubsection{Four assumptions of
+regression}\label{four-assumptions-of-regression}}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  \emph{Linearity}: The relationship between \(X\) and the mean of \(Y\)
+  is linear
+\item
+  \emph{Homoscedasticity}: The variance of the residual is the same for
+  any value of \(X\)
+\item
+  \emph{Independence}: Observations are independent of each other
+\item
+  \emph{Normality}: For any fixed value of \(X\), \(Y\) is normally
+  distributed \#\# Regression Diagnostics \#\#\# Residual Plots
+  Residuals are the variance in \(Y\) that is unexplained by \(X\)
+  \[\hat{e_i}=Y_i-\hat{Y_i}\]
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss)}
+
+
+\CommentTok{\# Residuals vs. X}
+\CommentTok{\# Ideally want a "cloud" without a large amount of values at the extremes of X, we want it to look basically random}
+
+\CommentTok{\# If we have a U{-}shape or an inverted U then that indicates the data may be better suited for a nonlinear model}
+
+\CommentTok{\# We also want to check for any major outliers, is there a point that\textquotesingle{}s super far away from the rest?}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Agriculture, }\AttributeTok{y=}\NormalTok{.resid)) }\SpecialCharTok{+} 
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-17-1.pdf}
+
+\hypertarget{leverages}{%
+\subsubsection{Leverages}\label{leverages}}
+
+Leverages tell us how much influence each value of \(X\) have
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss)}
+
+\FunctionTok{leveragePlot}\NormalTok{(}\AttributeTok{model=}\NormalTok{fit, }\AttributeTok{term.name=}\StringTok{"Catholic"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-18-1.pdf}
+
+\begin{verbatim}
+##  Rive Gauche   Neuveville Franches-Mnt   Porrentruy 
+##           47            5            3            6
+\end{verbatim}
+
+\hypertarget{studentized-and-standardized-residuals}{%
+\subsubsection{Studentized and Standardized
+Residuals}\label{studentized-and-standardized-residuals}}
+
+Standardized measurements of residuals, helps you see outliers.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss)}
+
+\CommentTok{\# Regular ole residuals}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{.fitted, }\AttributeTok{y=}\NormalTok{.resid)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-19-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Studentized residuals}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{.fitted, }\AttributeTok{y=}\FunctionTok{rstudent}\NormalTok{(fit))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-19-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Standardized residuals}
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{.fitted, }\AttributeTok{y=}\FunctionTok{rstandard}\NormalTok{(fit))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-19-3.pdf}
+
+\hypertarget{dfbeta}{%
+\subsubsection{DFBETA}\label{dfbeta}}
+
+Helps assess how influential each observation is. Essentially calculates
+how much the slope changes when an observation is removed from the model
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss)}
+
+\FunctionTok{ols\_plot\_dfbetas}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-20-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# OR from car}
+
+\FunctionTok{dfbetasPlots}\NormalTok{(fit)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-20-2.pdf}
+
+\hypertarget{cooks-distance}{%
+\subsubsection{Cook's Distance}\label{cooks-distance}}
+
+Tells you how far, on average, the predicted y-values will move if an
+observation is dropped (note DFBeta is concerned with change in slope
+but also shows you outliers)
+
+Especially helpful for multivariate regression b/c combos of \(X\)s
+could yield an influential point a residual plot won't catch.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{fit }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(Fertility }\SpecialCharTok{\textasciitilde{}}\NormalTok{ Catholic }\SpecialCharTok{+}\NormalTok{ Agriculture }\SpecialCharTok{+}\NormalTok{ Education, }\AttributeTok{data =}\NormalTok{ swiss)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Catholic, }\AttributeTok{y=}\FunctionTok{cooks.distance}\NormalTok{(fit))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-21-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{fit, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{Agriculture, }\AttributeTok{y=}\FunctionTok{cooks.distance}\NormalTok{(fit))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-21-2.pdf}
+
+\hypertarget{multicollinearity}{%
+\subsubsection{Multicollinearity}\label{multicollinearity}}
+
+The symptoms:
+
+\begin{itemize}
+\item
+  Instability of estimates when adding or dropping variables
+\item
+  Massive coefficients or t-statistics
+\item
+  Two or more variables that are similar but with opposite signs
+\end{itemize}
+
+What do to:
+
+\begin{itemize}
+\item
+  More data!
+\item
+  Simplify the model
+
+  \begin{itemize}
+  \item
+    Do we need all the variables that are collinear?
+  \item
+    Could we combine two or more variables to create some sort of index?
+  \end{itemize}
+\end{itemize}
+
+\hypertarget{poli-271}{%
+\section{POLI 271}\label{poli-271}}
+
+\hypertarget{likelihood-theory}{%
+\subsection{Likelihood Theory}\label{likelihood-theory}}
+
+\hypertarget{deriving-the-log-likelihood}{%
+\subsubsection{Deriving the log
+likelihood}\label{deriving-the-log-likelihood}}
+
+Given some probability density function (our stochastic component),
+\(f(y;\theta)\) (could be normal, Gaussian, etc.):
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Get the joint probability of the data. If the probabilities are
+  independent then we have:
+\end{enumerate}
+
+\[Pr(y_i,. . ., y_n|\theta_1, . . ., \theta_n)=Pr(y;\theta)=\prod_{i=1}^nf(y_i;\theta_i)\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Convert the joint probability to a likelihood. Take the joint
+  probability, multiply it by some constant scalar, \(h(y)\).
+\end{enumerate}
+
+\[\mathcal{L}(\theta|y)=h(y)\times Pr(y;\theta)\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\item
+  Plug in our \(f(y;\theta)\) and simplify \(\mathcal{L}(\theta|y)\)
+\item
+  Simplify further by taking the log of \(\mathcal{L}(\theta|y)\)
+\item
+  Find the critical points by taking the first derivative w.r.t
+  \(\theta\)
+\item
+  Check whether they are maxima or minima by taking the second
+  derivative w.r.t. \(\theta\)
+\end{enumerate}
+
+An example:
+
+The exponential probability density function is defined as:
+\(f_e(x;\theta)=\theta e^{-\theta x}\).
+
+First, note that since \(X~f_e(x;\theta)\) the support (possible values
+of \(X\)) is \(\mathbb{R}\in [0, \infty]\)
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Get the joint probability
+\end{enumerate}
+
+\[f_{\mathrm{joint}}(x,\theta)=\prod_{i=1}^n(\theta e^{-\theta x_i})=\theta^n\prod_{i=1}^n( e^{-\theta x_i})\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Define the likelihood function
+\end{enumerate}
+
+\[\mathcal{L}(\theta|x)=h(x)\theta^n\prod_{i=1}^n( e^{-\theta x_i})\]
+
+Let \(h(x)=1\)
+
+\[\mathcal{L}(\theta|x)=\theta^n\prod_{i=1}^n( e^{-\theta x_i})\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{2}
+\tightlist
+\item
+  Take the log
+\end{enumerate}
+
+\[\ln(\mathcal{L}(\theta|x))=\ln(\theta^n\prod_{i=1}^n( e^{-\theta x_i}))\]
+\[\ln(\mathcal{L}(\theta|x))=n\ln(\theta)-\theta\sum_{i=1}^nx_i\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{3}
+\tightlist
+\item
+  Take the first derivative and identify the critical points
+\end{enumerate}
+
+\[\frac{d\ln(\mathcal{L}(\theta|x))}{d\theta}=\frac{n}{\theta}-\sum_{i=1}^nx_i\]
+
+Set the derivative equal to zero to find the critical values of
+\(\theta\):
+
+\[\frac{n}{\theta}-\sum_{i=1}^nx_i=0\]
+
+\[\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}\]
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{4}
+\tightlist
+\item
+  Take the second derivative and substitute \(\hat{\theta}\) for
+  \(\theta\). If the result is positive the critical point is a minumum,
+  if zero then it's a saddle, if negative it's a maximum.
+\end{enumerate}
+
+\[\frac{d^2\ln(\mathcal{L}(\theta|x))}{d\theta^2}=\frac{-n}{\theta^2}\]
+
+Plugging in \(\hat{\theta}\):
+
+\[\frac{d^2ln(\mathcal{L}(\theta=\hat{\theta}|x))}{d\theta^2}=\frac{-n\sum_{i=1}^nx_i}{n}=-\sum_{i=1}^nx_i\]
+
+What's the sign of \(-\sum_{i=1}^nx_i\)?
+
+We know \(-\sum_{i=1}^nx_i<0\) because \(\sum_{i=1}^nx_i>0\) given the
+\(X\) is bounded between \([0, \infty]\) therefore it is a maximum and
+thus \(\hat{\theta}\) is a maximum and the MLE is
+\(\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}\).
+
+Now in R:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Sets the seed for R\textquotesingle{}s baked in random number generation for easy replication}
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{2}\NormalTok{)}
+
+\CommentTok{\# Assigns x to be a vector of 1000 observations drawn from the exponential distribution}
+\CommentTok{\# with lambda=3}
+\NormalTok{x }\OtherTok{\textless{}{-}} \FunctionTok{rexp}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\DecValTok{3}\NormalTok{)}
+
+\CommentTok{\# Returns the log likelihood for some parameter, theta, given data, x}
+\NormalTok{exp.ll }\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(theta, x)\{}\FunctionTok{return}\NormalTok{((}\FunctionTok{length}\NormalTok{(x)}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(theta))}\SpecialCharTok{{-}}\NormalTok{(theta}\SpecialCharTok{*}\FunctionTok{sum}\NormalTok{(x)))\}}
+
+\NormalTok{thetas }\OtherTok{=} \FunctionTok{seq}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{,}\FloatTok{0.1}\NormalTok{)}
+
+\NormalTok{y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{()}
+
+\ControlFlowTok{for}\NormalTok{(theta }\ControlFlowTok{in}\NormalTok{ thetas)\{}
+\NormalTok{  y }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(y,}\FunctionTok{exp.ll}\NormalTok{(}\AttributeTok{theta=}\NormalTok{theta,}\AttributeTok{x=}\NormalTok{x))}
+\NormalTok{\}}
+
+\NormalTok{theta\_hat }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(x)}\SpecialCharTok{/}\FunctionTok{sum}\NormalTok{(x)}
+\FunctionTok{paste}\NormalTok{(}\StringTok{"For the given x, theta\_hat is: "}\NormalTok{, theta\_hat)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] "For the given x, theta_hat is:  2.8956932819183"
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(y,thetas)}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{df,}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{thetas,}\AttributeTok{y=}\NormalTok{y)) }\SpecialCharTok{+}
+  \FunctionTok{geom\_point}\NormalTok{(}\AttributeTok{size=}\FloatTok{0.5}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_vline}\NormalTok{(}\AttributeTok{xintercept=}\NormalTok{theta\_hat, }\AttributeTok{color=}\StringTok{"red"}\NormalTok{, }\AttributeTok{linetype=}\StringTok{"dashed"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Log likelihood vs. theta"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{xlab}\NormalTok{(}\StringTok{"theta"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{ylab}\NormalTok{(}\StringTok{"Log likelihood"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{theme\_bw}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-22-1.pdf}
+
+Note: See MLE Problem Set 2 for a derivation of the MLE of the normal
+variance.
+
+\hypertarget{regularity}{%
+\subsection{Regularity}\label{regularity}}
+
+In order to find the MLE as we did above, the likelihood function must
+demonstrate ``regularity'', i.e.~it must be continuous and twice
+differentiable.
+
+\hypertarget{binary-data}{%
+\subsection{Binary Data}\label{binary-data}}
+
+\hypertarget{why-not-just-use-ols}{%
+\subsubsection{Why not just use OLS?}\label{why-not-just-use-ols}}
+
+\begin{itemize}
+\tightlist
+\item
+  Nonsensical predictions: predicted probabilites using a linear
+  probability model on a binary outcome can fall outside \([0,1]\),
+  meaning the OLS estimate is biased and inconsistent.
+\item
+  Assumes the relationship between a covariate and the probability of 1
+  as the outcome is constant across all values of the covariate
+\item
+  Can give you heteroskedastic residuals that give biased confidence
+  intervals
+\end{itemize}
+
+\hypertarget{the-logit-model}{%
+\subsubsection{The Logit Model}\label{the-logit-model}}
+
+Logit allows for mapping probabilities onto the unbounded real line
+using odds. We transform a probability, \(p\), to logit by taking the
+log of the odds ratio:
+
+\[\mathrm{logit}(p)=\log(\frac{p}{1-p})\]
+
+And the inverse mapping:\\
+
+\[
+\mathrm{logit}^{-1}(x)=\frac{e^x}{1+e^x}=\frac{1}{1+e^{-x}}
+\]
+
+We model binary outcomes as Bernoulli trials so our stochastic component
+is:
+
+\[
+f_B(y_i;\theta_i)=\theta_i^{y_i}(1-\theta_i)^{1-y_i}= 
+   \left\{
+\begin{array}{ll}
+      \theta_i & y_i=1 \\
+      1-\theta_i & y_i=0
+\end{array} 
+\right. 
+\]
+
+And our systematic component is:
+
+\[
+\theta_i=\mathrm{logit}^{-1}(x_i^T\beta)=\frac{1}{1+e^{-x_i^T\beta}}
+\]
+
+As we do above we can then get the joint probability distribution:
+
+\[
+Pr(y|\theta)=\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}
+\]
+
+And the log-likelihood:
+
+\[
+\log\mathcal{L}(\theta|y)=\sum_{i=1}^n\log(\frac{e^{-x_i^T\beta^{1-y_i}}}{1+e^{-x_i^T\beta}})
+\]
+
+Finding the MLE with R (Ward and Ahlquist code):
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#function for optimization of logit}
+\NormalTok{binreg}\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(X,y,}\AttributeTok{method=}\StringTok{"BFGS"}\NormalTok{)\{}
+\NormalTok{  X}\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\DecValTok{1}\NormalTok{,X)}
+  
+  \CommentTok{\# Get the log{-}likelihood}
+\NormalTok{  negLL}\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b,X,y)\{}
+\NormalTok{    p}\OtherTok{\textless{}{-}}\FunctionTok{as.vector}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{X }\SpecialCharTok{\%*\%}\NormalTok{ b)))}
+    
+    \FunctionTok{return}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{sum}\NormalTok{(y}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(p) }\SpecialCharTok{+}\NormalTok{ (}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{y)}\SpecialCharTok{*}\FunctionTok{log}\NormalTok{(}\DecValTok{1}\SpecialCharTok{{-}}\NormalTok{p)))}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Get the gradient}
+\NormalTok{  gradient}\OtherTok{\textless{}{-}} \ControlFlowTok{function}\NormalTok{(b,X,y)\{}
+\NormalTok{    p }\OtherTok{\textless{}{-}} \FunctionTok{as.vector}\NormalTok{(}\DecValTok{1}\SpecialCharTok{/}\NormalTok{(}\DecValTok{1}\SpecialCharTok{+}\FunctionTok{exp}\NormalTok{(}\SpecialCharTok{{-}}\NormalTok{X }\SpecialCharTok{\%*\%}\NormalTok{ b)))}
+    
+    \FunctionTok{return}\NormalTok{(}\SpecialCharTok{{-}}\FunctionTok{apply}\NormalTok{(((y }\SpecialCharTok{{-}}\NormalTok{ p)}\SpecialCharTok{*}\NormalTok{X), }\DecValTok{2}\NormalTok{, sum))}
+\NormalTok{  \}}
+  
+  \CommentTok{\# Pass our data, log{-}likelihood, and gradient to optim() }
+  \CommentTok{\# which will find the maximum likelihood}
+\NormalTok{  results}\OtherTok{\textless{}{-}} \FunctionTok{optim}\NormalTok{(}\AttributeTok{par=}\FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{,}\FunctionTok{ncol}\NormalTok{(X)), }
+                  \AttributeTok{fn=}\NormalTok{negLL,}
+                  \AttributeTok{gr=}\NormalTok{gradient, }
+                  \AttributeTok{hessian=}\NormalTok{T, }
+                  \AttributeTok{method=}\NormalTok{method,}
+                  \AttributeTok{X=}\NormalTok{X,}
+                  \AttributeTok{y=}\NormalTok{y)}
+  
+  \CommentTok{\# Pull out the stuff we want}
+  \FunctionTok{list}\NormalTok{(}\AttributeTok{coefficients=}\NormalTok{results}\SpecialCharTok{$}\NormalTok{par,}
+       \AttributeTok{var=}\FunctionTok{solve}\NormalTok{(results}\SpecialCharTok{$}\NormalTok{hessian),}
+       \AttributeTok{deviance=}\DecValTok{2}\SpecialCharTok{*}\NormalTok{results}\SpecialCharTok{$}\NormalTok{value,}
+       \AttributeTok{converged=}\NormalTok{results}\SpecialCharTok{$}\NormalTok{convergence}\SpecialCharTok{==}\DecValTok{0}\NormalTok{)}
+\NormalTok{\}}
+
+\FunctionTok{data}\NormalTok{(}\StringTok{"mtcars"}\NormalTok{)}
+
+\CommentTok{\# set the DV to the binary variable for V{-}shaped vs. straight engine type}
+\NormalTok{DV }\OtherTok{\textless{}{-}}\NormalTok{ mtcars}\SpecialCharTok{$}\NormalTok{vs}
+
+\NormalTok{IVs }\OtherTok{\textless{}{-}} \FunctionTok{as.matrix}\NormalTok{(mtcars }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{select}\NormalTok{(cyl, disp, hp))}
+
+\NormalTok{mlebin.fit}\OtherTok{\textless{}{-}}\FunctionTok{binreg}\NormalTok{(}\AttributeTok{X=}\NormalTok{IVs, }\AttributeTok{y=}\NormalTok{DV)}
+
+\CommentTok{\# Get our logit coefficients}
+\FunctionTok{round}\NormalTok{(mlebin.fit}\SpecialCharTok{$}\NormalTok{coefficients,}\DecValTok{2}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 10.07 -1.08  0.01 -0.04
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Compare to R\textquotesingle{}s baked in logit estimation}
+\NormalTok{fit.glm }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(vs }\SpecialCharTok{\textasciitilde{}}\NormalTok{ cyl }\SpecialCharTok{+}\NormalTok{ disp }\SpecialCharTok{+}\NormalTok{ hp,}
+               \AttributeTok{family =} \FunctionTok{binomial}\NormalTok{(}\AttributeTok{link =} \StringTok{"logit"}\NormalTok{), }
+               \AttributeTok{data =}\NormalTok{ mtcars)}
+\FunctionTok{summary}\NormalTok{(fit.glm, }\AttributeTok{signif.stars=}\ConstantTok{FALSE}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = vs ~ cyl + disp + hp, family = binomial(link = "logit"), 
+##     data = mtcars)
+## 
+## Deviance Residuals: 
+##      Min        1Q    Median        3Q       Max  
+## -2.37997  -0.23996  -0.04823   0.35762   1.34781  
+## 
+## Coefficients:
+##              Estimate Std. Error z value Pr(>|z|)  
+## (Intercept) 10.069083   3.917828   2.570   0.0102 *
+## cyl         -1.075480   1.079346  -0.996   0.3190  
+## disp         0.008179   0.015662   0.522   0.6015  
+## hp          -0.043732   0.037350  -1.171   0.2417  
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 43.860  on 31  degrees of freedom
+## Residual deviance: 15.758  on 28  degrees of freedom
+## AIC: 23.758
+## 
+## Number of Fisher Scoring iterations: 7
+\end{verbatim}
+
+\hypertarget{interpreting-logit}{%
+\subsubsection{Interpreting Logit}\label{interpreting-logit}}
+
+While the output of logit is similar to OLS, interpretation is a bit
+more nuanced for 2 reasons:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  The model is nonlinear so the effect of a particular covariate on the
+  DV is not constant across all levels of the covariate. This can be
+  seen by deriving the marginal effect of a covariate, \(x_k\), on the
+  expected value of \(Y\):
+
+  \[\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}\]
+
+  As a quick trick, you can divide a coefficient by 4 to get an estimate
+  of a maximum effect a 1 unit increase in the covariate can have on the
+  probability of the DV being 1. i.e.~if we have a coefficent of -1.45
+  then \(\frac{-1.45}{4}=-0.4\) so a 1 unit increase in the IV reduces
+  the probability of the DV being one by about 40\%.
+\item
+  The logit model is a linear regression on the log odds so the
+  exponentiated coefficients are odds ratios. If we have a coefficient
+  greater than 1 then a 1 unit increase in that covariate corresponds to
+  an \emph{increase} in the relative probability of obtaining a 1 in the
+  outcome variable. Less than 1 represents a decrease.
+\end{enumerate}
+
+\hypertarget{interpreting-logit-with-plots}{%
+\subsubsection{Interpreting Logit with
+Plots}\label{interpreting-logit-with-plots}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Read in and clean up the data}
+\NormalTok{impeach }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Data/impeach.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 435 Columns: 5
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## dbl (5): votesum, clint96, partyid, aflcio97, ccoal98
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#impeach \textless{}{-} impeach \%\textgreater{}\% select({-}ccoal98)}
+\NormalTok{impeach }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(impeach)}
+\FunctionTok{attach}\NormalTok{(impeach)}
+
+\CommentTok{\# Make our DV binary}
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[votesum }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Unknown or uninitialised column: `votebin`.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[votesum }\SpecialCharTok{==} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\CommentTok{\# Estimate the model}
+\NormalTok{model }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(votebin }\SpecialCharTok{\textasciitilde{}}\NormalTok{ partyid }\SpecialCharTok{+}\NormalTok{ clint96, }\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{impeach)}
+
+\FunctionTok{summary}\NormalTok{(model)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## glm(formula = votebin ~ partyid + clint96, family = binomial(link = "logit"), 
+##     data = impeach)
+## 
+## Deviance Residuals: 
+##     Min       1Q   Median       3Q      Max  
+## -3.2606  -0.0414   0.0128   0.0848   2.5753  
+## 
+## Coefficients:
+##             Estimate Std. Error z value Pr(>|z|)    
+## (Intercept) 11.22019    3.25291   3.449 0.000562 ***
+## partyid      7.95961    1.03158   7.716 1.20e-14 ***
+## clint96     -0.31520    0.07542  -4.179 2.92e-05 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## (Dispersion parameter for binomial family taken to be 1)
+## 
+##     Null deviance: 593.487  on 428  degrees of freedom
+## Residual deviance:  57.753  on 426  degrees of freedom
+## AIC: 63.753
+## 
+## Number of Fisher Scoring iterations: 9
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Tidy the model}
+\NormalTok{results }\OtherTok{\textless{}{-}} \FunctionTok{tidy}\NormalTok{(model)}
+
+\CommentTok{\# Get the 95\% CI}
+\NormalTok{fit\_cis\_95 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(model, }\AttributeTok{level =} \FloatTok{0.95}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"conf.low\_95"} \OtherTok{=} \StringTok{"X2.5.."}\NormalTok{,}
+         \StringTok{"conf.high\_95"} \OtherTok{=} \StringTok{"X97.5.."}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Waiting for profiling to be done...
+\end{verbatim}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Get the 90\% CI}
+\NormalTok{fit\_cis\_90 }\OtherTok{\textless{}{-}} \FunctionTok{confint}\NormalTok{(model, }\AttributeTok{level =} \FloatTok{0.90}\NormalTok{) }\SpecialCharTok{\%\textgreater{}\%} 
+  \FunctionTok{data.frame}\NormalTok{() }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{rename}\NormalTok{(}\StringTok{"conf.low\_90"} \OtherTok{=} \StringTok{"X5.."}\NormalTok{,}
+         \StringTok{"conf.high\_90"} \OtherTok{=} \StringTok{"X95.."}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Waiting for profiling to be done...
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Bind it together}
+\NormalTok{results }\OtherTok{\textless{}{-}} \FunctionTok{bind\_cols}\NormalTok{(results, }
+\NormalTok{                     fit\_cis\_95, }
+\NormalTok{                     fit\_cis\_90) }\SpecialCharTok{\%\textgreater{}\%}
+           \FunctionTok{rename}\NormalTok{(}\AttributeTok{Variable =}\NormalTok{ term,}
+                  \AttributeTok{Coefficient =}\NormalTok{ estimate,}
+                  \AttributeTok{SE =}\NormalTok{ std.error) }\SpecialCharTok{\%\textgreater{}\%}
+           \FunctionTok{filter}\NormalTok{(Variable }\SpecialCharTok{!=} \StringTok{"(Intercept)"}\NormalTok{)}
+
+\CommentTok{\# Plot it!}
+\FunctionTok{ggplot}\NormalTok{(results, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }\AttributeTok{y =}\NormalTok{ Coefficient)) }\SpecialCharTok{+}
+        \FunctionTok{geom\_hline}\NormalTok{(}\AttributeTok{yintercept =} \DecValTok{0}\NormalTok{, }\AttributeTok{color =} \StringTok{"red"}\NormalTok{, }\AttributeTok{lty =} \DecValTok{2}\NormalTok{) }\SpecialCharTok{+}
+        \FunctionTok{geom\_point}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }
+                    \AttributeTok{y =}\NormalTok{ Coefficient)) }\SpecialCharTok{+} 
+        \CommentTok{\# geom\_linerange(aes(x = Variable, }
+        \CommentTok{\#              ymin = conf.low\_90,}
+        \CommentTok{\#              ymax = conf.high\_90),}
+        \CommentTok{\#            lwd = 1) +}
+        \FunctionTok{geom\_errorbar}\NormalTok{(}\FunctionTok{aes}\NormalTok{(}\AttributeTok{x =}\NormalTok{ Variable, }
+                     \AttributeTok{ymin =}\NormalTok{ conf.low\_95,}
+                     \AttributeTok{ymax =}\NormalTok{ conf.high\_95),}
+                     \AttributeTok{width=}\NormalTok{.}\DecValTok{1}\NormalTok{) }\SpecialCharTok{+} 
+        \FunctionTok{ggtitle}\NormalTok{(}\StringTok{"Coefficient Plot"}\NormalTok{) }\SpecialCharTok{+}
+        \FunctionTok{coord\_flip}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{theme\_light}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Now a predicted probability plot}
+
+\CommentTok{\# Say we want to know the difference in predicted probability}
+\CommentTok{\# of a Republican vs. a Democrat voting to impeach Clinton}
+
+\CommentTok{\# Create a sequence of the range of values for the 96 vote share}
+\NormalTok{clint96.range }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\FunctionTok{min}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96),}\FunctionTok{max}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96),.}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# Construct the Democratic scenario}
+\NormalTok{x.lo }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{, }\FunctionTok{median}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)) }\CommentTok{\# Democrat scenario}
+\NormalTok{X.lo }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.lo, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.lo), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.lo[}\DecValTok{3}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+
+\CommentTok{\# Construct the Republican scenario}
+\NormalTok{x.hi }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\DecValTok{1}\NormalTok{, }\FunctionTok{median}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)) }\CommentTok{\# Republican scenario}
+\NormalTok{X.hi }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.hi, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.hi), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.hi[}\DecValTok{3}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+
+\CommentTok{\# Generate a multivariate normal distribution}
+\NormalTok{B.tilde }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\FunctionTok{coef}\NormalTok{(model), }\FunctionTok{vcov}\NormalTok{(model))}
+
+\CommentTok{\# Generate the predicted probabilities}
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.lo)}
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.hi)}
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.lo, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.hi, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+
+
+\CommentTok{\# Now tidy the data and plot with ggplot}
+\NormalTok{pred.prob.df }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{xrange=}\FunctionTok{rep}\NormalTok{(clint96.range,}\DecValTok{2}\NormalTok{), }
+                           \AttributeTok{y=}\FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{2}\NormalTok{,],s.hi[}\DecValTok{2}\NormalTok{,]),}
+                           \AttributeTok{conf.low =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{1}\NormalTok{,], s.hi[}\DecValTok{1}\NormalTok{,]),}
+                           \AttributeTok{conf.high =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{3}\NormalTok{,], s.hi[}\DecValTok{3}\NormalTok{,]),}
+                           \AttributeTok{scenario =} \FunctionTok{rep}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"Democrat"}\NormalTok{, }\StringTok{"Republican"}\NormalTok{), }
+                                          \AttributeTok{each=}\FunctionTok{length}\NormalTok{(clint96.range)))}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{pred.prob.df, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{xrange, }\AttributeTok{y=}\NormalTok{y,}
+                              \AttributeTok{ymin=}\NormalTok{conf.low,}
+                              \AttributeTok{ymax=}\NormalTok{conf.high,}
+                              \AttributeTok{fill=}\FunctionTok{factor}\NormalTok{(scenario),}
+                              \AttributeTok{linetype=}\FunctionTok{factor}\NormalTok{(scenario))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size=}\NormalTok{.}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\AttributeTok{alpha=}\FloatTok{0.25}\NormalTok{, }\AttributeTok{color=}\StringTok{"gray"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{"1996 Vote Share for Clinton"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Predicted Probability"}\NormalTok{,}
+       \AttributeTok{title=}\StringTok{"Predicted Probability Plot"}\NormalTok{, }\AttributeTok{linetype=}\StringTok{"Scenario"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"Democrat"}\NormalTok{, }\StringTok{"Republican"}\NormalTok{), }
+                    \AttributeTok{values=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill=}\StringTok{"none"}\NormalTok{, }\AttributeTok{color=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-2.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Or use base graphics (ew)}
+
+\CommentTok{\#jpeg(file="pred\_prob.jpeg")}
+
+\CommentTok{\# Get our blank plot}
+\FunctionTok{plot}\NormalTok{(clint96.range, s.lo[}\DecValTok{2}\NormalTok{,], }\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{1}\NormalTok{),}
+     \AttributeTok{xlab=}\StringTok{"Clinton 1996 District Vote Share"}\NormalTok{,}
+     \AttributeTok{ylab=}\StringTok{"Predicted Probability of Voting for Impeachment"}\NormalTok{,}
+     \AttributeTok{main=}\StringTok{"Impeachment Vote, Party ID, and 1996 Clinton Vote Share"}\NormalTok{,}
+     \AttributeTok{bty=}\StringTok{"n"}\NormalTok{, }\AttributeTok{col=}\StringTok{"white"}\NormalTok{)}
+
+\CommentTok{\# Plot the confidence bands}
+\FunctionTok{polygon}\NormalTok{(}\AttributeTok{x=}\FunctionTok{c}\NormalTok{(clint96.range, }\FunctionTok{rev}\NormalTok{(clint96.range)),}
+        \AttributeTok{y=}\FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{1}\NormalTok{,],}\FunctionTok{rev}\NormalTok{(s.lo[}\DecValTok{3}\NormalTok{,])),}
+        \AttributeTok{col=}\FunctionTok{grey}\NormalTok{(}\FloatTok{0.8}\NormalTok{), }\AttributeTok{border=}\ConstantTok{NA}\NormalTok{)}
+
+\FunctionTok{polygon}\NormalTok{(}\AttributeTok{x=}\FunctionTok{c}\NormalTok{(clint96.range, }\FunctionTok{rev}\NormalTok{(clint96.range)),}
+        \AttributeTok{y=}\FunctionTok{c}\NormalTok{(s.hi[}\DecValTok{1}\NormalTok{,],}\FunctionTok{rev}\NormalTok{(s.hi[}\DecValTok{3}\NormalTok{,])),}
+        \AttributeTok{col=}\FunctionTok{grey}\NormalTok{(}\FloatTok{0.8}\NormalTok{), }\AttributeTok{border=}\ConstantTok{NA}\NormalTok{)}
+
+\CommentTok{\#Plot the predicted probability curves}
+\FunctionTok{lines}\NormalTok{(clint96.range, s.hi[}\DecValTok{2}\NormalTok{,], }\AttributeTok{lty=}\DecValTok{3}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+
+\FunctionTok{lines}\NormalTok{(clint96.range, s.lo[}\DecValTok{2}\NormalTok{,], }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{)}
+
+\FunctionTok{legend}\NormalTok{(}\DecValTok{70}\NormalTok{, }\DecValTok{1}\NormalTok{, }\AttributeTok{legend=}\FunctionTok{c}\NormalTok{(}\StringTok{"Democrat"}\NormalTok{, }\StringTok{"Republican"}\NormalTok{), }\AttributeTok{lty=}\FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{,}\DecValTok{3}\NormalTok{),}\AttributeTok{lwd=}\DecValTok{3}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-3.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#dev.off()}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{comparing-models}{%
+\subsubsection{Comparing Models}\label{comparing-models}}
+
+\hypertarget{roc-plots}{%
+\subsubsection{ROC Plots}\label{roc-plots}}
+
+Use these to assess model fit heuristically. We want our model's curve
+to be as close to a straight diagonal line as possible.
+
+In the below example, because the simpler model performs about as well
+as the more complicated one we would opt for the simpler model (assuming
+AIC, BIC, etc. are similar)
+
+Note: We can also calculate and compare the Area Under the Curve (AUC)
+for each model's ROC curve; smaller is better.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Read in and clean up the data}
+\NormalTok{impeach }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Data/impeach.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 435 Columns: 5
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## dbl (5): votesum, clint96, partyid, aflcio97, ccoal98
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impeach }\OtherTok{\textless{}{-}} \FunctionTok{na.omit}\NormalTok{(impeach)}
+\FunctionTok{attach}\NormalTok{(impeach)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The following objects are masked from impeach (pos = 3):
+## 
+##     aflcio97, ccoal98, clint96, partyid, votesum
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Make our DV binary}
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[votesum }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Unknown or uninitialised column: `votebin`.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[votesum }\SpecialCharTok{==} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\CommentTok{\# Define two models to compare, one without aflcio97, one with}
+\NormalTok{model1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(votebin }\SpecialCharTok{\textasciitilde{}}\NormalTok{ partyid }\SpecialCharTok{+}\NormalTok{ clint96, }\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{impeach)}
+
+\NormalTok{model2 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(votebin }\SpecialCharTok{\textasciitilde{}}\NormalTok{ partyid }\SpecialCharTok{+}\NormalTok{ clint96 }\SpecialCharTok{+}\NormalTok{ aflcio97, }\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{impeach)}
+
+\CommentTok{\# Get out predicted values for each model}
+\NormalTok{model1\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model1, impeach, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{model2\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model2, impeach, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{preds\_list }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(model1\_pred, model2\_pred)}
+
+
+\NormalTok{m }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(preds\_list)}
+\NormalTok{actual\_values }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\FunctionTok{list}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{votebin),}\DecValTok{2}\NormalTok{)}
+
+\NormalTok{pred }\OtherTok{\textless{}{-}} \FunctionTok{prediction}\NormalTok{(preds\_list, actual\_values)}
+\NormalTok{rocs }\OtherTok{\textless{}{-}} \FunctionTok{performance}\NormalTok{(pred, }\StringTok{"tpr"}\NormalTok{, }\StringTok{"fpr"}\NormalTok{)}
+\CommentTok{\#jpeg(file="ROCplot.jpeg")}
+
+\CommentTok{\# Plot it}
+\FunctionTok{plot}\NormalTok{(rocs, }\AttributeTok{col =} \FunctionTok{as.list}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{m), }\AttributeTok{main =} \StringTok{"Model 1 and 2 ROC Comparison"}\NormalTok{)}
+     \FunctionTok{legend}\NormalTok{(}\AttributeTok{x =} \StringTok{"bottomright"}\NormalTok{,}
+            \AttributeTok{legend =} \FunctionTok{c}\NormalTok{(}\StringTok{"Model 1"}\NormalTok{, }\StringTok{"Model 2"}\NormalTok{),}
+            \AttributeTok{fill =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{m)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\#dev.off()}
+
+\CommentTok{\# Calculating the AUC from the predicted values calculated above}
+\NormalTok{AUC\_in }\OtherTok{\textless{}{-}} \FunctionTok{performance}\NormalTok{(pred, }\AttributeTok{measure=}\StringTok{"auc"}\NormalTok{)}
+
+\NormalTok{AUC\_labels }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Model 1"}\NormalTok{, }\StringTok{"Model 2"}\NormalTok{)}
+
+\NormalTok{knitr}\SpecialCharTok{::}\FunctionTok{kable}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(AUC\_labels, }\FunctionTok{round}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(AUC\_in}\SpecialCharTok{@}\NormalTok{y.values), }\DecValTok{3}\NormalTok{)), }\AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"AUC"}\NormalTok{),}
+      \AttributeTok{caption =} \StringTok{"Model AUCs"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-25}Model AUCs}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+ & AUC\\
+\hline
+Model 1 & 0.996\\
+\hline
+Model 2 & 0.998\\
+\hline
+\end{tabular}
+\end{table}
+
+\hypertarget{out-of-sample-prediction}{%
+\subsubsection{Out-of-sample
+Prediction}\label{out-of-sample-prediction}}
+
+We assess out-of-sample prediction because our model might be overfitted
+to the data we feed it. When a model can predict both in-sample and
+out-of-sample well then it's more in line with the data generating
+process.
+
+What we need to evaluate a model's prediction error (AKA generalization
+error, generalization performance): - Training set - Test set - A model
+- A loss function to measure deviation from the actual value in the test
+set
+
+What we want: - Good performance in both the test and training sets
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load in some data}
+\NormalTok{ms}\OtherTok{\textless{}{-}}\FunctionTok{read.table}\NormalTok{(}\StringTok{"Data/Msrepl87.asc"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{, }
+    \AttributeTok{colClasses=}\FunctionTok{c}\NormalTok{(}\StringTok{"character"}\NormalTok{,}\FunctionTok{rep}\NormalTok{(}\StringTok{"numeric"}\NormalTok{,}\DecValTok{22}\NormalTok{)))}
+\FunctionTok{rownames}\NormalTok{(ms) }\OtherTok{\textless{}{-}}\NormalTok{ ms}\SpecialCharTok{$}\NormalTok{country}
+
+
+\CommentTok{\# Create a new variables of interest}
+\NormalTok{ms}\SpecialCharTok{$}\NormalTok{sanctions }\OtherTok{\textless{}{-}}\NormalTok{ (ms}\SpecialCharTok{$}\NormalTok{sanctions70 }\SpecialCharTok{+}\NormalTok{ ms}\SpecialCharTok{$}\NormalTok{sanctions75)}\SpecialCharTok{/}\DecValTok{2}
+\NormalTok{ms}\SpecialCharTok{$}\NormalTok{deaths }\OtherTok{\textless{}{-}} \FunctionTok{ifelse}\NormalTok{(ms}\SpecialCharTok{$}\NormalTok{deaths75 }\SpecialCharTok{\textgreater{}} \DecValTok{0}\NormalTok{, }\DecValTok{1}\NormalTok{, }\DecValTok{0}\NormalTok{)}
+
+
+\CommentTok{\# Create 3 competing logit models}
+\NormalTok{model1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions, }\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{ms)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model2 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76, }
+              \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{ms)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model3 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions }\SpecialCharTok{+}\NormalTok{ civlib76 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ sanctions}\SpecialCharTok{:}\NormalTok{civlib76,}
+              \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{ms)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{modelsummary}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"Model 1"}\OtherTok{=}\NormalTok{model1, }\StringTok{"Model 2"}\OtherTok{=}\NormalTok{model2, }\StringTok{"Model 3"}\OtherTok{=}\NormalTok{model3))}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{lccc}
+\toprule
+  & Model 1 & Model 2 & Model 3\\
+\midrule
+(Intercept) & \num{-0.462} & \num{-0.521} & \num{-1.744}\\
+ & (\num{0.372}) & (\num{0.624}) & (\num{0.891})\\
+sanctions & \num{0.102} & \num{0.073} & \num{0.314}\\
+ & (\num{0.031}) & (\num{0.033}) & (\num{0.133})\\
+pop75 &  & \num{0.071} & \num{0.056}\\
+ &  & (\num{0.048}) & (\num{0.050})\\
+civlib76 &  & \num{-0.059} & \num{0.192}\\
+ &  & (\num{0.136}) & (\num{0.177})\\
+sanctions × civlib76 &  &  & \num{-0.043}\\
+ &  &  & (\num{0.020})\\
+\midrule
+Num.Obs. & \num{95} & \num{95} & \num{95}\\
+AIC & \num{89.4} & \num{89.6} & \num{86.5}\\
+BIC & \num{94.5} & \num{99.8} & \num{99.3}\\
+Log.Lik. & \num{-42.676} & \num{-40.786} & \num{-38.256}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Based on the AIC and BIC Model 1 has the best in{-}sample fit}
+\CommentTok{\# Now let\textquotesingle{}s use cross{-}validation to assess out{-}of{-}sample fit}
+
+\FunctionTok{set.seed}\NormalTok{(}\DecValTok{1234}\NormalTok{)}
+
+\CommentTok{\# Define number of folds we want}
+\NormalTok{k }\OtherTok{\textless{}{-}} \DecValTok{10}
+
+\CommentTok{\# Make the fold assignments, order them, and attach them to the dataset}
+\NormalTok{folds }\OtherTok{\textless{}{-}} \FunctionTok{cvFolds}\NormalTok{(}\AttributeTok{n=}\FunctionTok{NROW}\NormalTok{(ms), }\AttributeTok{K=}\NormalTok{k, }\AttributeTok{type=}\StringTok{"random"}\NormalTok{)}
+\NormalTok{folds }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(folds}\SpecialCharTok{$}\NormalTok{subsets, folds}\SpecialCharTok{$}\NormalTok{which))}
+\FunctionTok{colnames}\NormalTok{(folds) }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"index"}\NormalTok{, }\StringTok{"fold"}\NormalTok{)}
+\NormalTok{folds }\OtherTok{\textless{}{-}}\NormalTok{ folds[}\FunctionTok{order}\NormalTok{(folds}\SpecialCharTok{$}\NormalTok{index),]}
+
+\NormalTok{ms}\SpecialCharTok{$}\NormalTok{fold }\OtherTok{\textless{}{-}}\NormalTok{ folds}\SpecialCharTok{$}\NormalTok{fold}
+
+\NormalTok{data }\OtherTok{\textless{}{-}}\NormalTok{ ms }\SpecialCharTok{\%\textgreater{}\%}
+  \FunctionTok{mutate}\NormalTok{(}\AttributeTok{preds1 =} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(ms)),}
+         \AttributeTok{preds2 =} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(ms)),}
+         \AttributeTok{preds3 =} \FunctionTok{rep}\NormalTok{(}\DecValTok{0}\NormalTok{, }\FunctionTok{nrow}\NormalTok{(ms)))}
+
+\CommentTok{\# Loop through each fold}
+\ControlFlowTok{for}\NormalTok{(k\_i }\ControlFlowTok{in} \DecValTok{1}\SpecialCharTok{:}\NormalTok{k)\{}
+   
+   \CommentTok{\# Get the training data}
+\NormalTok{   train\_data }\OtherTok{\textless{}{-}}\NormalTok{ ms }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(fold }\SpecialCharTok{!=}\NormalTok{ k\_i)}
+   
+   \CommentTok{\# Get the testing data}
+\NormalTok{   test\_data }\OtherTok{\textless{}{-}}\NormalTok{ ms }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{filter}\NormalTok{(fold }\SpecialCharTok{==}\NormalTok{ k\_i)}
+   
+   \CommentTok{\# Train model 1 and get predictions}
+\NormalTok{   trained\_model1 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions, }\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{),}
+                         \AttributeTok{data=}\NormalTok{train\_data)}
+   
+\NormalTok{   preds1.vals }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(trained\_model1, test\_data, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+   
+\NormalTok{   data[data}\SpecialCharTok{$}\NormalTok{fold }\SpecialCharTok{==}\NormalTok{ k\_i,]}\SpecialCharTok{$}\NormalTok{preds1 }\OtherTok{\textless{}{-}}\NormalTok{ preds1.vals}
+
+   \CommentTok{\# Train model 2 and get predictions}
+\NormalTok{   trained\_model2 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76,}
+                         \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{ms)}
+   
+\NormalTok{   preds2.vals }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(trained\_model2, test\_data, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+   
+\NormalTok{   data[data}\SpecialCharTok{$}\NormalTok{fold }\SpecialCharTok{==}\NormalTok{ k\_i,]}\SpecialCharTok{$}\NormalTok{preds2 }\OtherTok{\textless{}{-}}\NormalTok{ preds2.vals}
+
+   \CommentTok{\# Train model 3 and get predictions  }
+\NormalTok{   trained\_model3 }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions }\SpecialCharTok{+}\NormalTok{ civlib76 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ sanctions}\SpecialCharTok{:}\NormalTok{civlib76,}
+                         \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{), }\AttributeTok{data=}\NormalTok{ms)}
+   
+\NormalTok{   preds3.vals }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(trained\_model3, test\_data, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+   
+\NormalTok{   data[data}\SpecialCharTok{$}\NormalTok{fold }\SpecialCharTok{==}\NormalTok{ k\_i,]}\SpecialCharTok{$}\NormalTok{preds3 }\OtherTok{\textless{}{-}}\NormalTok{ preds3.vals}
+
+\NormalTok{\}}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{preds }\OtherTok{\textless{}{-}} \FunctionTok{list}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{preds1, data}\SpecialCharTok{$}\NormalTok{preds2, data}\SpecialCharTok{$}\NormalTok{preds3)}
+\NormalTok{n }\OtherTok{\textless{}{-}} \FunctionTok{length}\NormalTok{(preds)}
+
+\CommentTok{\# Get the actual values}
+\NormalTok{actual\_vals }\OtherTok{\textless{}{-}} \FunctionTok{rep}\NormalTok{(}\FunctionTok{list}\NormalTok{(data}\SpecialCharTok{$}\NormalTok{deaths), n)}
+
+\CommentTok{\# Make the ROC plot}
+\NormalTok{pred\_instance }\OtherTok{\textless{}{-}} \FunctionTok{prediction}\NormalTok{(preds, actual\_vals)}
+
+\CommentTok{\# how to get the actual }
+\NormalTok{AUC\_out }\OtherTok{\textless{}{-}} \FunctionTok{performance}\NormalTok{(pred\_instance, }\AttributeTok{measure=}\StringTok{"auc"}\NormalTok{)}
+
+\NormalTok{AUC\_labels }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\StringTok{"Model 1"}\NormalTok{, }\StringTok{"Model 2"}\NormalTok{, }\StringTok{"Model 3"}\NormalTok{)}
+
+\FunctionTok{kable}\NormalTok{(}\FunctionTok{cbind}\NormalTok{(AUC\_labels, }\FunctionTok{round}\NormalTok{(}\FunctionTok{as.numeric}\NormalTok{(AUC\_out}\SpecialCharTok{@}\NormalTok{y.values), }\DecValTok{3}\NormalTok{)), }\AttributeTok{col.names =} \FunctionTok{c}\NormalTok{(}\StringTok{""}\NormalTok{, }\StringTok{"AUC"}\NormalTok{),}
+      \AttributeTok{caption =} \StringTok{"Out{-}of{-}sample AUCs"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-26}Out-of-sample AUCs}
+\centering
+\begin{tabular}[t]{l|l}
+\hline
+ & AUC\\
+\hline
+Model 1 & 0.827\\
+\hline
+Model 2 & 0.863\\
+\hline
+Model 3 & 0.862\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{rocs }\OtherTok{\textless{}{-}} \FunctionTok{performance}\NormalTok{(pred\_instance, }\StringTok{"tpr"}\NormalTok{, }\StringTok{"fpr"}\NormalTok{)}
+\FunctionTok{plot}\NormalTok{(rocs, }\AttributeTok{col =} \FunctionTok{as.list}\NormalTok{(}\DecValTok{1}\SpecialCharTok{:}\NormalTok{n), }\AttributeTok{main =} \StringTok{"Out{-}of{-}sample ROC Curves from 10{-}fold CV"}\NormalTok{)}
+\FunctionTok{legend}\NormalTok{(}\AttributeTok{x =} \StringTok{"bottomright"}\NormalTok{, }\AttributeTok{legend =} \FunctionTok{c}\NormalTok{(}\StringTok{"Model 1"}\NormalTok{, }\StringTok{"Model 2"}\NormalTok{, }\StringTok{"Model 3"}\NormalTok{),}
+       \AttributeTok{fill =} \DecValTok{1}\SpecialCharTok{:}\NormalTok{n)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-26-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cvFit}\NormalTok{(model1, }\AttributeTok{data=}\NormalTok{ms, }\AttributeTok{y=}\NormalTok{ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{K=}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{verbatim}
+## 10-fold CV results:
+##       CV 
+## 7.623817
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cvFit}\NormalTok{(model2, }\AttributeTok{data=}\NormalTok{ms, }\AttributeTok{y=}\NormalTok{ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{K=}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{verbatim}
+## 10-fold CV results:
+##       CV 
+## 8.625017
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{cvFit}\NormalTok{(model3, }\AttributeTok{data=}\NormalTok{ms, }\AttributeTok{y=}\NormalTok{ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{K=}\DecValTok{10}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+
+## Warning: glm.fit: fitted probabilities numerically 0 or 1 occurred
+\end{verbatim}
+
+\begin{verbatim}
+## 10-fold CV results:
+##       CV 
+## 15.88777
+\end{verbatim}
+
+\hypertarget{separation-plots}{%
+\subsubsection{Separation Plots}\label{separation-plots}}
+
+Use this plot to assess a model's ability to discriminate between cases.
+The best model would have all the events (dark red lines) cluster to the
+right and non-events (light red lines) cluster to the left.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate predicted values for each model}
+\NormalTok{model1\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model1, ms, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{model2\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model2, ms, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+\NormalTok{model3\_pred }\OtherTok{\textless{}{-}} \FunctionTok{predict}\NormalTok{(model3, ms, }\AttributeTok{type =} \StringTok{"response"}\NormalTok{)}
+
+\CommentTok{\# Note: the separationplot library doesn\textquotesingle{}t seem to allow multiple plots in the same chunk or like any attempts to save the plots using R functions}
+\FunctionTok{separationplot}\NormalTok{(model1\_pred, ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{heading=}\StringTok{"Model 1 Separation Plot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{separationplot}\NormalTok{(model2\_pred, ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{heading=}\StringTok{"Model 2 Separation Plot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{separationplot}\NormalTok{(model3\_pred, ms}\SpecialCharTok{$}\NormalTok{deaths, }\AttributeTok{heading=}\StringTok{"Model 3 Separation Plot"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{ordered-categorical-variable-models}{%
+\subsection{Ordered Categorical Variable
+Models}\label{ordered-categorical-variable-models}}
+
+\hypertarget{ordered-logit}{%
+\subsubsection{Ordered Logit}\label{ordered-logit}}
+
+Binary logit is just a special case of ordered logit. Because our \(Y\)
+is discretized, the probability density function for this model is a
+piecewise function. The likelihood function then becomes a product of
+binary logit models (see pg. 143-144 of Ward and Ahlquist 2018). Like
+binary logit, ordered logit assumes the errors follow a logistic
+distribution whereas probit assumes normally distributed errors.
+
+Note: The derivation of the MLE for ordered logit is sufficiently
+complex that I doubt it would be asked on the exam.
+
+\hypertarget{interpretation}{%
+\paragraph{Interpretation}\label{interpretation}}
+
+Ordered logit estimates are less straightforward to interpret than
+binary logit.
+
+\hypertarget{model-interpretation}{%
+\subsection{Model Interpretation}\label{model-interpretation}}
+
+\hypertarget{exam-questions-and-answers}{%
+\section{2021 Exam Questions and
+Answers}\label{exam-questions-and-answers}}
+
+\end{document}

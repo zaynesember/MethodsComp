@@ -3,9 +3,6 @@ title: "Methods Comp Notes"
 author: "Zayne Sember"
 date: "3/29/2022"
 output: html_document
-editor_options: 
-  markdown: 
-    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -29,16 +26,13 @@ library(ggeffects)
 
 ## Hypothesis Testing
 
-1.  Set some threshold, $\alpha$, at or below which you deem a p-value
-    significant
+1.  Set some threshold, $\alpha$, at or below which you deem a p-value significant
 
 2.  Define the null hypothesis, $H_0$
 
-3.  Define the alternative hypothesis, $H_A$, either two-tailed or
-    one-tailed
+3.  Define the alternative hypothesis, $H_A$, either two-tailed or one-tailed
 
-4.  Calculate a test statistic such as Z-score or t-test and check the
-    p-value
+4.  Calculate a test statistic such as Z-score or t-test and check the p-value
 
 5.  Draw conclusions
 
@@ -101,27 +95,21 @@ $E(\hat{\theta}) - \theta = 0$
 
 ### Asymptotic Unbiasedness
 
-As $n$ gets bigger, the estimator's biasedness goes to zero
-$\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+As $n$ gets bigger, the estimator's biasedness goes to zero $\lim_{n\to\infty} P(|E[\hat{\theta}] - \theta| > \epsilon) \to 0; \forall\epsilon >0$
 
 ### Efficiency
 
-The estimator needs fewer observations to achieve better error
-performance $\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}$
+The estimator needs fewer observations to achieve better error performance $\frac{1}{MSE}=\frac{1}{E[(\hat{\theta}-\theta)^2]}$
 
 ### Consistency
 
-The distribution of estimates converges on the true value as $n$ gets
-bigger
-$\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0$
+The distribution of estimates converges on the true value as $n$ gets bigger $\lim_{n\to\infty} P(|\hat{\theta} - \theta| > \epsilon) \to 0; \forall\epsilon >0$
 
 ## Correlation
 
-We define the correlation, $r$, between two variables, $x$ and $y$, to
-be:
+We define the correlation, $r$, between two variables, $x$ and $y$, to be:
 
-$$r=\frac{\sum{Z_{xi}Z_{yi}}}{n-1}=\frac{\sum{(x_i-\bar{x})(y_i-\bar{y})}}{s_xs_y(n-1)}$$
-where the standard deviation of $x$ (and same for $y$) is:
+$$r=\frac{\sum{Z_{xi}Z_{yi}}}{n-1}=\frac{\sum{(x_i-\bar{x})(y_i-\bar{y})}}{s_xs_y(n-1)}$$ where the standard deviation of $x$ (and same for $y$) is:
 
 $$s_x=\sqrt{\frac{\sum{(x_i-\bar{x})^2}}{n-1}}$$
 
@@ -134,10 +122,7 @@ cor(x,y)
 
 ## Regression Basics
 
-Ordinary least squares regression seeks to minimize the the vertical
-distances, $\epsilon$, between the data being fitted and some line of
-best fit with some slope (in the bivariate case), $\beta_1$, and some
-intercept, $\beta_0$.
+Ordinary least squares regression seeks to minimize the the vertical distances, $\epsilon$, between the data being fitted and some line of best fit with some slope (in the bivariate case), $\beta_1$, and some intercept, $\beta_0$.
 
 The model we want to fit to:
 
@@ -145,11 +130,9 @@ $$y_i=\beta_0+\beta_1x_i+\epsilon_i$$
 
 The model we estimate:
 
-$$y_i=\hat{\beta_0}+\hat{\beta_1}x_i+e_i$$ The residuals, $e_i$, are an
-estimate of the error (distance between true line and y_i).
+$$y_i=\hat{\beta_0}+\hat{\beta_1}x_i+e_i$$ The residuals, $e_i$, are an estimate of the error (distance between true line and y_i).
 
-The residual sum of squares (RSS) is defined as:
-$$RSS=\sum e_i^2=\sum(y_i-\hat{y_i})^2$$
+The residual sum of squares (RSS) is defined as: $$RSS=\sum e_i^2=\sum(y_i-\hat{y_i})^2$$
 
 ```{r}
 # If we have some lm model we can get the RSS as follows:
@@ -175,9 +158,7 @@ y_hat <- fitted(model)
 rss(y, y_hat)
 ```
 
-The regression sum of squares (RSS) (AKA sum of squares of regression
-(SSR), explained sum of squares (ESS)) is defined as:
-$$RegSS=\sum(\hat{y_i}-\bar{y})^2$$
+The regression sum of squares (RSS) (AKA sum of squares of regression (SSR), explained sum of squares (ESS)) is defined as: $$RegSS=\sum(\hat{y_i}-\bar{y})^2$$
 
 ```{r}
 x <- rnorm(n=100, mean=2, sd=3)
@@ -194,8 +175,7 @@ regSS <- function(y_hat, y){
 regSS(y_hat, y)
 ```
 
-The total sum of squares (TSS) is defined as:
-$$TSS=\sum(y_i-\bar{y})^2$$
+The total sum of squares (TSS) is defined as: $$TSS=\sum(y_i-\bar{y})^2$$
 
 ```{r}
 y <- rnorm(n=100, mean=-3, sd=2)
@@ -207,9 +187,7 @@ TSS <- function(y){
 TSS(y)
 ```
 
-The ratio of RegSS to TSS is our $r^2$, the share of variance in $y$
-that is explained by $x$:
-$$r^2=\frac{RegSS}{TSS}=\frac{\sum(\hat{y_i}-\bar{y})^2}{\sum(y_i-\bar{y})^2}$$
+The ratio of RegSS to TSS is our $r^2$, the share of variance in $y$ that is explained by $x$: $$r^2=\frac{RegSS}{TSS}=\frac{\sum(\hat{y_i}-\bar{y})^2}{\sum(y_i-\bar{y})^2}$$
 
 ```{r}
 x <- rnorm(n=100, mean=2, sd=3)
@@ -234,8 +212,7 @@ rsquared(y, y_hat)
 
 #### Step 1
 
-Given the vectors $X$ and $Y$, find $X^2$, $XY$, and the sums of all of
-the preceding vectors
+Given the vectors $X$ and $Y$, find $X^2$, $XY$, and the sums of all of the preceding vectors
 
 ```{r}
 calc_x2xy <- function(x, y){
@@ -261,9 +238,7 @@ df_step1
 
 #### Step 2
 
-Calculate $\hat\beta_1$ and $\hat\beta_0$:
-$$\hat\beta_1=\frac{N\sum x_iy_i-\sum x_i\sum y_i}{N\sum x_i^2-(\sum x_i)^2}$$
-$$\hat\beta_0=\frac{\sum y_i -\hat\beta_1\sum x_i}{N}$$
+Calculate $\hat\beta_1$ and $\hat\beta_0$: $$\hat\beta_1=\frac{N\sum x_iy_i-\sum x_i\sum y_i}{N\sum x_i^2-(\sum x_i)^2}$$ $$\hat\beta_0=\frac{\sum y_i -\hat\beta_1\sum x_i}{N}$$
 
 ```{r}
 calc_beta1 <- function(df){
@@ -297,8 +272,7 @@ beta0
 
 #### Step 3
 
-Next, calculate $x-\bar x$, $(x- \bar x)^2$, $y-\bar y$, $(y-\bar y)^2$,
-and $(x-\bar x)(y-\bar y)$.
+Next, calculate $x-\bar x$, $(x- \bar x)^2$, $y-\bar y$, $(y-\bar y)^2$, and $(x-\bar x)(y-\bar y)$.
 
 ```{r}
 calc_r_table <- function(x, y){
@@ -338,9 +312,7 @@ calc_rsquared(x=x,y=y)
 
 #### Step 4
 
-Calculate the residuals, their square, and from that the estimated
-standard error $$e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i$$
-$$\hat\sigma=\sqrt{\frac{\sum e_i^2}{N-2}}$$
+Calculate the residuals, their square, and from that the estimated standard error $$e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i$$ $$\hat\sigma=\sqrt{\frac{\sum e_i^2}{N-2}}$$
 
 ```{r}
 calc_residuals <- function(x, y, beta0, beta1){
@@ -407,26 +379,19 @@ We now have multiple $X$s we need to fit to:
 
 $$Y=\beta_0+\beta_1X_1+\beta_2X_2+\epsilon$$
 
-We want to find the values of $\beta_0$, $\beta_1$, and $\beta_2$ that
-**minimizes** the sum of squared residuals (RSS):
+We want to find the values of $\beta_0$, $\beta_1$, and $\beta_2$ that **minimizes** the sum of squared residuals (RSS):
 
 $$RSS=\sum(\hat{y_i}-\bar{y})^2=\sum(\hat{y_i}-(\hat{\beta_0}+\hat\beta_1X_1+\hat\beta_2X_2)^2$$
 
 ## Categorical Variables
 
-When regressing on a categorical variable you leave one category out.
-Coefficients are the impact of being $X$ vs. the excluded category, all
-else equal.
+When regressing on a categorical variable you leave one category out. Coefficients are the impact of being $X$ vs. the excluded category, all else equal.
 
 ## Fixed Effects
 
-Suppose we have data on 100 individuals in each of 100 countries
-($n=10,000$).
+Suppose we have data on 100 individuals in each of 100 countries ($n=10,000$).
 
-If we include a dummy to "soak up" the country effects we can "isolate"
-the differences between the individuals across countries. - The
-estimated coefficients for each country typically aren't reported bc
-they aren't relevant to our RQ
+If we include a dummy to "soak up" the country effects we can "isolate" the differences between the individuals across countries. - The estimated coefficients for each country typically aren't reported bc they aren't relevant to our RQ
 
 ```{r}
 data(trade)
@@ -444,21 +409,13 @@ summary(fe_ols)
 
 ## Interactions
 
-Case 1: Interacting a dummy with another dummy - Coefficient is the
-(estimated) change in the *intercept* of the line of best fit between
-units where both dummies are zero vs. where they are both 1.
+Case 1: Interacting a dummy with another dummy - Coefficient is the (estimated) change in the *intercept* of the line of best fit between units where both dummies are zero vs. where they are both 1.
 
-Case 2: Interacting a dummy with a continuous variable - Coefficient is
-the difference in coefficient on the continuous variable when dummy is
-on vs. off.
+Case 2: Interacting a dummy with a continuous variable - Coefficient is the difference in coefficient on the continuous variable when dummy is on vs. off.
 
-Case 3: Interacting a continuous variable with another continuous
-variable. - Don't try to interpret coefficient, look at an interaction
-plot
+Case 3: Interacting a continuous variable with another continuous variable. - Don't try to interpret coefficient, look at an interaction plot
 
-Overall, an interaction tells us the *impact* one variable has on
-another variable's effect on the outcome. - Only include them when you
-have a theoretical reason for doing so
+Overall, an interaction tells us the *impact* one variable has on another variable's effect on the outcome. - Only include them when you have a theoretical reason for doing so
 
 ### Interaction plots
 
@@ -519,8 +476,7 @@ Pretty self-explanatory
 
 ### Coefficient Plots
 
-Easier to read than a Big Ugly Table of Numbers (BUTON) - Always include
-95% CI
+Easier to read than a Big Ugly Table of Numbers (BUTON) - Always include 95% CI
 
 ```{r}
 # Source: https://bookdown.org/paul/applied-data-visualization/graph-coefficient-plots.html
@@ -567,8 +523,7 @@ coefplot(fit)
 
 ### Predicted Value Plots
 
-These plots convey the substantive importance of your findings; the
-magnitude of the impact of your IVs on your DV
+These plots convey the substantive importance of your findings; the magnitude of the impact of your IVs on your DV
 
 ```{r}
 df <- data.frame(x1=c(3, 4, 4, 5, 5, 6, 7, 8, 11, 12),
@@ -590,8 +545,7 @@ ggplot(df, aes(x=predict(model), y=y)) +
 
 ### Marginal Effects Plot
 
-Another way to visualize the substantive meaning of your regression
-coefficients, especially when interactions are involved.
+Another way to visualize the substantive meaning of your regression coefficients, especially when interactions are involved.
 
 ```{r}
 data(efc)
@@ -613,18 +567,13 @@ plot_model(model, type = "pred", terms = c("c12hour")) +
 
 ### Four assumptions of regression
 
-1.  *Linearity*: The relationship between $X$ and the mean of $Y$ is
-    linear
+1.  *Linearity*: The relationship between $X$ and the mean of $Y$ is linear
 
-2.  *Homoscedasticity*: The variance of the residual is the same for any
-    value of $X$
+2.  *Homoscedasticity*: The variance of the residual is the same for any value of $X$
 
 3.  *Independence*: Observations are independent of each other
 
-4.  *Normality*: For any fixed value of $X$, $Y$ is normally distributed
-    ## Regression Diagnostics ##\# Residual Plots Residuals are the
-    variance in $Y$ that is unexplained by $X$
-    $$\hat{e_i}=Y_i-\hat{Y_i}$$
+4.  *Normality*: For any fixed value of $X$, $Y$ is normally distributed ## Regression Diagnostics ##\# Residual Plots Residuals are the variance in $Y$ that is unexplained by $X$ $$\hat{e_i}=Y_i-\hat{Y_i}$$
 
 ```{r}
 fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
@@ -676,8 +625,7 @@ ggplot(data=fit, aes(x=.fitted, y=rstandard(fit))) +
 
 ### DFBETA
 
-Helps assess how influential each observation is. Essentially calculates
-how much the slope changes when an observation is removed from the model
+Helps assess how influential each observation is. Essentially calculates how much the slope changes when an observation is removed from the model
 
 ```{r}
 fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
@@ -691,12 +639,9 @@ dfbetasPlots(fit)
 
 ### Cook's Distance
 
-Tells you how far, on average, the predicted y-values will move if an
-observation is dropped (note DFBeta is concerned with change in slope
-but also shows you outliers)
+Tells you how far, on average, the predicted y-values will move if an observation is dropped (note DFBeta is concerned with change in slope but also shows you outliers)
 
-Especially helpful for multivariate regression b/c combos of $X$s could
-yield an influential point a residual plot won't catch.
+Especially helpful for multivariate regression b/c combos of $X$s could yield an influential point a residual plot won't catch.
 
 ```{r}
 fit <- lm(Fertility ~ Catholic + Agriculture + Education, data = swiss)
@@ -728,8 +673,7 @@ What do to:
 
     -   Do we need all the variables that are collinear?
 
-    -   Could we combine two or more variables to create some sort of
-        index?
+    -   Could we combine two or more variables to create some sort of index?
 
 # POLI 271
 
@@ -737,16 +681,13 @@ What do to:
 
 ### Deriving the log likelihood
 
-Given some probability density function (our stochastic component),
-$f(y;\theta)$ (could be normal, Gaussian, etc.):
+Given some probability density function (our stochastic component), $f(y;\theta)$ (could be normal, Gaussian, etc.):
 
-1.  Get the joint probability of the data. If the probabilities are
-    independent then we have:
+1.  Get the joint probability of the data. If the probabilities are independent then we have:
 
 $$Pr(y_i,. . ., y_n|\theta_1, . . ., \theta_n)=Pr(y;\theta)=\prod_{i=1}^nf(y_i;\theta_i)$$
 
-2.  Convert the joint probability to a likelihood. Take the joint
-    probability, multiply it by some constant scalar, $h(y)$.
+2.  Convert the joint probability to a likelihood. Take the joint probability, multiply it by some constant scalar, $h(y)$.
 
 $$\mathcal{L}(\theta|y)=h(y)\times Pr(y;\theta)$$
 
@@ -754,19 +695,15 @@ $$\mathcal{L}(\theta|y)=h(y)\times Pr(y;\theta)$$
 
 4.  Simplify further by taking the log of $\mathcal{L}(\theta|y)$
 
-5.  Find the critical points by taking the first derivative w.r.t
-    $\theta$
+5.  Find the critical points by taking the first derivative w.r.t $\theta$
 
-6.  Check whether they are maxima or minima by taking the second
-    derivative w.r.t. $\theta$
+6.  Check whether they are maxima or minima by taking the second derivative w.r.t. $\theta$
 
 An example:
 
-The exponential probability density function is defined as:
-$f_e(x;\theta)=\theta e^{-\theta x}$.
+The exponential probability density function is defined as: $f_e(x;\theta)=\theta e^{-\theta x}$.
 
-First, note that since $X~f_e(x;\theta)$ the support (possible values of
-$X$) is $\mathbb{R}\in [0, \infty]$
+First, note that since $X~f_e(x;\theta)$ the support (possible values of $X$) is $\mathbb{R}\in [0, \infty]$
 
 1.  Get the joint probability
 
@@ -782,23 +719,19 @@ $$\mathcal{L}(\theta|x)=\theta^n\prod_{i=1}^n( e^{-\theta x_i})$$
 
 3.  Take the log
 
-$$\ln(\mathcal{L}(\theta|x))=\ln(\theta^n\prod_{i=1}^n( e^{-\theta x_i}))$$
-$$\ln(\mathcal{L}(\theta|x))=n\ln(\theta)-\theta\sum_{i=1}^nx_i$$
+$$\ln(\mathcal{L}(\theta|x))=\ln(\theta^n\prod_{i=1}^n( e^{-\theta x_i}))$$ $$\ln(\mathcal{L}(\theta|x))=n\ln(\theta)-\theta\sum_{i=1}^nx_i$$
 
 4.  Take the first derivative and identify the critical points
 
 $$\frac{d\ln(\mathcal{L}(\theta|x))}{d\theta}=\frac{n}{\theta}-\sum_{i=1}^nx_i$$
 
-Set the derivative equal to zero to find the critical values of
-$\theta$:
+Set the derivative equal to zero to find the critical values of $\theta$:
 
 $$\frac{n}{\theta}-\sum_{i=1}^nx_i=0$$
 
 $$\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$$
 
-5.  Take the second derivative and substitute $\hat{\theta}$ for
-    $\theta$. If the result is positive the critical point is a minumum,
-    if zero then it's a saddle, if negative it's a maximum.
+5.  Take the second derivative and substitute $\hat{\theta}$ for $\theta$. If the result is positive the critical point is a minumum, if zero then it's a saddle, if negative it's a maximum.
 
 $$\frac{d^2\ln(\mathcal{L}(\theta|x))}{d\theta^2}=\frac{-n}{\theta^2}$$
 
@@ -808,10 +741,7 @@ $$\frac{d^2ln(\mathcal{L}(\theta=\hat{\theta}|x))}{d\theta^2}=\frac{-n\sum_{i=1}
 
 What's the sign of $-\sum_{i=1}^nx_i$?
 
-We know $-\sum_{i=1}^nx_i<0$ because $\sum_{i=1}^nx_i>0$ given the $X$
-is bounded between $[0, \infty]$ therefore it is a maximum and thus
-$\hat{\theta}$ is a maximum and the MLE is
-$\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$.
+We know $-\sum_{i=1}^nx_i<0$ because $\sum_{i=1}^nx_i>0$ given the $X$ is bounded between $[0, \infty]$ therefore it is a maximum and thus $\hat{\theta}$ is a maximum and the MLE is $\hat{\theta}=\frac{n}{\sum_{i=1}^nx_i}$.
 
 Now in R:
 
@@ -848,32 +778,23 @@ ggplot(data=df,aes(x=thetas,y=y)) +
   theme_bw()
 ```
 
-Note: See MLE Problem Set 2 for a derivation of the MLE of the normal
-variance.
+Note: See MLE Problem Set 2 for a derivation of the MLE of the normal variance.
 
 ## Regularity
 
-In order to find the MLE as we did above, the likelihood function must
-demonstrate "regularity", i.e. it must be continuous and twice
-differentiable.
+In order to find the MLE as we did above, the likelihood function must demonstrate "regularity", i.e. it must be continuous and twice differentiable.
 
 ## Binary Data
 
 ### Why not just use OLS?
 
--   Nonsensical predictions: predicted probabilites using a linear
-    probability model on a binary outcome can fall outside $[0,1]$,
-    meaning the OLS estimate is biased and inconsistent.
--   Assumes the relationship between a covariate and the probability of
-    1 as the outcome is constant across all values of the covariate
--   Can give you heteroskedastic residuals that give biased confidence
-    intervals
+-   Nonsensical predictions: predicted probabilites using a linear probability model on a binary outcome can fall outside $[0,1]$, meaning the OLS estimate is biased and inconsistent.
+-   Assumes the relationship between a covariate and the probability of 1 as the outcome is constant across all values of the covariate
+-   Can give you heteroskedastic residuals that give biased confidence intervals
 
 ### The Logit Model
 
-Logit allows for mapping probabilities onto the unbounded real line
-using odds. We transform a probability, $p$, to logit by taking the log
-of the odds ratio:
+Logit allows for mapping probabilities onto the unbounded real line using odds. We transform a probability, $p$, to logit by taking the log of the odds ratio:
 
 $$\mathrm{logit}(p)=\log(\frac{p}{1-p})$$
 
@@ -883,8 +804,7 @@ $$
 \mathrm{logit}^{-1}(x)=\frac{e^x}{1+e^x}=\frac{1}{1+e^{-x}}
 $$
 
-We model binary outcomes as Bernoulli trials so our stochastic component
-is:
+We model binary outcomes as Bernoulli trials so our stochastic component is:
 
 $$
 f_B(y_i;\theta_i)=\theta_i^{y_i}(1-\theta_i)^{1-y_i}= 
@@ -924,15 +844,15 @@ binreg<- function(X,y,method="BFGS"){
   # Get the log-likelihood
   negLL<- function(b,X,y){
     p<-as.vector(1/(1+exp(-X %*% b)))
-    - sum(y*log(p) + (1-y)*log(1-p))
+    
+    return(-sum(y*log(p) + (1-y)*log(1-p)))
   }
   
   # Get the gradient
   gradient<- function(b,X,y){
-    p <- as.vector(1/(1+exp(-X %*% b))) - 
-      apply(((y - p)*X),
-            2,
-            sum)
+    p <- as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-apply(((y - p)*X), 2, sum))
   }
   
   # Pass our data, log-likelihood, and gradient to optim() 
@@ -974,28 +894,19 @@ summary(fit.glm, signif.stars=FALSE)
 
 ### Interpreting Logit
 
-While the output of logit is similar to OLS, interpretation is a bit
-more nuanced for 2 reasons:
+While the output of logit is similar to OLS, interpretation is a bit more nuanced for 2 reasons:
 
-1.  The model is nonlinear so the effect of a particular covariate on
-    the DV is not constant across all levels of the covariate. This can
-    be seen by deriving the marginal effect of a covariate, $x_k$, on
-    the expected value of $Y$:
+1.  The model is nonlinear so the effect of a particular covariate on the DV is not constant across all levels of the covariate. This can be seen by deriving the marginal effect of a covariate, $x_k$, on the expected value of $Y$:
 
-    $$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}$$
+$$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}$$
 
-    As a quick trick, you can divide a coefficient by 4 to get an
-    estimate of a maximum effect a 1 unit increase in the covariate can
-    have on the probability of the DV being 1. i.e. if we have a
-    coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
+As a quick trick, you can divide a coefficient by 4 to get an estimate of a maximum effect a 1 unit increase in the covariate can have on the probability of the DV being 1. i.e. if we have a coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
 
-2.  The logit model is a linear regression on the log odds so the
-    exponentiated coefficients are odds ratios. If we have a coefficient
-    greater than 1 then a 1 unit increase in that covariate corresponds
-    to an *increase* in the relative probability of obtaining a 1 in the
-    outcome variable. Less than 1 represents a decrease.
-    
+2.  The logit model is a linear regression on the log odds so the exponentiated coefficients are odds ratios. If we have a coefficient greater than 1 then a 1 unit increase in that covariate corresponds to an *increase* in the relative probability of obtaining a 1 in the outcome variable. Less than 1 represents a decrease.
+
 ### Interpreting Logit with Plots
+
+We can use a coefficient plot to avoid a BUTON
 
 ```{r}
 # Read in and clean up the data
@@ -1053,9 +964,11 @@ ggplot(results, aes(x = Variable, y = Coefficient)) +
         ggtitle("Coefficient Plot") +
         coord_flip() +
   theme_light()
+```
 
-# Now a predicted probability plot
+We can use a predicted probability plot to show the substantive impact of our results
 
+```{r}
 # Say we want to know the difference in predicted probability
 # of a Republican vs. a Democrat voting to impeach Clinton
 
@@ -1133,6 +1046,113 @@ legend(70, 1, legend=c("Democrat", "Republican"), lty=c(1,3),lwd=3)
 #dev.off()
 ```
 
+We can also use a predicted probability plot to model an interaction in a logit model
+
+```{r}
+# Load in the data
+impeach <- read_csv("Data/impeach.csv")
+impeach <- impeach %>% na.omit()
+
+impeach$votebin[impeach$votesum != 0] <- 1
+impeach$votebin[impeach$votesum == 0] <- 0
+
+model_int <- glm(votebin ~ clint96 * aflcio97 ,family=binomial(link="logit"),
+                 data=impeach)
+model_noint <- glm(votebin ~ clint96 + aflcio97,
+                   family=binomial(link="logit"),
+                   data=impeach)
+
+modelsummary(list(model_noint, model_int), title="Impeachment models")
+```
+
+```{r}
+clint96.range <- seq(quantile(impeach$clint96)[2],
+                    quantile(impeach$clint96)[4],.1)
+
+# NO INTERACTION MODEL
+x.lo <- c(1, median(impeach$clint96), 0) # Q1 clint96 scenario
+X.lo <- matrix(x.lo, nrow=length(x.lo), ncol=length(clint96.range))
+X.lo[2,] <- clint96.range
+
+x.hi <- c(1, median(impeach$clint96), 100) # Q2 clint96 scenario
+X.hi <- matrix(x.hi, nrow=length(x.hi), ncol=length(clint96.range))
+X.hi[2,] <- clint96.range
+
+B.tilde <- mvrnorm(1000, coef(model_noint), vcov(model_noint))
+
+s.lo <- inv.logit(B.tilde %*% X.lo) # Note we would use pnorm() here instead if 
+s.hi <- inv.logit(B.tilde %*% X.hi) # evaluating a probit model!
+
+s.lo <- apply(s.lo, 2, quantile, c(0.025, 0.5, 0.975))
+s.hi <- apply(s.hi, 2, quantile, c(0.025, 0.5, 0.975))
+
+
+# Now tidy the data and plot with ggplot
+pred.prob.df.noint <- data.frame(xrange=rep(clint96.range,2), 
+                           y=c(s.lo[2,],s.hi[2,]),
+                           conf.low = c(s.lo[1,], s.hi[1,]),
+                           conf.high = c(s.lo[3,], s.hi[3,]),
+                           scenario = rep(c("AFL-CIO=100", "AFL-CIO=0"), 
+                                          each=length(clint96.range)))
+
+ggplot(data=pred.prob.df.noint, aes(x=xrange, y=y,
+                              ymin=conf.low,
+                              ymax=conf.high,
+                              fill=factor(scenario),
+                              linetype=factor(scenario))) +
+  geom_line(size=.8) +
+  geom_ribbon(alpha=0.25, color="gray") +
+  labs(x="1996 Vote Share for Clinton", y="Predicted Probability",
+       title="Predicted Probability Plot for No Interaction Model", linetype="Scenario") +
+  scale_fill_manual(labels=c("AFL-CIO=100", "AFL-CIO=0"), 
+                    values=c("blue", "red")) +
+  theme_minimal() +
+  guides(fill="none", color="none")
+
+
+# INTERACTION MODEL
+x.lo <- c(1, median(impeach$clint96)[2], 0, 0) # 0 AFL-CIO score scenario
+X.lo <- matrix(x.lo, nrow=length(x.lo), ncol=length(clint96.range))
+X.lo[2,] <- clint96.range
+X.lo[4,] <- clint96.range*0
+
+x.hi <- c(1, quantile(impeach$clint96)[4], 100, 0) # 100 AFL-CIO score scenario
+X.hi <- matrix(x.hi, nrow=length(x.hi), ncol=length(clint96.range))
+X.hi[2,] <- clint96.range
+X.hi[4,] <- clint96.range*100
+
+B.tilde <- mvrnorm(1000, coef(model_int), vcov(model_int))
+
+s.lo <- inv.logit(B.tilde %*% X.lo)
+s.hi <- inv.logit(B.tilde %*% X.hi)
+
+s.lo <- apply(s.lo, 2, quantile, c(0.025, 0.5, 0.975))
+s.hi <- apply(s.hi, 2, quantile, c(0.025, 0.5, 0.975))
+
+
+# Now tidy the data and plot with ggplot
+pred.prob.df.int <- data.frame(xrange=rep(clint96.range,2), 
+                           y=c(s.lo[2,],s.hi[2,]),
+                           conf.low = c(s.lo[1,], s.hi[1,]),
+                           conf.high = c(s.lo[3,], s.hi[3,]),
+                           scenario = rep(c("AFL-CIO=100", "AFL-CIO=0"), 
+                                          each=length(clint96.range)))
+
+ggplot(data=pred.prob.df.int, aes(x=xrange, y=y,
+                              ymin=conf.low,
+                              ymax=conf.high,
+                              fill=factor(scenario),
+                              linetype=factor(scenario))) +
+  geom_line(size=.8) +
+  geom_ribbon(alpha=0.25, color="gray") +
+  labs(x="1996 Vote Share for Clinton", y="Predicted Probability",
+       title="Predicted Probability Plot for Interaction Model", linetype="Scenario") +
+  scale_fill_manual(labels=c("AFL-CIO=100", "AFL-CIO=0"), 
+                    values=c("blue", "red")) +
+  theme_minimal() +
+  guides(fill="none", color="none")
+```
+
 ### Comparing Models
 
 ### ROC Plots
@@ -1142,6 +1162,7 @@ Use these to assess model fit heuristically. We want our model's curve to be as 
 In the below example, because the simpler model performs about as well as the more complicated one we would opt for the simpler model (assuming AIC, BIC, etc. are similar)
 
 Note: We can also calculate and compare the Area Under the Curve (AUC) for each model's ROC curve; smaller is better.
+
 ```{r}
 # Read in and clean up the data
 impeach <- read_csv("Data/impeach.csv")
@@ -1186,30 +1207,14 @@ knitr::kable(cbind(AUC_labels, round(as.numeric(AUC_in@y.values), 3)), col.names
       caption = "Model AUCs")
      
 ```
-### Separation Plots
-```{r}
-# Note: the separationplot library doesn't seem to allow multiple plots in the same chunk or like any attempts to save the plots using R functions
-separationplot(model1_pred, ms$deaths, heading="Model 1 Separation Plot")
-```
-```{r}
-separationplot(model2_pred, ms$deaths, heading="Model 2 Separation Plot")
-```
-```{r}
-separationplot(model3_pred, ms$deaths, heading="Model 3 Separation Plot")
-```
 
-## Out-of-sample Prediction
+### Out-of-sample Prediction
 
 We assess out-of-sample prediction because our model might be overfitted to the data we feed it. When a model can predict both in-sample and out-of-sample well then it's more in line with the data generating process.
 
-What we need to evaluate a model's prediction error (AKA generalization error, generalization performance):
-- Training set
-- Test set
-- A model
-- A loss function to measure deviation from the actual value in the test set
+What we need to evaluate a model's prediction error (AKA generalization error, generalization performance): - Training set - Test set - A model - A loss function to measure deviation from the actual value in the test set
 
-What we want:
-- Good performance in both the test and training sets
+What we want: - Good performance in both the test and training sets
 
 ```{r}
 # Load in some data
@@ -1319,8 +1324,157 @@ cvFit(model2, data=ms, y=ms$deaths, K=10)
 cvFit(model3, data=ms, y=ms$deaths, K=10)
 ```
 
-## Model Selection
+### Separation Plots
 
-## Model Interpretation
+Use this plot to assess a model's ability to discriminate between cases. The best model would have all the events (dark red lines) cluster to the right and non-events (light red lines) cluster to the left.
+
+```{r}
+# Generate predicted values for each model
+model1_pred <- predict(model1, ms, type = "response")
+model2_pred <- predict(model2, ms, type = "response")
+model3_pred <- predict(model3, ms, type = "response")
+
+# Note: the separationplot library doesn't seem to allow multiple plots in the same chunk or like any attempts to save the plots using R functions
+separationplot(model1_pred, ms$deaths, heading="Model 1 Separation Plot")
+```
+
+```{r}
+separationplot(model2_pred, ms$deaths, heading="Model 2 Separation Plot")
+```
+
+```{r}
+separationplot(model3_pred, ms$deaths, heading="Model 3 Separation Plot")
+```
+
+## Ordered Categorical Variable Models
+
+### Ordered Logit
+
+Binary logit is just a special case of ordered logit. Because our $Y$ is discretized, the probability density function for this model is a piecewise function. The likelihood function then becomes a product of binary logit models (see pg. 143-144 of Ward and Ahlquist 2018). Like binary logit, ordered logit assumes the errors follow a logistic distribution whereas probit assumes normally distributed errors.
+
+See pg. 146-154 of Ward and Ahlquist (2018) for examples of interpreting the confusing output an ordered logit model.
+
+Note: The derivation of the MLE for ordered logit is sufficiently complex that I doubt it would be asked on the exam.
+
+An example in R:
+
+```{r, results='asis'}
+drury <- read_csv("Data/drury_jpr_data.csv")
+
+model_logit_drury <- polr(as.ordered(result) ~ log(gnprat) + trade + tarcst + cost + coop, 
+                   method="logistic", data=drury, Hess=T)
+
+modelsummary(model_logit_drury)
+```
+
+```{r}
+attach(drury)
+X.coop1 <- cbind(median(log(gnprat)), median(drury$trade), median(tarcst), median(cost), min(coop)) # coop = 1 scenario
+
+X.coop4 <- cbind(median(log(gnprat)), median(drury$trade), median(tarcst), median(cost), max(coop)) # coop = 4 scenario
+
+draws<-mvrnorm(1000, c(coef(model_logit_drury),model_logit_drury$zeta),
+               solve(model_logit_drury$Hessian))
+
+B<-draws[,1:length(coef(model_logit_drury))]
+
+Taus<-draws[,(length(coef(model_logit_drury))+1):ncol(draws)]
+
+pi.cutoff12.coop1 <- plogis(Taus[,2] - B%*%t(X.coop1)) - plogis(Taus[,1] - B%*%t(X.coop1))
+pi.cutoff12.coop4 <- plogis(Taus[,2] - B%*%t(X.coop4)) - plogis(Taus[,1] - B%*%t(X.coop4))
+pi.cutoff23.coop1 <- plogis(Taus[,3] - B%*%t(X.coop1)) - plogis(Taus[,2] - B%*%t(X.coop1))
+pi.cutoff23.coop4 <- plogis(Taus[,3] - B%*%t(X.coop4)) - plogis(Taus[,2] - B%*%t(X.coop4))
+
+# result = 2 first difference
+fd.res2 <- pi.cutoff12.coop4 - pi.cutoff12.coop1
+# result = 3 first difference
+fd.res3 <- pi.cutoff23.coop4 - pi.cutoff23.coop1
+
+plot(density(fd.res3, adjust=1.5), xlim=c(-0.2,0.2),ylim=c(0,25),
+     xlab="Change in predicted probability", bty="n", col=1,
+     yaxt="n", lwd=2, main="First Difference Change in Probability\n from Changing coop=4 to coop=1",
+     ylab="")
+lines(density(fd.res2, adjust=1.5), col=grey(0.5), lwd=2, lty=2)
+text(x=0.1, y=20, labels="Dashed: Pr(result=2 | coop=4) -
+     \n Pr(result=2 | coop=1)",cex=.8)
+text(x=-0.1, y=20, labels="Solid: Pr(result=3 | coop=4) -
+     \n Pr(result=3 | coop=1)",cex=.8)
+```
+
+The above plot shows the changes in probability of the `result` of sanctions being 3 and 4 when a country has `coop` = 1 (no cooperation) versus having `coop` = 4 (major trading partners making major efforts to limit trade). This change in `coop` appears to decrease the probability that a country falls into category 3 of `result` as the solid distribution above is centered to the left of 0. This makes sense given the large and negative coefficient on `coop` in the ordered logit model in the table above. The same change in `coop` may slightly increase the probability of being categorized as `result` = 2 as the dashed distribution above appears to be centered slightly to the right of 0.
+
+### Multinomial Logit
+
+When are DV is binned into non-ordinal categories we can use a multinomial logit model.
+
+Again, the derivation of the likelihood function for this class of models is fairly complicated (and taking its derivative analytically would be a nightmare) and so I'd guess it's unlikely to be asked on the exam. See pg. 163-164 of Ward and Ahlquist (2018) for the relevant definitions.
+
+#### Independence of Irrelevant Alternatives (IIA)
+
+IIA is an assumption baked in to the standard multinomial logit model. It just means if we have some choices A and B for the DV then introducing some C won't change the relative likelihood of someone choosing A over B.
+
+#### Interpretation
+
+Like with ordered logit, interpretation is kind of a nightmare. Essentially, each coefficient is the logit coefficient w.r.t. the excluded (reference) category of the DV for those columns of the BUTON. See pg. 169 of Ward and Ahlquist (2018) for an example of this. The first two columns of Table 9.1 present the logit coefficient of the given category w.r.t Labor.
+
+## Count Data
+
+Count models are used to describe count data ($Y\in{0,1,2, . . .}$). Count data is discrete and bounded from below.
+
+### Why not use OLS?
+
+This is a bad idea for the same reason it's a bad idea to use OLS with binaryd data: 1. The variance of a count increases with the mean (more error around larger values) and thus count data is heteroskedastic.
+
+2.  OLS will generate predictions that aren't lower bounded at 0 or integers. This can be worked around by logging the DV but then you have to deal with $\log(0)$. Do you discard these observations? Do you add some arbitrary constant to every value of your DV?
+
+### Poisson Regression
+
+#### The Poisson Distribution
+
+Assumptions: 1. Events occur independently.
+
+2.  There is a constant arrival rate of events, $\lambda$. The probability of an event occurring in the interval $(t,t+h]$ is then $h\lambda$ (probability of a no event is $1-\lambda h$)
+
+The distribution is then:
+
+$$Y~f_p(y;\lambda,h)$$ $$Pr(Y=y)=\frac{e^{-h\lambda}(h\lambda)^y{y!}$$ where $\lambda>0, h>0$
+
+This is our *stochastic/random* component. The systematic component is some continuous or discrete set of IVs, $X$, that are linear in parameters (i.e. not squared, divided, etc.).
+
+The mean and variance of the Poisson distribution is: $E[Y]=var(Y)=h\lambda$
+
+If all observational intervals are the same length then we can let $h=1$ and the distribution simplifies to:
+
+$$Pr(Y=y)=\frac{e^{-\lambda}\lambda^y}{y!}$$
+
+The mean and variance of the Poisson distribution is then: $E[Y]=var(Y)=\lambda$
+
+#### The Poisson Model
+
+To incorporate covariates into a Poisson model where the mean is greater than zero, we need a link function to map our covariates, $x_i$, onto positive values. We use the exponential function:
+
+$$E[Y_i]=h\lambda_i=he^{x_i^T\beta}$$
+
+Or when $h=1$:
+
+$$E[Y_i]=\lambda_i=e^{x_i^T\beta}$$
+
+Plugging this value of $\lambda$ into our probability mass function we found defined above we get:
+
+$$Pr(Y_i=y|x_i)=\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T\beta}]^y} {y!}$$
+
+We then derive the likelihood as follows:
+
+$$\mathcal{L}(\beta|X,y)=\prod_{i=1}^n\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T \beta}]^{y_i}}{y_i!}$$
+
+Take the log:
+
+$$\ln\mathcal{L}=\sum_{i=1}^n [e^{x_i^T\beta} + y_ix_i^T\beta - \ln(y_i!)]$$
+
+We can drop the $\ln(y_i!)$ as it's not a function of what we're trying to maximize ($\beta$)
+
+The score equation is:
+
+$$\frac{\partial\ln\mathcal{L}}{\partial\beta}=\sum_{i=1}^n y_ix_i^T\beta-x_i^T\beta e^(x_i^T\beta)=\sum_{i=1}^n(y_i-e^{x_i^T\beta})x_i=0$$
 
 # 2021 Exam Questions and Answers
