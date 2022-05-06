@@ -7,6 +7,10 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(plotness) # can install with devtools::install_github("https://github.com/zaynesember/plotness")
+library(vcd)
+library(AER)
+library(jtools)
 library(cvTools)
 library(separationplot)
 library(kableExtra)
@@ -674,6 +678,10 @@ What do to:
     -   Do we need all the variables that are collinear?
 
     -   Could we combine two or more variables to create some sort of index?
+
+### Instrumental Variables
+
+TODO
 
 # POLI 271
 
@@ -1475,6 +1483,66 @@ We can drop the $\ln(y_i!)$ as it's not a function of what we're trying to maxim
 
 The score equation is:
 
-$$\frac{\partial\ln\mathcal{L}}{\partial\beta}=\sum_{i=1}^n y_ix_i^T\beta-x_i^T\beta e^(x_i^T\beta)=\sum_{i=1}^n(y_i-e^{x_i^T\beta})x_i=0$$
+$$\frac{\partial\ln\mathcal{L}}{\partial\beta}=\sum_{i=1}^n y_ix_i^T\beta-x_i^T\beta e^{x_i^T\beta}=\sum_{i=1}^n(y_i-e^{x_i^T\beta})x_i=0$$
+
+#### Differential exposure
+
+When observations have different exposure windows (i.e. $h$ is not constant across observational units) then we would expect their counts to be proportional to their exposure window. We have two choices for accounting for this:
+
+1.  Offset: Include the size of the exposure window in the regression but constrain its coefficient to be 1.0 i.e. $\lambda_i=e^{x_i^T\beta+\ln(h_i)}$
+
+<!-- -->
+
+2.  Control: Simply add the (log) of the exposure for each unit as a control in the regression
+
+#### Interpretation
+
+As with other non-linear models, directly interpreting coefficients isn't the way to go. Instead, construct scenarios and generate predicted values to interpret results.
+
+An example in R:
+
+```{r}
+# Load in the data
+ms<-read.table("Data/Msrepl87.asc", header=TRUE, 
+    colClasses=c("character",rep("numeric",22)))
+rownames(ms) <- ms$country
+
+# Generate Poisson model
+model_poisson <- glm(deaths75 ~ sanctions75 + pop75 + civlib76, data=ms,
+                     family="poisson")
+
+modelsummary(model_poisson, title="Poisson Model", stars=T)
+
+# Now make a predicted value plot to interpret the effect of sanctions75
+# on the probability of a death occurring
+
+# Note this function automatically holds other IVs at their mean.
+
+effect_plot(model_poisson, pred="sanctions75", interval=T) + theme_minimal()
+
+```
+#### Diagnostics
+
+The Poisson distribution assumes that the level of heteroskedasticity will be constant. i.e. the variance will increase 1:1 with the mean of count data. This restrictive assumption is expressed as follows:
+
+$$E[Y]=\mathrm{var}(Y)$$
+
+We call it over-dispersion when $E[Y]<\mathrm{var}(Y)$ (most common) and under-dispersion when $E[Y]>\mathrm{var}(Y)$.
+
+Obviously comparing the mean and variance of the DV is one way to assess dispersion. We can also use the `dispersiontest()` function from the `AER` library:
+```{r}
+AER::dispersiontest(model_poisson, alternative="two.sided")
+```
+
+To visually check for disperion we can use a Poissonness plot. Similar to a QQ plot, a perfectly dispersed DV will create a straight line in the plot. The Poissonness plot, however, does not tell us much about over-dispersion. For that we can use a hanging rootogram.
+
+```{r}
+# vcd has the distplot function to create a Poissonness plot but I went ahead and 
+# adapted it to output a ggplot
+
+plotness::plotness(ms$deaths75)
+
+```
+
 
 # 2021 Exam Questions and Answers
