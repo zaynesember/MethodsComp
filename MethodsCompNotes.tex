@@ -166,13 +166,13 @@ Some hypothesis tests in R
 ##  One Sample t-test
 ## 
 ## data:  x
-## t = -49.521, df = 99, p-value < 2.2e-16
+## t = -48.777, df = 99, p-value < 2.2e-16
 ## alternative hypothesis: true mean is not equal to 5
 ## 95 percent confidence interval:
-##  0.007626801 0.392281568
+##  -0.1199148  0.2803502
 ## sample estimates:
-## mean of x 
-## 0.1999542
+##  mean of x 
+## 0.08021768
 \end{verbatim}
 
 \begin{Shaded}
@@ -192,13 +192,13 @@ Some hypothesis tests in R
 ##  Welch Two Sample t-test
 ## 
 ## data:  x and y
-## t = 0.31687, df = 192.26, p-value = 0.7517
+## t = 0.55166, df = 197.99, p-value = 0.5818
 ## alternative hypothesis: true difference in means is not equal to 0
 ## 95 percent confidence interval:
-##  -0.2513670  0.3475923
+##  -0.1962811  0.3487518
 ## sample estimates:
-## mean of x mean of y 
-## 0.1492472 0.1011345
+##   mean of x   mean of y 
+## -0.06493332 -0.14116866
 \end{verbatim}
 
 \begin{Shaded}
@@ -222,13 +222,13 @@ Some hypothesis tests in R
 ##  2-sample test for equality of proportions with continuity correction
 ## 
 ## data:  c(x_count, y_count) out of c(length(x), length(y))
-## X-squared = 0.98631, df = 1, p-value = 0.3206
+## X-squared = 0.32158, df = 1, p-value = 0.5707
 ## alternative hypothesis: two.sided
 ## 95 percent confidence interval:
-##  -0.22770055  0.06770055
+##  -0.19807665  0.09807665
 ## sample estimates:
 ## prop 1 prop 2 
-##   0.50   0.58
+##   0.44   0.49
 \end{verbatim}
 
 \begin{Shaded}
@@ -282,13 +282,13 @@ Some hypothesis tests in R
 ##  F test to compare two variances
 ## 
 ## data:  x and y
-## F = 1.1867, num df = 99, denom df = 120, p-value = 0.3696
+## F = 0.71324, num df = 99, denom df = 120, p-value = 0.0825
 ## alternative hypothesis: true ratio of variances is not equal to 1
 ## 95 percent confidence interval:
-##  0.8156903 1.7383726
+##  0.490271 1.044850
 ## sample estimates:
 ## ratio of variances 
-##           1.186658
+##          0.7132415
 \end{verbatim}
 
 \hypertarget{properties-of-estimators}{%
@@ -339,7 +339,7 @@ where the standard deviation of \(x\) (and same for \(y\)) is:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -0.0008780174
+## [1] -0.011581
 \end{verbatim}
 
 \hypertarget{regression-basics}{%
@@ -375,7 +375,7 @@ The residual sum of squares (RSS) is defined as:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 405.485
+## [1] 344.8536
 \end{verbatim}
 
 \begin{Shaded}
@@ -387,7 +387,7 @@ The residual sum of squares (RSS) is defined as:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 405.485
+## [1] 344.8536
 \end{verbatim}
 
 \begin{Shaded}
@@ -405,7 +405,7 @@ The residual sum of squares (RSS) is defined as:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 405.485
+## [1] 344.8536
 \end{verbatim}
 
 The regression sum of squares (RSS) (AKA sum of squares of regression
@@ -430,7 +430,7 @@ The regression sum of squares (RSS) (AKA sum of squares of regression
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 6.941426
+## [1] 5.399105
 \end{verbatim}
 
 The total sum of squares (TSS) is defined as:
@@ -449,7 +449,7 @@ The total sum of squares (TSS) is defined as:
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 453.6135
+## [1] 445.7826
 \end{verbatim}
 
 The ratio of RegSS to TSS is our \(r^2\), the share of variance in \(y\)
@@ -468,7 +468,7 @@ that is explained by \(x\):
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.01235521
+## [1] 0.03913119
 \end{verbatim}
 
 \begin{Shaded}
@@ -486,7 +486,7 @@ that is explained by \(x\):
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.01235521
+## [1] 0.03913119
 \end{verbatim}
 
 \hypertarget{calculating-bivariate-regression-by-hand-linear-method}{%
@@ -524,15 +524,15 @@ all of the preceding vectors
 \end{Shaded}
 
 \begin{verbatim}
-##               x           y   xsquared         xy
-## 1     -1.767347   0.7195615   3.123516  -1.271715
-## 2      3.416346  -0.5409233  11.671422  -1.847981
-## 3      4.044545  -3.8825557  16.358343 -15.703170
-## 4      2.872654  -1.5697349   8.252139  -4.509305
-## 5      8.055635  -3.1979392  64.893254 -25.761431
-## 6      6.718193  -3.5025679  45.134122 -23.530928
-## 7     -2.256267  -3.8162410   5.090739   8.610457
-## total 21.083759 -15.7904005 154.523536 -64.014073
+##                x           y    xsquared          xy
+## 1      7.4039370  -1.1445848  54.8182830  -8.4744335
+## 2      1.7788690   0.8053083   3.1643748   1.4325379
+## 3      0.4651401  -4.5427678   0.2163553  -2.1130234
+## 4     -4.9581280  -3.9371908  24.5830329  19.5210959
+## 5      3.3341701  -3.6299097  11.1166902 -12.1027365
+## 6      5.6957309  -2.3785524  32.4413506 -13.5475943
+## 7      1.4103995  -0.2292384   1.9892267  -0.3233177
+## total 15.1301186 -15.0569356 128.3293136 -15.6074718
 \end{verbatim}
 
 \hypertarget{step-2}{%
@@ -569,7 +569,7 @@ Calculate \(\hat\beta_1\) and \(\hat\beta_0\):
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -0.1807727
+## [1] 0.1771193
 \end{verbatim}
 
 \begin{Shaded}
@@ -580,7 +580,7 @@ Calculate \(\hat\beta_1\) and \(\hat\beta_0\):
 \end{Shaded}
 
 \begin{verbatim}
-## [1] -1.71129
+## [1] -2.533824
 \end{verbatim}
 
 \begin{Shaded}
@@ -630,22 +630,22 @@ Next, calculate \(x-\bar x\), \((x- \bar x)^2\), \(y-\bar y\),
 \end{Shaded}
 
 \begin{verbatim}
-##           x          y x_minus_xbar x_minus_xbar_sq y_minus_ybar
-## 1 -1.767347  0.7195615   -4.7793128      22.8418310    2.9753330
-## 2  3.416346 -0.5409233    0.4043807       0.1635238    1.7148482
-## 3  4.044545 -3.8825557    1.0325792       1.0662198   -1.6267842
-## 4  2.872654 -1.5697349   -0.1393119       0.0194078    0.6860366
-## 5  8.055635 -3.1979392    5.0436693      25.4386003   -0.9421677
-## 6  6.718193 -3.5025679    3.7062277      13.7361240   -1.2467964
-## 7 -2.256267 -3.8162410   -5.2682323      27.7542715   -1.5604695
+##            x          y x_minus_xbar x_minus_xbar_sq y_minus_ybar
+## 1  7.4039370 -1.1445848    5.2424915      27.4837169    1.0064060
+## 2  1.7788690  0.8053083   -0.3825765       0.1463648    2.9562991
+## 3  0.4651401 -4.5427678   -1.6963054       2.8774521   -2.3917770
+## 4 -4.9581280 -3.9371908   -7.1195735      50.6883265   -1.7862000
+## 5  3.3341701 -3.6299097    1.1727246       1.3752830   -1.4789189
+## 6  5.6957309 -2.3785524    3.5342854      12.4911733   -0.2275616
+## 7  1.4103995 -0.2292384   -0.7510460       0.5640701    1.9217524
 ##   y_minus_ybar_sq x_minus_xbar_y_minus_ybar
-## 1       8.8526062              -14.22004690
-## 2       2.9407043                0.69345155
-## 3       2.6464267               -1.67978352
-## 4       0.4706462               -0.09557305
-## 5       0.8876800               -4.75198227
-## 6       1.5545013               -4.62091139
-## 7       2.4350651                8.22091581
+## 1      1.01285310                 5.2760750
+## 2      8.73970425                -1.1310107
+## 3      5.72059713                 4.0571843
+## 4      3.19051047                12.7169822
+## 5      2.18720125                -1.7343646
+## 6      0.05178427                -0.8042676
+## 7      3.69313231                -1.4433245
 \end{verbatim}
 
 \begin{Shaded}
@@ -655,7 +655,7 @@ Next, calculate \(x-\bar x\), \((x- \bar x)^2\), \(y-\bar y\),
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 0.1503172
+## [1] 0.1219688
 \end{verbatim}
 
 \begin{Shaded}
@@ -691,14 +691,14 @@ standard error \[e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i\]
 \end{Shaded}
 
 \begin{verbatim}
-##             e    e_squared
-## 1  2.11136354 4.4578559817
-## 2  1.78794920 3.1967623314
-## 3 -1.44012201 2.0739513919
-## 4  0.66085282 0.4367264545
-## 5 -0.03040982 0.0009247573
-## 6 -0.57681150 0.3327115111
-## 7 -2.51282222 6.3142755311
+##             e   e_squared
+## 1  0.07785986 0.006062158
+## 2  3.02406075 9.144943413
+## 3 -2.09132863 4.373655452
+## 4 -0.52518647 0.275820831
+## 5 -1.68663105 2.844724292
+## 6 -0.85355157 0.728550285
+## 7  2.05477712 4.222109005
 \end{verbatim}
 
 \begin{Shaded}
@@ -712,7 +712,7 @@ standard error \[e_i=y_i-\hat y_i=y_i-\hat\beta_0-\hat\beta_1 x_i\]
 \end{Shaded}
 
 \begin{verbatim}
-## [1] 1.833751
+## [1] 2.078262
 \end{verbatim}
 
 \begin{Shaded}
@@ -750,13 +750,13 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 
 \begin{verbatim}
 ##      [,1]       [,2]
-## [1,]    1 -1.2842908
-## [2,]    1 -1.8017344
-## [3,]    1 -1.0305580
-## [4,]    1 -0.4927654
-## [5,]    1 -2.1837009
-## [6,]    1  7.1661952
-## [7,]    1  6.2197928
+## [1,]    1  3.9235523
+## [2,]    1  5.7315581
+## [3,]    1  3.1254444
+## [4,]    1  1.7175178
+## [5,]    1 12.6795422
+## [6,]    1  0.7067669
+## [7,]    1  2.8635961
 \end{verbatim}
 
 \begin{Shaded}
@@ -778,13 +778,13 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 
 \begin{verbatim}
 ##            [,1]
-## [1,]  0.8321089
-## [2,] -1.8767308
-## [3,] -3.3227808
-## [4,] -2.5848674
-## [5,] -2.9854110
-## [6,] -2.3845586
-## [7,] -2.3702480
+## [1,] -6.2552319
+## [2,] -4.7557200
+## [3,] -1.5515628
+## [4,] -0.5459654
+## [5,] -4.4535501
+## [6,] -4.5246168
+## [7,] -3.1176872
 \end{verbatim}
 
 \begin{Shaded}
@@ -804,9 +804,9 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 \end{Shaded}
 
 \begin{verbatim}
-##          [,1]       [,2]
-## [1,] 7.000000   6.592938
-## [2,] 6.592938 101.009243
+##          [,1]      [,2]
+## [1,]  7.00000  30.74798
+## [2,] 30.74798 230.43378
 \end{verbatim}
 
 \begin{Shaded}
@@ -826,9 +826,9 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 \end{Shaded}
 
 \begin{verbatim}
-##              [,1]         [,2]
-## [1,]  0.152214539 -0.009935141
-## [2,] -0.009935141  0.010548557
+##            [,1]        [,2]
+## [1,]  0.3451683 -0.04605760
+## [2,] -0.0460576  0.01048535
 \end{verbatim}
 
 \begin{Shaded}
@@ -848,9 +848,9 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 \end{Shaded}
 
 \begin{verbatim}
-##           [,1]
-## [1,] -14.69249
-## [2,] -18.30067
+##            [,1]
+## [1,]  -25.20433
+## [2,] -126.18207
 \end{verbatim}
 
 \begin{Shaded}
@@ -870,9 +870,9 @@ Just calculate \(\hat\beta=(X'X)^{-1}X'Y\)
 \end{Shaded}
 
 \begin{verbatim}
-##             [,1]
-## [1,] -2.05459055
-## [2,] -0.04707369
+##            [,1]
+## [1,] -2.8880939
+## [2,] -0.1622115
 \end{verbatim}
 
 \begin{Shaded}
@@ -1476,6 +1476,147 @@ What do to:
   \end{itemize}
 \end{itemize}
 
+\hypertarget{instrumental-variables}{%
+\subsection{Instrumental Variables}\label{instrumental-variables}}
+
+A type of two-stage least squares regression (2SLS). Normally, when we
+want to test whether \(X\) has some effect on \(Y\) we regress \(Y\) on
+\(X\) (\(Y\sim X\) AKA \(Y=X\beta + \epsilon\)). However, when \(X\) is
+correlated with the error term (i.e.~it is endogenous), \(\epsilon\),
+OLS (and ANOVA) gives biased results. We get around this by using an
+instrumental variable, \(Z\), which is \emph{uncorrelated} with
+\(\epsilon\) and affects \(Y\) only through \(X\) (i.e.~is correlated
+with \(X\) but not with \(\epsilon\)).
+
+An example in \texttt{R}:
+
+We want to estimate the relationship between the after-tax average price
+of a pack of cigarettes (\(X\)) on the number of cigarette packs sold
+per capita (\(Y\)). We can't estimate this relationship directly because
+there is simultaneous causality between supply and demand. However, we
+can use the sales tax per pack as an instrument (\(Z\)) as sales tax is
+correlated with the after-tax price of a pack (\(X\)) and presumably
+with the quantity of packs sold (\(Y\)) but only because sales tax
+impacts the price per pack.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Example from: https://www.econometrics{-}with{-}r.org/12.1{-}TIVEWASRAASI.html}
+
+\FunctionTok{data}\NormalTok{(}\StringTok{"CigarettesSW"}\NormalTok{)}
+
+\CommentTok{\# Compute real per capita prices (X)}
+\NormalTok{CigarettesSW}\SpecialCharTok{$}\NormalTok{rprice }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(CigarettesSW, price }\SpecialCharTok{/}\NormalTok{ cpi)}
+
+\CommentTok{\# Compute the sales tax (Z)}
+\NormalTok{CigarettesSW}\SpecialCharTok{$}\NormalTok{salestax }\OtherTok{\textless{}{-}} \FunctionTok{with}\NormalTok{(CigarettesSW, (taxs }\SpecialCharTok{{-}}\NormalTok{ tax) }\SpecialCharTok{/}\NormalTok{ cpi)}
+
+\CommentTok{\# Check the correlation between Z and X}
+\FunctionTok{cor}\NormalTok{(CigarettesSW}\SpecialCharTok{$}\NormalTok{salestax, CigarettesSW}\SpecialCharTok{$}\NormalTok{price)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## [1] 0.6141228
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate a subset for the year 1995}
+\NormalTok{c1995 }\OtherTok{\textless{}{-}} \FunctionTok{subset}\NormalTok{(CigarettesSW, year }\SpecialCharTok{==} \StringTok{"1995"}\NormalTok{)}
+
+\CommentTok{\# Now we estimate the first stage X \textasciitilde{} Z}
+\NormalTok{cig\_s1 }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(rprice) }\SpecialCharTok{\textasciitilde{}}\NormalTok{ salestax, }\AttributeTok{data =}\NormalTok{ c1995)}
+
+\FunctionTok{summary}\NormalTok{(cig\_s1)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log(rprice) ~ salestax, data = c1995)
+## 
+## Residuals:
+##       Min        1Q    Median        3Q       Max 
+## -0.221027 -0.044324  0.000111  0.063730  0.210717 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept) 4.616546   0.029108   158.6  < 2e-16 ***
+## salestax    0.030729   0.004802     6.4 7.27e-08 ***
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.09394 on 46 degrees of freedom
+## Multiple R-squared:  0.471,  Adjusted R-squared:  0.4595 
+## F-statistic: 40.96 on 1 and 46 DF,  p-value: 7.271e-08
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Now get the predicted values from our first stage regression}
+\NormalTok{lcigp\_pred }\OtherTok{\textless{}{-}}\NormalTok{ cig\_s1}\SpecialCharTok{$}\NormalTok{fitted.values}
+
+\CommentTok{\# And regress our Y on our first stage fitted values}
+\NormalTok{cig\_s2 }\OtherTok{\textless{}{-}} \FunctionTok{lm}\NormalTok{(}\FunctionTok{log}\NormalTok{(c1995}\SpecialCharTok{$}\NormalTok{packs) }\SpecialCharTok{\textasciitilde{}}\NormalTok{ lcigp\_pred)}
+
+\FunctionTok{summary}\NormalTok{(cig\_s2)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## lm(formula = log(c1995$packs) ~ lcigp_pred)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.63180 -0.15802  0.00524  0.13574  0.61434 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   9.7199     1.8012   5.396  2.3e-06 ***
+## lcigp_pred   -1.0836     0.3766  -2.877  0.00607 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.2264 on 46 degrees of freedom
+## Multiple R-squared:  0.1525, Adjusted R-squared:  0.1341 
+## F-statistic: 8.277 on 1 and 46 DF,  p-value: 0.006069
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# }\AlertTok{NOTE}\CommentTok{: the AER package has a function that carries out 2SLS automatically}
+\CommentTok{\# ivreg(Y \textasciitilde{} X | Z, data)}
+\NormalTok{cig\_ivreg }\OtherTok{=} \FunctionTok{ivreg}\NormalTok{(}\FunctionTok{log}\NormalTok{(packs) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(rprice) }\SpecialCharTok{|}\NormalTok{ salestax, }\AttributeTok{data =}\NormalTok{ c1995)}
+
+\FunctionTok{summary}\NormalTok{(cig\_ivreg)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+## Call:
+## ivreg(formula = log(packs) ~ log(rprice) | salestax, data = c1995)
+## 
+## Residuals:
+##      Min       1Q   Median       3Q      Max 
+## -0.64619 -0.07732  0.02981  0.11283  0.41904 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(>|t|)    
+## (Intercept)   9.7199     1.5141   6.420 6.79e-08 ***
+## log(rprice)  -1.0836     0.3166  -3.422  0.00131 ** 
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 0.1904 on 46 degrees of freedom
+## Multiple R-Squared: 0.4011,  Adjusted R-squared: 0.3881 
+## Wald test: 11.71 on 1 and 46 DF,  p-value: 0.001313
+\end{verbatim}
+
 \hypertarget{poli-271}{%
 \section{POLI 271}\label{poli-271}}
 
@@ -1652,7 +1793,7 @@ Now in R:
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-22-1.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-23-1.pdf}
 
 Note: See MLE Problem Set 2 for a derivation of the MLE of the normal
 variance.
@@ -1833,19 +1974,26 @@ more nuanced for 2 reasons:
 
 \begin{enumerate}
 \def\labelenumi{\arabic{enumi}.}
+\tightlist
 \item
   The model is nonlinear so the effect of a particular covariate on the
   DV is not constant across all levels of the covariate. This can be
   seen by deriving the marginal effect of a covariate, \(x_k\), on the
   expected value of \(Y\):
+\end{enumerate}
 
-  \[\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}\]
+\[\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta})^2}\]
 
-  As a quick trick, you can divide a coefficient by 4 to get an estimate
-  of a maximum effect a 1 unit increase in the covariate can have on the
-  probability of the DV being 1. i.e.~if we have a coefficent of -1.45
-  then \(\frac{-1.45}{4}=-0.4\) so a 1 unit increase in the IV reduces
-  the probability of the DV being one by about 40\%.
+As a quick trick, you can divide a coefficient by 4 to get an estimate
+of a maximum effect a 1 unit increase in the covariate can have on the
+probability of the DV being 1. i.e.~if we have a coefficent of -1.45
+then \(\frac{-1.45}{4}=-0.4\) so a 1 unit increase in the IV reduces the
+probability of the DV being one by about 40\%.
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
 \item
   The logit model is a linear regression on the log odds so the
   exponentiated coefficients are odds ratios. If we have a coefficient
@@ -1857,6 +2005,8 @@ more nuanced for 2 reasons:
 \hypertarget{interpreting-logit-with-plots}{%
 \subsubsection{Interpreting Logit with
 Plots}\label{interpreting-logit-with-plots}}
+
+We can use a coefficient plot to avoid a BUTON
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -1999,12 +2149,13 @@ Plots}\label{interpreting-logit-with-plots}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-1.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-25-1.pdf}
+
+We can use a predicted probability plot to show the substantive impact
+of our results
 
 \begin{Shaded}
 \begin{Highlighting}[]
-\CommentTok{\# Now a predicted probability plot}
-
 \CommentTok{\# Say we want to know the difference in predicted probability}
 \CommentTok{\# of a Republican vs. a Democrat voting to impeach Clinton}
 
@@ -2055,7 +2206,7 @@ Plots}\label{interpreting-logit-with-plots}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-2.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-26-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2088,13 +2239,187 @@ Plots}\label{interpreting-logit-with-plots}}
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-24-3.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-26-2.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
 \CommentTok{\#dev.off()}
 \end{Highlighting}
 \end{Shaded}
+
+We can also use a predicted probability plot to model an interaction in
+a logit model
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load in the data}
+\NormalTok{impeach }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Data/impeach.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 435 Columns: 5
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## dbl (5): votesum, clint96, partyid, aflcio97, ccoal98
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impeach }\OtherTok{\textless{}{-}}\NormalTok{ impeach }\SpecialCharTok{\%\textgreater{}\%} \FunctionTok{na.omit}\NormalTok{()}
+
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[impeach}\SpecialCharTok{$}\NormalTok{votesum }\SpecialCharTok{!=} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{1}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: Unknown or uninitialised column: `votebin`.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{impeach}\SpecialCharTok{$}\NormalTok{votebin[impeach}\SpecialCharTok{$}\NormalTok{votesum }\SpecialCharTok{==} \DecValTok{0}\NormalTok{] }\OtherTok{\textless{}{-}} \DecValTok{0}
+
+\NormalTok{model\_int }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(votebin }\SpecialCharTok{\textasciitilde{}}\NormalTok{ clint96 }\SpecialCharTok{*}\NormalTok{ aflcio97 ,}\AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{),}
+                 \AttributeTok{data=}\NormalTok{impeach)}
+\NormalTok{model\_noint }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(votebin }\SpecialCharTok{\textasciitilde{}}\NormalTok{ clint96 }\SpecialCharTok{+}\NormalTok{ aflcio97,}
+                   \AttributeTok{family=}\FunctionTok{binomial}\NormalTok{(}\AttributeTok{link=}\StringTok{"logit"}\NormalTok{),}
+                   \AttributeTok{data=}\NormalTok{impeach)}
+
+\FunctionTok{modelsummary}\NormalTok{(}\FunctionTok{list}\NormalTok{(model\_noint, model\_int), }\AttributeTok{title=}\StringTok{"Impeachment models"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-27}Impeachment models}
+\centering
+\begin{tabular}[t]{lcc}
+\toprule
+  & Model 1 & Model 2\\
+\midrule
+(Intercept) & \num{10.344} & \num{14.946}\\
+ & (\num{2.969}) & (\num{9.954})\\
+clint96 & \num{-0.060} & \num{-0.152}\\
+ & (\num{0.059}) & (\num{0.197})\\
+aflcio97 & \num{-0.122} & \num{-0.182}\\
+ & (\num{0.016}) & (\num{0.122})\\
+clint96 × aflcio97 &  & \num{0.001}\\
+ &  & (\num{0.002})\\
+\midrule
+Num.Obs. & \num{429} & \num{429}\\
+AIC & \num{83.3} & \num{85.0}\\
+BIC & \num{95.5} & \num{101.3}\\
+Log.Lik. & \num{-38.648} & \num{-38.517}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{clint96.range }\OtherTok{\textless{}{-}} \FunctionTok{seq}\NormalTok{(}\FunctionTok{quantile}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)[}\DecValTok{2}\NormalTok{],}
+                    \FunctionTok{quantile}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)[}\DecValTok{4}\NormalTok{],.}\DecValTok{1}\NormalTok{)}
+
+\CommentTok{\# NO INTERACTION MODEL}
+\NormalTok{x.lo }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{median}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96), }\DecValTok{0}\NormalTok{) }\CommentTok{\# Q1 clint96 scenario}
+\NormalTok{X.lo }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.lo, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.lo), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.lo[}\DecValTok{2}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+
+\NormalTok{x.hi }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{median}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96), }\DecValTok{100}\NormalTok{) }\CommentTok{\# Q2 clint96 scenario}
+\NormalTok{X.hi }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.hi, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.hi), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.hi[}\DecValTok{2}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+
+\NormalTok{B.tilde }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\FunctionTok{coef}\NormalTok{(model\_noint), }\FunctionTok{vcov}\NormalTok{(model\_noint))}
+
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.lo) }\CommentTok{\# Note we would use pnorm() here instead if }
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.hi) }\CommentTok{\# evaluating a probit model!}
+
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.lo, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.hi, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+
+
+\CommentTok{\# Now tidy the data and plot with ggplot}
+\NormalTok{pred.prob.df.noint }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{xrange=}\FunctionTok{rep}\NormalTok{(clint96.range,}\DecValTok{2}\NormalTok{), }
+                           \AttributeTok{y=}\FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{2}\NormalTok{,],s.hi[}\DecValTok{2}\NormalTok{,]),}
+                           \AttributeTok{conf.low =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{1}\NormalTok{,], s.hi[}\DecValTok{1}\NormalTok{,]),}
+                           \AttributeTok{conf.high =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{3}\NormalTok{,], s.hi[}\DecValTok{3}\NormalTok{,]),}
+                           \AttributeTok{scenario =} \FunctionTok{rep}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"AFL{-}CIO=100"}\NormalTok{, }\StringTok{"AFL{-}CIO=0"}\NormalTok{), }
+                                          \AttributeTok{each=}\FunctionTok{length}\NormalTok{(clint96.range)))}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{pred.prob.df.noint, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{xrange, }\AttributeTok{y=}\NormalTok{y,}
+                              \AttributeTok{ymin=}\NormalTok{conf.low,}
+                              \AttributeTok{ymax=}\NormalTok{conf.high,}
+                              \AttributeTok{fill=}\FunctionTok{factor}\NormalTok{(scenario),}
+                              \AttributeTok{linetype=}\FunctionTok{factor}\NormalTok{(scenario))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size=}\NormalTok{.}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\AttributeTok{alpha=}\FloatTok{0.25}\NormalTok{, }\AttributeTok{color=}\StringTok{"gray"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{"1996 Vote Share for Clinton"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Predicted Probability"}\NormalTok{,}
+       \AttributeTok{title=}\StringTok{"Predicted Probability Plot for No Interaction Model"}\NormalTok{, }\AttributeTok{linetype=}\StringTok{"Scenario"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"AFL{-}CIO=100"}\NormalTok{, }\StringTok{"AFL{-}CIO=0"}\NormalTok{), }
+                    \AttributeTok{values=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill=}\StringTok{"none"}\NormalTok{, }\AttributeTok{color=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-28-1.pdf}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# INTERACTION MODEL}
+\NormalTok{x.lo }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{median}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)[}\DecValTok{2}\NormalTok{], }\DecValTok{0}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{\# 0 AFL{-}CIO score scenario}
+\NormalTok{X.lo }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.lo, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.lo), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.lo[}\DecValTok{2}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+\NormalTok{X.lo[}\DecValTok{4}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}\SpecialCharTok{*}\DecValTok{0}
+
+\NormalTok{x.hi }\OtherTok{\textless{}{-}} \FunctionTok{c}\NormalTok{(}\DecValTok{1}\NormalTok{, }\FunctionTok{quantile}\NormalTok{(impeach}\SpecialCharTok{$}\NormalTok{clint96)[}\DecValTok{4}\NormalTok{], }\DecValTok{100}\NormalTok{, }\DecValTok{0}\NormalTok{) }\CommentTok{\# 100 AFL{-}CIO score scenario}
+\NormalTok{X.hi }\OtherTok{\textless{}{-}} \FunctionTok{matrix}\NormalTok{(x.hi, }\AttributeTok{nrow=}\FunctionTok{length}\NormalTok{(x.hi), }\AttributeTok{ncol=}\FunctionTok{length}\NormalTok{(clint96.range))}
+\NormalTok{X.hi[}\DecValTok{2}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}
+\NormalTok{X.hi[}\DecValTok{4}\NormalTok{,] }\OtherTok{\textless{}{-}}\NormalTok{ clint96.range}\SpecialCharTok{*}\DecValTok{100}
+
+\NormalTok{B.tilde }\OtherTok{\textless{}{-}} \FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\FunctionTok{coef}\NormalTok{(model\_int), }\FunctionTok{vcov}\NormalTok{(model\_int))}
+
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.lo)}
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{inv.logit}\NormalTok{(B.tilde }\SpecialCharTok{\%*\%}\NormalTok{ X.hi)}
+
+\NormalTok{s.lo }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.lo, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+\NormalTok{s.hi }\OtherTok{\textless{}{-}} \FunctionTok{apply}\NormalTok{(s.hi, }\DecValTok{2}\NormalTok{, quantile, }\FunctionTok{c}\NormalTok{(}\FloatTok{0.025}\NormalTok{, }\FloatTok{0.5}\NormalTok{, }\FloatTok{0.975}\NormalTok{))}
+
+
+\CommentTok{\# Now tidy the data and plot with ggplot}
+\NormalTok{pred.prob.df.int }\OtherTok{\textless{}{-}} \FunctionTok{data.frame}\NormalTok{(}\AttributeTok{xrange=}\FunctionTok{rep}\NormalTok{(clint96.range,}\DecValTok{2}\NormalTok{), }
+                           \AttributeTok{y=}\FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{2}\NormalTok{,],s.hi[}\DecValTok{2}\NormalTok{,]),}
+                           \AttributeTok{conf.low =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{1}\NormalTok{,], s.hi[}\DecValTok{1}\NormalTok{,]),}
+                           \AttributeTok{conf.high =} \FunctionTok{c}\NormalTok{(s.lo[}\DecValTok{3}\NormalTok{,], s.hi[}\DecValTok{3}\NormalTok{,]),}
+                           \AttributeTok{scenario =} \FunctionTok{rep}\NormalTok{(}\FunctionTok{c}\NormalTok{(}\StringTok{"AFL{-}CIO=100"}\NormalTok{, }\StringTok{"AFL{-}CIO=0"}\NormalTok{), }
+                                          \AttributeTok{each=}\FunctionTok{length}\NormalTok{(clint96.range)))}
+
+\FunctionTok{ggplot}\NormalTok{(}\AttributeTok{data=}\NormalTok{pred.prob.df.int, }\FunctionTok{aes}\NormalTok{(}\AttributeTok{x=}\NormalTok{xrange, }\AttributeTok{y=}\NormalTok{y,}
+                              \AttributeTok{ymin=}\NormalTok{conf.low,}
+                              \AttributeTok{ymax=}\NormalTok{conf.high,}
+                              \AttributeTok{fill=}\FunctionTok{factor}\NormalTok{(scenario),}
+                              \AttributeTok{linetype=}\FunctionTok{factor}\NormalTok{(scenario))) }\SpecialCharTok{+}
+  \FunctionTok{geom\_line}\NormalTok{(}\AttributeTok{size=}\NormalTok{.}\DecValTok{8}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{geom\_ribbon}\NormalTok{(}\AttributeTok{alpha=}\FloatTok{0.25}\NormalTok{, }\AttributeTok{color=}\StringTok{"gray"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{labs}\NormalTok{(}\AttributeTok{x=}\StringTok{"1996 Vote Share for Clinton"}\NormalTok{, }\AttributeTok{y=}\StringTok{"Predicted Probability"}\NormalTok{,}
+       \AttributeTok{title=}\StringTok{"Predicted Probability Plot for Interaction Model"}\NormalTok{, }\AttributeTok{linetype=}\StringTok{"Scenario"}\NormalTok{) }\SpecialCharTok{+}
+  \FunctionTok{scale\_fill\_manual}\NormalTok{(}\AttributeTok{labels=}\FunctionTok{c}\NormalTok{(}\StringTok{"AFL{-}CIO=100"}\NormalTok{, }\StringTok{"AFL{-}CIO=0"}\NormalTok{), }
+                    \AttributeTok{values=}\FunctionTok{c}\NormalTok{(}\StringTok{"blue"}\NormalTok{, }\StringTok{"red"}\NormalTok{)) }\SpecialCharTok{+}
+  \FunctionTok{theme\_minimal}\NormalTok{() }\SpecialCharTok{+}
+  \FunctionTok{guides}\NormalTok{(}\AttributeTok{fill=}\StringTok{"none"}\NormalTok{, }\AttributeTok{color=}\StringTok{"none"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-28-2.pdf}
 
 \hypertarget{comparing-models}{%
 \subsubsection{Comparing Models}\label{comparing-models}}
@@ -2189,7 +2514,7 @@ for each model's ROC curve; smaller is better.
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-25-1.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-29-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2207,7 +2532,7 @@ for each model's ROC curve; smaller is better.
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-25}Model AUCs}
+\caption{\label{tab:unnamed-chunk-29}Model AUCs}
 \centering
 \begin{tabular}[t]{l|l}
 \hline
@@ -2456,7 +2781,7 @@ Log.Lik. & \num{-42.676} & \num{-40.786} & \num{-38.256}\\
 
 \begin{table}
 
-\caption{\label{tab:unnamed-chunk-26}Out-of-sample AUCs}
+\caption{\label{tab:unnamed-chunk-30}Out-of-sample AUCs}
 \centering
 \begin{tabular}[t]{l|l}
 \hline
@@ -2480,7 +2805,7 @@ Model 3 & 0.862\\
 \end{Highlighting}
 \end{Shaded}
 
-\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-26-1.pdf}
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-30-1.pdf}
 
 \begin{Shaded}
 \begin{Highlighting}[]
@@ -2629,17 +2954,511 @@ binary logit models (see pg. 143-144 of Ward and Ahlquist 2018). Like
 binary logit, ordered logit assumes the errors follow a logistic
 distribution whereas probit assumes normally distributed errors.
 
+See pg. 146-154 of Ward and Ahlquist (2018) for examples of interpreting
+the confusing output an ordered logit model.
+
 Note: The derivation of the MLE for ordered logit is sufficiently
 complex that I doubt it would be asked on the exam.
+
+An example in R:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{drury }\OtherTok{\textless{}{-}} \FunctionTok{read\_csv}\NormalTok{(}\StringTok{"Data/drury\_jpr\_data.csv"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Rows: 116 Columns: 26
+\end{verbatim}
+
+\begin{verbatim}
+## -- Column specification --------------------------------------------------------
+## Delimiter: ","
+## dbl (26): blknight, case, contrib, coop, cost, dstres, gnpcst, gnprat, inst,...
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## i Use `spec()` to retrieve the full column specification for this data.
+## i Specify the column types or set `show_col_types = FALSE` to quiet this message.
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{model\_logit\_drury }\OtherTok{\textless{}{-}} \FunctionTok{polr}\NormalTok{(}\FunctionTok{as.ordered}\NormalTok{(result) }\SpecialCharTok{\textasciitilde{}} \FunctionTok{log}\NormalTok{(gnprat) }\SpecialCharTok{+}\NormalTok{ trade }\SpecialCharTok{+}\NormalTok{ tarcst }\SpecialCharTok{+}\NormalTok{ cost }\SpecialCharTok{+}\NormalTok{ coop, }
+                   \AttributeTok{method=}\StringTok{"logistic"}\NormalTok{, }\AttributeTok{data=}\NormalTok{drury, }\AttributeTok{Hess=}\NormalTok{T)}
+
+\FunctionTok{modelsummary}\NormalTok{(model\_logit\_drury)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+  & Model 1\\
+\midrule
+log(gnprat) & \num{0.037}\\
+ & (\num{0.089})\\
+trade & \num{0.011}\\
+ & (\num{0.005})\\
+tarcst & \num{0.000}\\
+ & (\num{0.000})\\
+cost & \num{-0.105}\\
+ & (\num{0.257})\\
+coop & \num{-0.331}\\
+ & (\num{0.187})\\
+1|2 & \num{-1.391}\\
+ & (\num{0.706})\\
+2|3 & \num{-0.048}\\
+ & (\num{0.686})\\
+3|4 & \num{0.730}\\
+ & (\num{0.690})\\
+\midrule
+Num.Obs. & \num{116}\\
+AIC & \num{319.7}\\
+BIC & \num{341.7}\\
+Log.Lik. & \num{-151.834}\\
+edf & \num{8.000}\\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{attach}\NormalTok{(drury)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## The following object is masked _by_ .GlobalEnv:
+## 
+##     trade
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from package:fixest:
+## 
+##     trade
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from package:MASS:
+## 
+##     coop
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{X.coop1 }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\FunctionTok{median}\NormalTok{(}\FunctionTok{log}\NormalTok{(gnprat)), }\FunctionTok{median}\NormalTok{(drury}\SpecialCharTok{$}\NormalTok{trade), }\FunctionTok{median}\NormalTok{(tarcst), }\FunctionTok{median}\NormalTok{(cost), }\FunctionTok{min}\NormalTok{(coop)) }\CommentTok{\# coop = 1 scenario}
+
+\NormalTok{X.coop4 }\OtherTok{\textless{}{-}} \FunctionTok{cbind}\NormalTok{(}\FunctionTok{median}\NormalTok{(}\FunctionTok{log}\NormalTok{(gnprat)), }\FunctionTok{median}\NormalTok{(drury}\SpecialCharTok{$}\NormalTok{trade), }\FunctionTok{median}\NormalTok{(tarcst), }\FunctionTok{median}\NormalTok{(cost), }\FunctionTok{max}\NormalTok{(coop)) }\CommentTok{\# coop = 4 scenario}
+
+\NormalTok{draws}\OtherTok{\textless{}{-}}\FunctionTok{mvrnorm}\NormalTok{(}\DecValTok{1000}\NormalTok{, }\FunctionTok{c}\NormalTok{(}\FunctionTok{coef}\NormalTok{(model\_logit\_drury),model\_logit\_drury}\SpecialCharTok{$}\NormalTok{zeta),}
+               \FunctionTok{solve}\NormalTok{(model\_logit\_drury}\SpecialCharTok{$}\NormalTok{Hessian))}
+
+\NormalTok{B}\OtherTok{\textless{}{-}}\NormalTok{draws[,}\DecValTok{1}\SpecialCharTok{:}\FunctionTok{length}\NormalTok{(}\FunctionTok{coef}\NormalTok{(model\_logit\_drury))]}
+
+\NormalTok{Taus}\OtherTok{\textless{}{-}}\NormalTok{draws[,(}\FunctionTok{length}\NormalTok{(}\FunctionTok{coef}\NormalTok{(model\_logit\_drury))}\SpecialCharTok{+}\DecValTok{1}\NormalTok{)}\SpecialCharTok{:}\FunctionTok{ncol}\NormalTok{(draws)]}
+
+\NormalTok{pi.cutoff12.coop1 }\OtherTok{\textless{}{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop1)) }\SpecialCharTok{{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop1))}
+\NormalTok{pi.cutoff12.coop4 }\OtherTok{\textless{}{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop4)) }\SpecialCharTok{{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{1}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop4))}
+\NormalTok{pi.cutoff23.coop1 }\OtherTok{\textless{}{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{3}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop1)) }\SpecialCharTok{{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop1))}
+\NormalTok{pi.cutoff23.coop4 }\OtherTok{\textless{}{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{3}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop4)) }\SpecialCharTok{{-}} \FunctionTok{plogis}\NormalTok{(Taus[,}\DecValTok{2}\NormalTok{] }\SpecialCharTok{{-}}\NormalTok{ B}\SpecialCharTok{\%*\%}\FunctionTok{t}\NormalTok{(X.coop4))}
+
+\CommentTok{\# result = 2 first difference}
+\NormalTok{fd.res2 }\OtherTok{\textless{}{-}}\NormalTok{ pi.cutoff12.coop4 }\SpecialCharTok{{-}}\NormalTok{ pi.cutoff12.coop1}
+\CommentTok{\# result = 3 first difference}
+\NormalTok{fd.res3 }\OtherTok{\textless{}{-}}\NormalTok{ pi.cutoff23.coop4 }\SpecialCharTok{{-}}\NormalTok{ pi.cutoff23.coop1}
+
+\FunctionTok{plot}\NormalTok{(}\FunctionTok{density}\NormalTok{(fd.res3, }\AttributeTok{adjust=}\FloatTok{1.5}\NormalTok{), }\AttributeTok{xlim=}\FunctionTok{c}\NormalTok{(}\SpecialCharTok{{-}}\FloatTok{0.2}\NormalTok{,}\FloatTok{0.2}\NormalTok{),}\AttributeTok{ylim=}\FunctionTok{c}\NormalTok{(}\DecValTok{0}\NormalTok{,}\DecValTok{25}\NormalTok{),}
+     \AttributeTok{xlab=}\StringTok{"Change in predicted probability"}\NormalTok{, }\AttributeTok{bty=}\StringTok{"n"}\NormalTok{, }\AttributeTok{col=}\DecValTok{1}\NormalTok{,}
+     \AttributeTok{yaxt=}\StringTok{"n"}\NormalTok{, }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{main=}\StringTok{"First Difference Change in Probability}\SpecialCharTok{\textbackslash{}n}\StringTok{ from Changing coop=4 to coop=1"}\NormalTok{,}
+     \AttributeTok{ylab=}\StringTok{""}\NormalTok{)}
+\FunctionTok{lines}\NormalTok{(}\FunctionTok{density}\NormalTok{(fd.res2, }\AttributeTok{adjust=}\FloatTok{1.5}\NormalTok{), }\AttributeTok{col=}\FunctionTok{grey}\NormalTok{(}\FloatTok{0.5}\NormalTok{), }\AttributeTok{lwd=}\DecValTok{2}\NormalTok{, }\AttributeTok{lty=}\DecValTok{2}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(}\AttributeTok{x=}\FloatTok{0.1}\NormalTok{, }\AttributeTok{y=}\DecValTok{20}\NormalTok{, }\AttributeTok{labels=}\StringTok{"Dashed: Pr(result=2 | coop=4) {-}}
+\StringTok{     }\SpecialCharTok{\textbackslash{}n}\StringTok{ Pr(result=2 | coop=1)"}\NormalTok{,}\AttributeTok{cex=}\NormalTok{.}\DecValTok{8}\NormalTok{)}
+\FunctionTok{text}\NormalTok{(}\AttributeTok{x=}\SpecialCharTok{{-}}\FloatTok{0.1}\NormalTok{, }\AttributeTok{y=}\DecValTok{20}\NormalTok{, }\AttributeTok{labels=}\StringTok{"Solid: Pr(result=3 | coop=4) {-}}
+\StringTok{     }\SpecialCharTok{\textbackslash{}n}\StringTok{ Pr(result=3 | coop=1)"}\NormalTok{,}\AttributeTok{cex=}\NormalTok{.}\DecValTok{8}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-35-1.pdf}
+
+The above plot shows the changes in probability of the \texttt{result}
+of sanctions being 3 and 4 when a country has \texttt{coop} = 1 (no
+cooperation) versus having \texttt{coop} = 4 (major trading partners
+making major efforts to limit trade). This change in \texttt{coop}
+appears to decrease the probability that a country falls into category 3
+of \texttt{result} as the solid distribution above is centered to the
+left of 0. This makes sense given the large and negative coefficient on
+\texttt{coop} in the ordered logit model in the table above. The same
+change in \texttt{coop} may slightly increase the probability of being
+categorized as \texttt{result} = 2 as the dashed distribution above
+appears to be centered slightly to the right of 0.
+
+\hypertarget{multinomial-logit}{%
+\subsubsection{Multinomial Logit}\label{multinomial-logit}}
+
+When are DV is binned into non-ordinal categories we can use a
+multinomial logit model.
+
+Again, the derivation of the likelihood function for this class of
+models is fairly complicated (and taking its derivative analytically
+would be a nightmare) and so I'd guess it's unlikely to be asked on the
+exam. See pg. 163-164 of Ward and Ahlquist (2018) for the relevant
+definitions.
+
+\hypertarget{independence-of-irrelevant-alternatives-iia}{%
+\paragraph{Independence of Irrelevant Alternatives
+(IIA)}\label{independence-of-irrelevant-alternatives-iia}}
+
+IIA is an assumption baked in to the standard multinomial logit model.
+It just means if we have some choices A and B for the DV then
+introducing some C won't change the relative likelihood of someone
+choosing A over B.
 
 \hypertarget{interpretation}{%
 \paragraph{Interpretation}\label{interpretation}}
 
-Ordered logit estimates are less straightforward to interpret than
-binary logit.
+Like with ordered logit, interpretation is kind of a nightmare.
+Essentially, each coefficient is the logit coefficient w.r.t. the
+excluded (reference) category of the DV for those columns of the BUTON.
+See pg. 169 of Ward and Ahlquist (2018) for an example of this. The
+first two columns of Table 9.1 present the logit coefficient of the
+given category w.r.t Labor.
 
-\hypertarget{model-interpretation}{%
-\subsection{Model Interpretation}\label{model-interpretation}}
+\hypertarget{count-data}{%
+\subsection{Count Data}\label{count-data}}
+
+Count models are used to describe count data (\(Y\in{0,1,2, . . .}\)).
+Count data is discrete and bounded from below.
+
+\hypertarget{why-not-use-ols}{%
+\subsubsection{Why not use OLS?}\label{why-not-use-ols}}
+
+This is a bad idea for the same reason it's a bad idea to use OLS with
+binary data:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  The variance of a count increases with the mean (more error around
+  larger values) and thus count data is heteroskedastic.
+\item
+  OLS will generate predictions that aren't lower bounded at 0 or
+  integers. This can be worked around by logging the DV but then you
+  have to deal with \(\log(0)\). Do you discard these observations? Do
+  you add some arbitrary constant to every value of your DV?
+\end{enumerate}
+
+\hypertarget{poisson-regression}{%
+\subsubsection{Poisson Regression}\label{poisson-regression}}
+
+\hypertarget{the-poisson-distribution}{%
+\paragraph{The Poisson Distribution}\label{the-poisson-distribution}}
+
+Assumptions:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Events occur independently.
+\item
+  There is a constant arrival rate of events, \(\lambda\). The
+  probability of an event occurring in the interval \((t,t+h]\) is then
+  \(h\lambda\) (probability of a no event is \(1-\lambda h\))
+\end{enumerate}
+
+The distribution is then:
+
+\[Y\sim f_p(y;\lambda,h)\]
+\[Pr(Y=y)=\frac{e^{-h\lambda}(h\lambda)^y}{y!}\] where
+\(\lambda>0, h>0\)
+
+This is our \emph{stochastic/random} component. The systematic component
+is some continuous or discrete set of IVs, \(X\), that are linear in
+parameters (i.e.~not squared, divided, etc.).
+
+The mean and variance of the Poisson distribution is:
+\(E[Y]=var(Y)=h\lambda\)
+
+If all observational intervals are the same length then we can let
+\(h=1\) and the distribution simplifies to:
+
+\[Pr(Y=y)=\frac{e^{-\lambda}\lambda^y}{y!}\]
+
+The mean and variance of the Poisson distribution is then:
+\(E[Y]=var(Y)=\lambda\)
+
+\hypertarget{the-poisson-model}{%
+\paragraph{The Poisson Model}\label{the-poisson-model}}
+
+To incorporate covariates into a Poisson model where the mean is greater
+than zero, we need a link function to map our covariates, \(x_i\), onto
+positive values. We use the exponential function:
+
+\[E[Y_i]=h\lambda_i=he^{x_i^T\beta}\]
+
+Or when \(h=1\):
+
+\[E[Y_i]=\lambda_i=e^{x_i^T\beta}\]
+
+Plugging this value of \(\lambda\) into our probability mass function we
+found defined above we get:
+
+\[Pr(Y_i=y|x_i)=\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T\beta}]^y} {y!}\]
+
+We then derive the likelihood as follows:
+
+\[\mathcal{L}(\beta|X,y)=\prod_{i=1}^n\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T \beta}]^{y_i}}{y_i!}\]
+
+Take the log:
+
+\[\ln\mathcal{L}=\sum_{i=1}^n [e^{x_i^T\beta} + y_ix_i^T\beta - \ln(y_i!)]\]
+
+We can drop the \(\ln(y_i!)\) as it's not a function of what we're
+trying to maximize (\(\beta\))
+
+The score equation is:
+
+\[\frac{\partial\ln\mathcal{L}}{\partial\beta}=\sum_{i=1}^n y_ix_i^T\beta-x_i^T\beta e^{x_i^T\beta}=\sum_{i=1}^n(y_i-e^{x_i^T\beta})x_i=0\]
+
+\hypertarget{differential-exposure}{%
+\paragraph{Differential exposure}\label{differential-exposure}}
+
+When observations have different exposure windows (i.e.~\(h\) is not
+constant across observational units) then we would expect their counts
+to be proportional to their exposure window. We have two choices for
+accounting for this:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Offset: Include the size of the exposure window in the regression but
+  constrain its coefficient to be 1.0
+  i.e.~\(\lambda_i=e^{x_i^T\beta+\ln(h_i)}\)
+\end{enumerate}
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\setcounter{enumi}{1}
+\tightlist
+\item
+  Control: Simply add the (log) of the exposure for each unit as a
+  control in the regression
+\end{enumerate}
+
+\hypertarget{interpretation-1}{%
+\paragraph{Interpretation}\label{interpretation-1}}
+
+As with other non-linear models, directly interpreting coefficients
+isn't the way to go. Instead, construct scenarios and generate predicted
+values to interpret results.
+
+An example in R:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Load in the data}
+\NormalTok{ms}\OtherTok{\textless{}{-}}\FunctionTok{read.table}\NormalTok{(}\StringTok{"Data/Msrepl87.asc"}\NormalTok{, }\AttributeTok{header=}\ConstantTok{TRUE}\NormalTok{, }
+    \AttributeTok{colClasses=}\FunctionTok{c}\NormalTok{(}\StringTok{"character"}\NormalTok{,}\FunctionTok{rep}\NormalTok{(}\StringTok{"numeric"}\NormalTok{,}\DecValTok{22}\NormalTok{)))}
+\FunctionTok{rownames}\NormalTok{(ms) }\OtherTok{\textless{}{-}}\NormalTok{ ms}\SpecialCharTok{$}\NormalTok{country}
+
+\CommentTok{\# Generate Poisson model}
+\NormalTok{model\_poisson }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths75 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions75 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76, }\AttributeTok{data=}\NormalTok{ms,}
+                     \AttributeTok{family=}\StringTok{"poisson"}\NormalTok{)}
+
+\FunctionTok{modelsummary}\NormalTok{(model\_poisson, }\AttributeTok{title=}\StringTok{"Poisson Model"}\NormalTok{, }\AttributeTok{stars=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: In version 0.8.0 of the `modelsummary` package, the default significance markers produced by the `stars=TRUE` argument were changed to be consistent with R's defaults.
+## This warning is displayed once per session.
+\end{verbatim}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-36}Poisson Model}
+\centering
+\begin{tabular}[t]{lc}
+\toprule
+  & Model 1\\
+\midrule
+(Intercept) & \num{-0.019}\\
+ & (\num{0.015})\\
+sanctions75 & \num{0.005}***\\
+ & \vphantom{1} (\num{0.000})\\
+pop75 & \num{-0.001}***\\
+ & (\num{0.000})\\
+civlib76 & \num{1.455}***\\
+ & (\num{0.002})\\
+\midrule
+Num.Obs. & \num{95}\\
+AIC & \num{1844141.9}\\
+BIC & \num{1844152.1}\\
+Log.Lik. & \num{-922066.951}\\
+\bottomrule
+\multicolumn{2}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Now make a predicted value plot to interpret the effect of sanctions75}
+\CommentTok{\# on the probability of a death occurring}
+
+\CommentTok{\# Note this function automatically holds other IVs at their mean.}
+
+\FunctionTok{effect\_plot}\NormalTok{(model\_poisson, }\AttributeTok{pred=}\StringTok{"sanctions75"}\NormalTok{, }\AttributeTok{interval=}\NormalTok{T) }\SpecialCharTok{+} \FunctionTok{theme\_minimal}\NormalTok{()}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-36-1.pdf}
+
+\hypertarget{diagnostics}{%
+\paragraph{Diagnostics}\label{diagnostics}}
+
+The Poisson distribution assumes that the level of heteroskedasticity
+will be constant. i.e.~the variance will increase 1:1 with the mean of
+count data. This restrictive assumption is expressed as follows:
+
+\[E[Y]=\mathrm{var}(Y)\]
+
+We call it over-dispersion when \(E[Y]<\mathrm{var}(Y)\) (most common)
+and under-dispersion when \(E[Y]>\mathrm{var}(Y)\).
+
+Obviously comparing the mean and variance of the DV is one way to assess
+dispersion. We can also use the \texttt{dispersiontest()} function from
+the \texttt{AER} library:
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\NormalTok{AER}\SpecialCharTok{::}\FunctionTok{dispersiontest}\NormalTok{(model\_poisson, }\AttributeTok{alternative=}\StringTok{"two.sided"}\NormalTok{)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## 
+##  Dispersion test
+## 
+## data:  model_poisson
+## z = 1.2539, p-value = 0.2099
+## alternative hypothesis: true dispersion is not equal to 1
+## sample estimates:
+## dispersion 
+##   112512.2
+\end{verbatim}
+
+To visually check for disperion we can use a Poissonness plot. Similar
+to a QQ plot, a perfectly dispersed DV will create a straight line in
+the plot. The Poissonness plot, however, does not tell us much about
+over-dispersion. For that we can use a hanging rootogram.
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# vcd has the distplot function to create a Poissonness plot but I went ahead and }
+\CommentTok{\# adapted it to output a ggplot}
+
+\NormalTok{plotness}\SpecialCharTok{::}\FunctionTok{plotness}\NormalTok{(ms}\SpecialCharTok{$}\NormalTok{deaths75)}
+\end{Highlighting}
+\end{Shaded}
+
+\includegraphics{MethodsCompNotes_files/figure-latex/unnamed-chunk-38-1.pdf}
+
+\hypertarget{dealing-with-over-dispersion}{%
+\paragraph{Dealing with
+over-dispersion}\label{dealing-with-over-dispersion}}
+
+So we have over-dispersion, what do we do?
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\item
+  Quasipoisson: Allows generating generating predicted counts and
+  uncertainty estimates (which will be larger than a Poisson model) but
+  without being able to assess model fit with information criteria or
+  maximized likelihood.
+\item
+  Negative binomial: A model in which \(\lambda_i\) is a random variable
+  distributed as a gamma distribution but \(Y_i\), conditional on
+  \(\lambda_i\), is still Poisson
+\end{enumerate}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\CommentTok{\# Generate Poisson model}
+\NormalTok{model\_poisson }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths75 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions75 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76, }\AttributeTok{data=}\NormalTok{ms,}
+                     \AttributeTok{family=}\StringTok{"poisson"}\NormalTok{)}
+
+\CommentTok{\# Generate Poisson model}
+\NormalTok{model\_quasipoisson }\OtherTok{\textless{}{-}} \FunctionTok{glm}\NormalTok{(deaths75 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions75 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76, }\AttributeTok{data=}\NormalTok{ms,}
+                     \AttributeTok{family=}\StringTok{"quasipoisson"}\NormalTok{)}
+
+
+\CommentTok{\# Generate negative binomial model}
+\NormalTok{model\_negbin }\OtherTok{\textless{}{-}} \FunctionTok{glm.nb}\NormalTok{(deaths75 }\SpecialCharTok{\textasciitilde{}}\NormalTok{ sanctions75 }\SpecialCharTok{+}\NormalTok{ pop75 }\SpecialCharTok{+}\NormalTok{ civlib76, }\AttributeTok{data=}\NormalTok{ms)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{verbatim}
+## Warning: glm.fit: algorithm did not converge
+
+## Warning: glm.fit: algorithm did not converge
+
+## Warning: glm.fit: algorithm did not converge
+
+## Warning: glm.fit: algorithm did not converge
+
+## Warning: glm.fit: algorithm did not converge
+\end{verbatim}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\FunctionTok{modelsummary}\NormalTok{(}\FunctionTok{list}\NormalTok{(}\StringTok{"Poisson Model"}\OtherTok{=}\NormalTok{model\_poisson, }
+                  \StringTok{"Quasipoisson Model"}\OtherTok{=}\NormalTok{model\_quasipoisson, }
+                  \StringTok{"Neg. Bin. Model"}\OtherTok{=}\NormalTok{model\_negbin), }
+             \AttributeTok{title=}\StringTok{"Count Data Models"}\NormalTok{, }\AttributeTok{stars=}\NormalTok{T)}
+\end{Highlighting}
+\end{Shaded}
+
+\begin{table}
+
+\caption{\label{tab:unnamed-chunk-39}Count Data Models}
+\centering
+\begin{tabular}[t]{lccc}
+\toprule
+  & Poisson Model & Quasipoisson Model & Neg. Bin. Model\\
+\midrule
+(Intercept) & \num{-0.019} & \num{-0.019} & \num{0.070}\\
+ & (\num{0.015}) & (\num{5.206}) & (\num{0.669})\\
+sanctions75 & \num{0.005}*** & \num{0.005} & \num{0.047}***\\
+ & (\num{0.000}) & (\num{0.005}) & (\num{0.003})\\
+pop75 & \num{-0.001}*** & \num{-0.001} & \num{-0.010}*\\
+ & (\num{0.000}) & (\num{0.013}) & (\num{0.004})\\
+civlib76 & \num{1.455}*** & \num{1.455}+ & \num{1.164}***\\
+ & (\num{0.002}) & (\num{0.792}) & (\num{0.145})\\
+\midrule
+Num.Obs. & \num{95} & \num{95} & \num{95}\\
+AIC & \num{1844141.9} & \num{NA} & \num{961.4}\\
+BIC & \num{1844152.1} & \num{NA} & \num{974.1}\\
+Log.Lik. & \num{-922066.951} & \num{NA} & \num{-475.682}\\
+\bottomrule
+\multicolumn{4}{l}{\rule{0pt}{1em}+ p $<$ 0.1, * p $<$ 0.05, ** p $<$ 0.01, *** p $<$ 0.001}\\
+\end{tabular}
+\end{table}
+
+\hypertarget{dealing-with-under-dispersion}{%
+\paragraph{Dealing with
+under-dispersion}\label{dealing-with-under-dispersion}}
+
+See Ward and Ahlquist (2018) for: Hurdle models (pg. 210) and
+zero-inflation models (pg. 211-212).
 
 \hypertarget{exam-questions-and-answers}{%
 \section{2021 Exam Questions and

@@ -679,9 +679,51 @@ What do to:
 
     -   Could we combine two or more variables to create some sort of index?
 
-### Instrumental Variables
+## Instrumental Variables
 
-TODO
+A type of two-stage least squares regression (2SLS). Normally, when we want to test whether $X$ has some effect on $Y$ we regress $Y$ on $X$ ($Y\sim X$ AKA $Y=X\beta + \epsilon$). However, when $X$ is correlated with the error term (i.e. it is endogenous), $\epsilon$, OLS (and ANOVA) gives biased results. We get around this by using an instrumental variable, $Z$, which is *uncorrelated* with $\epsilon$ and affects $Y$ only through $X$ (i.e. is correlated with $X$ but not with $\epsilon$).
+
+An example in `R`:
+
+We want to estimate the relationship between the after-tax average price of a pack of cigarettes ($X$) on the number of cigarette packs sold per capita ($Y$). We can't estimate this relationship directly because there is simultaneous causality between supply and demand. However, we can use the sales tax per pack as an instrument ($Z$) as sales tax is correlated with the after-tax price of a pack ($X$) and presumably with the quantity of packs sold ($Y$) but only because sales tax impacts the price per pack.
+
+```{r}
+# Example from: https://www.econometrics-with-r.org/12.1-TIVEWASRAASI.html
+
+data("CigarettesSW")
+
+# Compute real per capita prices (X)
+CigarettesSW$rprice <- with(CigarettesSW, price / cpi)
+
+# Compute the sales tax (Z)
+CigarettesSW$salestax <- with(CigarettesSW, (taxs - tax) / cpi)
+
+# Check the correlation between Z and X
+cor(CigarettesSW$salestax, CigarettesSW$price)
+
+# Generate a subset for the year 1995
+c1995 <- subset(CigarettesSW, year == "1995")
+
+# Now we estimate the first stage X ~ Z
+cig_s1 <- lm(log(rprice) ~ salestax, data = c1995)
+
+summary(cig_s1)
+
+# Now get the predicted values from our first stage regression
+lcigp_pred <- cig_s1$fitted.values
+
+# And regress our Y on our first stage fitted values
+cig_s2 <- lm(log(c1995$packs) ~ lcigp_pred)
+
+summary(cig_s2)
+
+# NOTE: the AER package has a function that carries out 2SLS automatically
+# ivreg(Y ~ X | Z, data)
+cig_ivreg = ivreg(log(packs) ~ log(rprice) | salestax, data = c1995)
+
+summary(cig_ivreg)
+
+```
 
 # POLI 271
 
@@ -906,7 +948,7 @@ While the output of logit is similar to OLS, interpretation is a bit more nuance
 
 1.  The model is nonlinear so the effect of a particular covariate on the DV is not constant across all levels of the covariate. This can be seen by deriving the marginal effect of a covariate, $x_k$, on the expected value of $Y$:
 
-$$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta)^2}$$
+$$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta})^2}$$
 
 As a quick trick, you can divide a coefficient by 4 to get an estimate of a maximum effect a 1 unit increase in the covariate can have on the probability of the DV being 1. i.e. if we have a coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
 
@@ -1431,21 +1473,23 @@ Count models are used to describe count data ($Y\in{0,1,2, . . .}$). Count data 
 
 ### Why not use OLS?
 
-This is a bad idea for the same reason it's a bad idea to use OLS with binaryd data: 1. The variance of a count increases with the mean (more error around larger values) and thus count data is heteroskedastic.
+This is a bad idea for the same reason it's a bad idea to use OLS with binary data:
 
+1.  The variance of a count increases with the mean (more error around larger values) and thus count data is heteroskedastic.
 2.  OLS will generate predictions that aren't lower bounded at 0 or integers. This can be worked around by logging the DV but then you have to deal with $\log(0)$. Do you discard these observations? Do you add some arbitrary constant to every value of your DV?
 
 ### Poisson Regression
 
 #### The Poisson Distribution
 
-Assumptions: 1. Events occur independently.
+Assumptions:
 
+1.  Events occur independently.
 2.  There is a constant arrival rate of events, $\lambda$. The probability of an event occurring in the interval $(t,t+h]$ is then $h\lambda$ (probability of a no event is $1-\lambda h$)
 
 The distribution is then:
 
-$$Y~f_p(y;\lambda,h)$$ $$Pr(Y=y)=\frac{e^{-h\lambda}(h\lambda)^y{y!}$$ where $\lambda>0, h>0$
+$$Y\sim f_p(y;\lambda,h)$$ $$Pr(Y=y)=\frac{e^{-h\lambda}(h\lambda)^y}{y!}$$ where $\lambda>0, h>0$
 
 This is our *stochastic/random* component. The systematic component is some continuous or discrete set of IVs, $X$, that are linear in parameters (i.e. not squared, divided, etc.).
 
@@ -1521,6 +1565,7 @@ modelsummary(model_poisson, title="Poisson Model", stars=T)
 effect_plot(model_poisson, pred="sanctions75", interval=T) + theme_minimal()
 
 ```
+
 #### Diagnostics
 
 The Poisson distribution assumes that the level of heteroskedasticity will be constant. i.e. the variance will increase 1:1 with the mean of count data. This restrictive assumption is expressed as follows:
@@ -1530,6 +1575,7 @@ $$E[Y]=\mathrm{var}(Y)$$
 We call it over-dispersion when $E[Y]<\mathrm{var}(Y)$ (most common) and under-dispersion when $E[Y]>\mathrm{var}(Y)$.
 
 Obviously comparing the mean and variance of the DV is one way to assess dispersion. We can also use the `dispersiontest()` function from the `AER` library:
+
 ```{r}
 AER::dispersiontest(model_poisson, alternative="two.sided")
 ```
@@ -1544,5 +1590,601 @@ plotness::plotness(ms$deaths75)
 
 ```
 
+#### Dealing with over-dispersion
+
+So we have over-dispersion, what do we do?
+
+1.  Quasipoisson: Allows generating generating predicted counts and uncertainty estimates (which will be larger than a Poisson model) but without being able to assess model fit with information criteria or maximized likelihood.
+
+2.  Negative binomial: A model in which $\lambda_i$ is a random variable distributed as a gamma distribution but $Y_i$, conditional on $\lambda_i$, is still Poisson
+
+```{r}
+# Generate Poisson model
+model_poisson <- glm(deaths75 ~ sanctions75 + pop75 + civlib76, data=ms,
+                     family="poisson")
+
+# Generate Poisson model
+model_quasipoisson <- glm(deaths75 ~ sanctions75 + pop75 + civlib76, data=ms,
+                     family="quasipoisson")
+
+
+# Generate negative binomial model
+model_negbin <- glm.nb(deaths75 ~ sanctions75 + pop75 + civlib76, data=ms)
+
+modelsummary(list("Poisson Model"=model_poisson, 
+                  "Quasipoisson Model"=model_quasipoisson, 
+                  "Neg. Bin. Model"=model_negbin), 
+             title="Count Data Models", stars=T)
+```
+
+#### Dealing with under-dispersion
+
+See Ward and Ahlquist (2018) for: Hurdle models (pg. 210) and zero-inflation models (pg. 211-212).
 
 # 2021 Exam Questions and Answers
+
+## 1 OLS
+
+The attached dataset has a measure of party ideology ($Y$), a lagged measure of party ideology ($Y_\mathrm{lag}$),mean public opinion of group X ($X$), and mean public opinion of group Z ($Z$), in the variables $X$, $Y$, $Y_\mathrm{lag}$, and $Z$. The dataset is a time-series dataset organized by row, where row 1 corresponds to period 1, row 2 corresponds to period 2, etc. A scholar hypothesizes that party platforms change over time in response to current public opinion of group X and Z. Conduct your analysis below accordingly. Assume that public opinion change is exogenous.
+
+1. Conduct a joint test of whether public opinion of group X and Z have any impact on party ideology. Explain the test you are using and conduct the test using your choice of software.
+
+To test whether X and Z have a joint impact on Y, I conduct an F-test which compares an unrestricted OLS model containing the covariates of interest, $Y \sim X + Z$, to a restricted model wherein the mean of Y is predicted for each observation and only the intercept is estimated. In this F-test, the null hypothesis is that the coefficients on X and Z are zero and the two-tailed alternative hypothesis is that their coefficients are not zero. `R`'s `lm` function conducts a joint F-test for us when estimating the unrestricted model as follows:
+```{r}
+df_q1 <- read_csv("Methods_Comp_2021_Data/Question1data.csv")
+
+model_q1.1 <- lm(Y ~ X + Z, data=df_q1)
+summary(model_q1.1)
+```
+The joint F-statistic is estimated at 0.127 with a p-value of 0.8808. If we set our significance threshold to $\alpha=.05$ or even $\alpha=.10$ then our F-statistic is not significant and thus the null hypothesis that the coefficients on X and Z are zero cannot be rejected. We thus conclude that there is no evidence here that the public opinion of groups X or Z have an impact on party ideology.
+
+
+2. For 1.1, show the formula for the test statistic and explain each element in it. Explain why OR prove that the test you are using follows the distribution that is used in whatever test you use.
+
+The F-statistic is defined as:
+
+$$F=\frac{(SSR_{\mathrm{restricted}}-SSR_{\mathrm{unrestricted}})/q}{SSR_{\mathrm{unrestricted}}/(n-k-1)}$$
+
+$SSR_{\mathrm{restricted}}$ is the sum of squared residuals for our unrestricted OLS model and $SSR_{\mathrm{unrestricted}}$ is the sum of squared residuals for the restricted model. The sum of squared residuals is a measure of how much variance there is in the error terms of a regression model, essentially measuring the fit of the data to the model. By getting the difference between the $SSR$ of the two models we are getting at how much bigger the residuals are when the covariates are excluded. $n$ is the number of observations for our data. $k$ is the number of explanatory variables we have in the unrestricted model (in this case $k=2$ as we have $X$ and $Z$). $q$ is the number of restrictions we have, i.e. the difference in degrees of freedom between the unrestricted and restricted models.
+
+
+The joint F-test should follow an F-distribution. We can run the following simulation to see if the F statistics we get are distributed as we would expect under the null hypothesis:
+```{r}
+# Note: simulation code adapted from Bert Wilden's answers to the exam
+N <- 250
+k <- 2
+q <- 2
+null_Fs <- c()
+
+for(i in 1:1000){
+  # Under the null our betas are 0
+  b1_null <- 0
+  b2_null <- 0
+  
+  # Generate normally distributed predicted values of Y as a function of X and Z 
+  # assuming the null is true
+  y_null <- rnorm(N, mean=0 + (b1_null * df_q1$X) + (b2_null * df_q1$Z))
+  
+  
+  # Fit the unrestricted model predicting y_null from X and Z
+  model_null_ur <- lm(y_null ~ df_q1$X + df_q1$Z)
+  
+  # "Fitting" the restricted model with only the intercept will just give us the
+  # mean of Y so we have:
+  # model_null_r <- mean(y_null)
+  model_null_r <- lm(y_null ~ 1)
+  
+  # Get the unrestricted sum of squares
+  SSR_ur <- sum(resid(model_null_ur)^2)
+  
+  # Get the restricted sum of squares
+  SSR_r <- sum(resid(model_null_r)^2)
+  
+  F_stat <- ((SSR_r-SSR_ur)/q)/(SSR_ur/(N-k-1))
+  
+  null_Fs <- c(null_Fs, F_stat)
+  
+}
+
+# Coerce into a dataframe and calculate the density under the F distribution
+# for each value of the F stat simulated under the null
+sim.q1 <- data.frame(null_Fs) %>% mutate(F_density = df(null_Fs, k, N-k))
+
+ggplot(sim.q1, aes(x=null_Fs)) +
+  geom_density(fill="purple3", alpha=0.5, color="black") +
+  geom_line(aes(y=F_density), color="darkgreen", linetype="dashed", lwd=1) +
+  theme_bw()
+
+# OR do it in base R graphics
+
+hist(null_Fs, br=20, col="cadetblue", freq=F, main="Simulated F Statistics\nCompared to F Fistribution")
+curve(df(x,k,250-k), add=T, lwd=4, col="violetred4")
+```
+We can see that the simulated values under the null (purple) approximately follows an F-distribution (green dashed line) as we would expect.
+
+3. Does one group matter more than the other? Test whether political party platforms are more responsive to Group X than to Group Z. Explain the test, state null and alternative hypothesis, and conduct the test using your favorite software. Then, show the formula used in this test and explain each component of it. You do not need to repeat any explanation already presented in a previous response.
+
+```{r}
+model_q1.1 <- lm(Y ~ X + Z, data=df_q1)
+summary(model_q1.1)
+```
+To test whether party ideology is better predicted by $X$ or $Z$ we re-estimate the OLS model containing both covariates as in 1.1. This time we focus in on the estimated coefficient and t-value for each covariate. The t-value is calculated as:
+
+$$t=\frac{\hat{\beta}}{\hat{SE}_{\beta}}$$
+
+where $\hat{\beta}$ is the coefficient estimate for the covariate tested and $\hat{SE}_{\beta}$ is the coefficient's standard error. The null hypothesis is that the estimate for each covariate's coefficient, $\hat{\beta}$ is zero. The alternative hypothesis is that it is non-zero. 
+
+We can see from the regression result that $X$ has a t-value of 0.439 and $Z$ has a t-value of 0.233. Though $X$'s estimated coefficient (0.18) is larger than $Z$'s (.05), neither t-statistic is statistically significant indicated by p-values for each coefficient $>.05$. The standard errors on the coefficients are sufficiently large that we cannot conclude that $X$ or $Z$ matter for predicting $Y$ and as such cannot conclude that the party is more responsive to one group over the other based on this model.
+
+4. Now, suppose that opinions for Group Z are measured with error, so Z = true mean ideology + measurement error, where the measurement error is iid N(0, 1), and uncorrelated with $X$, $Y$ , $Y_\mathrm{lag}$, and $Z$ but opinions for Group X are not measured with error. How might that affect your conclusions from (3)? Develop your response with an analytic or simulated result to illustrate the problem.
+
+```{r}
+set.seed(1234)
+
+sim.q1.4 <- data.frame(beta_X_em = NA, SE_X_em = NA, 
+                       beta_Z_em = NA, SE_Z_em = NA)
+# Run the simulation 10,000 times (1,000 isn't enough to see the biasing)
+for(i in 1:10000){
+  N <- 250
+  
+  # Add on normally distributed measurement error to Z
+  df_q1$Z_witherror <- df_q1$Z + rnorm(n=N)
+  
+  # Estimate the model with measurement error
+  model_Zerror <- lm(Y ~ X + Z_witherror, data=df_q1)
+  
+  # Pull out estimates
+  beta_X_em <- summary(model_Zerror)$coefficients[2,1]
+  SE_X_em <- summary(model_Zerror)$coefficients[2,2]
+  
+  beta_Z_em <- summary(model_Zerror)$coefficients[3,1]
+  SE_Z_em <- summary(model_Zerror)$coefficients[3,2]
+  
+  sim.q1.4 <- rbind(sim.q1.4, c(beta_X_em, SE_X_em,
+                                beta_Z_em, SE_Z_em))
+}
+
+sim.q1.4 %>% 
+  drop_na() %>% 
+  ggplot(aes()) +
+    geom_density(aes(x=beta_X_em), fill="red", alpha=0.25, color="darkred") +
+    geom_density(aes(x=beta_Z_em), fill="blue", alpha=0.25, color="darkblue") +
+    geom_vline(aes(xintercept=mean(beta_X_em)), color="red", lwd=.8,
+               linetype="dashed") +
+    geom_vline(aes(xintercept=summary(model_q1.1)$coefficients[2,1]),
+               color="darkred", linetype="dotted", lwd=1) +
+    geom_vline(aes(xintercept=mean(beta_Z_em)), color="blue", lwd=.8, 
+               linetype="dashed") +
+    geom_vline(aes(xintercept=summary(model_q1.1)$coefficients[3,1]),
+               linetype="dotted", color="darkblue", lwd=1) +
+    xlim(c(-0.1,0.25)) +
+    labs(x="Coefficient Estimate", y="Density", 
+         title="Comparing OLS Coefficients with and without Z measurement error") +
+    theme_minimal() +
+    annotate("text", x=-.01, y=100, label="Z (measurement error model)", 
+             color="blue", size=3) +
+    annotate("text", x=.1, y=100, label="Z (no measurement error model)",
+             color="darkblue", size=3) +
+    annotate("text", x=0.125, y=110, label="X (measurement error model)", 
+             color="red",size=3) +
+    annotate("text", x=.215, y=110, label="X (no measurement\nerror model)",
+             color="darkred", size=3)
+
+sim.q1.4 %>% 
+  drop_na() %>% 
+  ggplot(aes()) +
+    geom_density(aes(x=SE_X_em), fill="red", alpha=0.25, color="darkred") +
+    #geom_density(aes(x=SE_Z_em), fill="blue", alpha=0.25, color="darkblue") +
+    geom_vline(aes(xintercept=mean(SE_X_em)), color="red", lwd=.8,
+               linetype="dashed") +
+    geom_vline(aes(xintercept=summary(model_q1.1)$coefficients[2,2]),
+               color="darkred", linetype="dotted", lwd=1) +
+    # geom_vline(aes(xintercept=mean(SE_Z_em)), color="blue", lwd=.8, 
+    #            linetype="dashed") +
+    # geom_vline(aes(xintercept=summary(model_q1.1)$coefficients[3,2]),
+    #            linetype="dotted", color="darkblue", lwd=1) +
+    labs(x="Standard Error Estimate", y="Density", 
+         title="Comparing OLS SEs with and without Z measurement error") +
+    theme_minimal() +
+    # annotate("text", x=-.01, y=100, label="Z (measurement error model)", 
+    #          color="blue", size=3) +
+    # annotate("text", x=.1, y=100, label="Z (no measurement error model)",
+    #          color="darkblue", size=3) +
+    annotate("text", x=0.3995, y=2000, label="SE_X (measurement error model)",
+             color="red",size=3) +
+    annotate("text", x=0.3996, y=1800, label="SE_X (no measurement error model)",
+             color="darkred", size=3)
+
+
+sim.q1.4 %>% 
+  drop_na() %>% 
+  ggplot(aes()) +
+    geom_density(aes(x=SE_Z_em), fill="blue", alpha=0.25, color="darkblue") +
+    geom_vline(aes(xintercept=mean(SE_Z_em)), color="blue", lwd=.8,
+               linetype="dashed") +
+    geom_vline(aes(xintercept=summary(model_q1.1)$coefficients[3,2]),
+               linetype="dotted", color="darkblue", lwd=1) +
+    xlim(c(0.12,0.23)) +
+    labs(x="Standard Error Estimate", y="Density", 
+         title="Comparing OLS SEs with and without Z measurement error") +
+    theme_minimal() +
+    annotate("text", x=0.162, y=90, label="SE_Z (measurement error model)",
+             color="blue", size=3) +
+    annotate("text", x=.218, y=90, label="SE_Z (no measurement error model)",
+             color="darkblue", size=3)
+```
+The first figure above plots the distribution and mean (dashed line) of the coefficients for X and Z estimated for 10,000 different values of Z with random measurement error simulated. The dotted lines represent the coefficient estimates found in part 1.3 for the OLS model with no measurement error on Z. As the figure shows, while measurement error on Z does not affect the estimate for X's coefficient, it does bias the estimate of Z's coefficient, in this case it biases it toward zero. This means that measurement error on Z can obfuscate the effect of Z on Y.
+
+The next two figures plot the distribution and mean (dashed line) of standard error estimates from the simulation for X and Z, respectively. The standard error estimates for the OLS model from part 1.3 are plotted with dotted lines. There is no effect of measurement error for Z on the standard error estimates for X but measurement error on Z does bias its standard error estimates toward zero.
+
+5. Suppose that Q (included in your dataset) is a valid instrument for $Z$. Repeat your analysis from 1.3 appropriately and explain your new conclusion.
+
+Assuming $Q$ affects $Y$ only through $Z$ we can perform an two stage least squares regression as follows:
+```{r}
+# Estimate the first stage regression: Z ~ Q
+model_stage1 <- lm(Z ~ Q, data=df_q1)
+
+# Grab the fitted values from the first stage regression and attach to our
+# dataset
+df_q1$ZonQ <- model_stage1$fitted.values
+
+# Perform the second stage regression replacing Z with our fitted values from
+# stage 1:
+model_stage2 <- lm(Y ~ X + ZonQ, data=df_q1)
+
+# Because lm doesn't calculate instrumental standard errors correctly we can
+# re-estimate our IV regression with ivreg from the AER package:
+model_stage2_ivreg <- ivreg(Y ~ X + Z | X + Q, data=df_q1)
+
+# Compare these models' estimates to that of part 1.3
+modelsummary(list("Non-IV Model"=model_q1.1, 
+                  "IV Model (lm)"=model_stage2, 
+                  "IV Model (ivreg)"=model_stage2_ivreg), stars=T)
+```
+We can see that using $Q$ as an instrument for $Z$ yields a coefficient that is the opposite sign and further from zero than using $Z$ itself, however, because the standard errors remain large, we cannot draw any substantively different conclusion from the IV model as opposed to the non-IV model estimated in part 1.3.
+
+6. This is a time-series dataset. What problems may arise when conducting this type of analysis? What are some of the solutions you might use to address these problems.
+
+The primary concern with performing OLS regression on time series is the presence of serial autocorrelation. This violates the assumption required by OLS that observations are independent of one another. This can cause errors to be correlated over time and bias the estimated standard errors. 
+
+One way to address this is to use autoregressive (AR) or autoregressive moving average (ARMA) models rather than ordinary least squares. AR and ARMA models use previous values as predictors to account for serial autocorrelation and the resulting bias in standard errors. However, these models assume stationarity of the time series data so tests such as the ADF, KWSS, and PP statistical tests must be conducted first and differencing/other data transformation/decomposition may be necessary to meet the conditions necessary for these models.
+
+## 2 MLE
+
+For this question, we will be using a replication dataset from a forthcoming article in the American Journal of Political Science, “Differences in Men’s and Women’s Policing Behavior: Evidence from Traffic Stops” by Kelsey Shoub, Katelyn E. Stauffer, and Miyeon Song. Shoub, Strauffer, and Song (Forthcoming) use data from over four million traffic stops in North Carolina and Florida to understand how gender is associated with the likelihood that an officer searches someone they have stopped at a traffic stop. You can find the full paper here: https://drive.google.com/file/d/1JyNzTF3lZq8N0blVahb7Zko3M5clPcHk/view and replication data here: https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/QTUF6D.
+
+For our purposes, we will be using a smaller version of their full analysis, looking at 2,712,478 traffic stops in Florida. Note that our analyses are simpler versions of what the authors do in the paper, so this is not an exact replication, though the conclusions are the same.
+
+Download the data (sent to you) and load it into R. We are interested in exploring how whether a search occurred `search_occur` is associated with the officer’s gender `of_gender`, coded 1 for female and 0 for male.
+
+1. In this question, we will model `search_occur` as a function of `of_gender` using logistic regression. Write down the data generating process for the logit model.
+
+```{r}
+# Warning: Loading this file crashes RStudio like half the time
+df_q2 <- get(load("Methods_Comp_2021_Data/Question2Data.rdata"))
+```
+
+Our stochastic component is modeled as a Bernoulli distribution:
+
+$$
+f_B(y_i;\theta_i)=\theta_i^{y_i}(1-\theta_i)^{1-y_i}= 
+   \left\{
+\begin{array}{ll}
+      \theta_i & y_i=1 \\
+      1-\theta_i & y_i=0
+\end{array} 
+\right. 
+$$
+
+And our systematic component is:
+
+$$
+\theta_i=\mathrm{logit}^{-1}(x_i^T\beta)=\frac{1}{1+e^{-x_i^T\beta}}
+$$
+
+2. Derive the log-likelihood function (show your work).
+
+We first define the joint probability distribution of $i$ independent Bernoulli trials by taking the product of our stochastic component defined in part 1:
+
+$$
+Pr(y|\theta)=\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}
+$$
+
+We define this joint probability distribution as our likelihood function, $\mathcal{L}(\theta|y)$:
+
+$$\mathcal{L}(\theta|y)=\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}$$
+
+Taking the natural logarithm our product becomes a sum and, applying log laws, we arrive at the log likelihood:
+
+$$\ln(\mathcal{L}(\theta|y))=\ln[\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}]$$
+$$\ln(\mathcal{L}(\theta|y))=\sum_{i=1}^n\ln[ \theta_i^{y_i}(1-\theta_i)^{1-y_i}]$$
+$$\ln(\mathcal{L}(\theta|y))=\sum_{i=1}^n y_i\ln(\theta_i) + (1-y_i)\ln(1-\theta_i)$$
+where $\theta_i=\mathrm{logit}^{-1}(x_i^T\beta)=\frac{1}{1+e^{-x_i^T\beta}}$ as defined above.
+
+3. Program the log-likelihood function in `R` and optimize for the coefficients on `of_gender`. Report your coefficients and standard errors in a table.
+
+We find the MLE of the above log likelihood with `R` as follows:
+```{r}
+#function for optimization of logit
+binreg<- function(X,y,method="BFGS"){
+  X<- cbind(1,X)
+  
+  # Get the log-likelihood
+  negLL<- function(b,X,y){
+    p<-as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-sum(y*log(p) + (1-y)*log(1-p)))
+  }
+  
+  # Get the gradient (score function)
+  gradient<- function(b,X,y){
+    p <- as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-apply(((y - p)*X), 2, sum))
+  }
+  
+  # Pass our data, log-likelihood, and gradient to optim() 
+  # which will find the maximum likelihood
+  results<- optim(par=rep(0,ncol(X)), 
+                  fn=negLL,
+                  gr=gradient, 
+                  hessian=T, 
+                  method=method,
+                  X=X,
+                  y=y)
+  
+  # Pull out the stuff we want
+  list(coefficients=results$par,
+       stderr=sqrt(diag(solve(results$hessian))),
+       var=solve(results$hessian),
+       deviance=2*results$value,
+       converged=results$convergence==0)
+}
+
+mlebin.fit<-binreg(X=df_q2$of_gender, y=df_q2$search_occur)
+
+# Get our logit coefficients
+round(mlebin.fit$coefficients,3)
+
+# Get out logit standard errors
+round(mlebin.fit$stderr,3)
+
+
+# Double check against R's baked in estimation
+fit.glm <- glm(search_occur ~ of_gender,
+               family = binomial(link = "logit"), 
+               data = df_q2)
+summary(fit.glm, signif.stars=FALSE)
+
+# Looks good so let's put our estimates into a nice table
+kable(cbind(Term=c("Intercept", "of_gender"),
+            Estimate=round(mlebin.fit$coefficients,3),
+            "Std. Err."=round(mlebin.fit$stderr,3)),
+      caption="Logit Model")
+```
+
+
+4. Simulate the expected probabilities of a search at a traffic stop given a female officer and given a male officer. Create a plot of the difference, including estimates of uncertainty. Interpret the result.
+
+```{r}
+# We want to know the difference in predicted probability
+# of being pulled over when an officer is male vs. female
+
+
+# Create a sequence of the range of values for the 96 vote share
+gender.range <- c(0,1)
+
+# Construct the male scenario
+x.lo <- c(1, 0)
+X.lo <- matrix(x.lo, nrow=length(x.lo), ncol=length(gender.range))
+X.lo[2,] <- gender.range
+
+# Construct the female scenario
+x.hi <- c(1, 1)
+X.hi <- matrix(x.hi, nrow=length(x.hi), ncol=length(gender.range))
+X.hi[2,] <- gender.range
+
+# Generate a multivariate normal distribution
+B.tilde <- mvrnorm(1000, coef(fit.glm), vcov(fit.glm))
+
+# Generate the predicted probabilities
+s.lo <- inv.logit(B.tilde %*% X.lo)
+s.hi <- inv.logit(B.tilde %*% X.hi)
+s.lo <- apply(s.lo, 2, quantile, c(0.025, 0.5, 0.975))
+s.hi <- apply(s.hi, 2, quantile, c(0.025, 0.5, 0.975))
+
+
+# Now tidy the data and plot with ggplot
+pred.prob.df <- data.frame(xrange=rep(gender.range,2), 
+                           y=c(s.lo[2,],s.hi[2,]),
+                           conf.low = c(s.lo[1,], s.hi[1,]),
+                           conf.high = c(s.lo[3,], s.hi[3,]),
+                           scenario = rep(c("Male", "Female"), 
+                                          each=length(gender.range)))
+
+ggplot(data=pred.prob.df, aes(x=xrange, y=y,
+                              ymin=conf.low,
+                              ymax=conf.high)) +
+  geom_point(size=2.5) +
+  geom_errorbar(width=0.2, size=0.8) +
+  labs(x="Gender", y="Predicted Probability",
+       title="Predicted Probability Plot for the\nEffect of Officer Gender of Traffic Stop Occurrence") +
+  theme_minimal() +
+  annotate("text", x=1, y=.0015, label="Female") +
+  annotate("text", x=0, y=.0045, label="Male")
+```
+The model predicts that male officers are far more likely (about 5 times more likely) to conduct a traffic stop.
+
+5. A critic of the paper says that years of service might confound the relationship between gender and searches at traffic stops. On average, female officers have fewer years of service. Include `officer_years_of_service` in your regression as a control variable. Repeat the analysis in 2.3 and report your coefficients and standard errors in a table.
+
+```{r}
+#function for optimization of logit
+binreg<- function(X,y,method="BFGS"){
+  X<- cbind(1,X)
+  
+  # Get the log-likelihood
+  negLL<- function(b,X,y){
+    p<-as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-sum(y*log(p) + (1-y)*log(1-p)))
+  }
+  
+  # Get the gradient (score function)
+  gradient<- function(b,X,y){
+    p <- as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-apply(((y - p)*X), 2, sum))
+  }
+  
+  # Pass our data, log-likelihood, and gradient to optim() 
+  # which will find the maximum likelihood
+  results<- optim(par=rep(0,ncol(X)), 
+                  fn=negLL,
+                  gr=gradient, 
+                  hessian=T, 
+                  method=method,
+                  X=X,
+                  y=y)
+  
+  # Pull out the stuff we want
+  list(coefficients=results$par,
+       stderr=sqrt(diag(solve(results$hessian))),
+       var=solve(results$hessian),
+       deviance=2*results$value,
+       converged=results$convergence==0)
+}
+
+mlebin.fit<-binreg(X=cbind(df_q2$of_gender, df_q2$officer_years_of_service), y=df_q2$search_occur)
+
+# Get our logit coefficients
+round(mlebin.fit$coefficients,3)
+
+# Get out logit standard errors
+round(mlebin.fit$stderr,3)
+
+
+# Double check against R's baked in estimation
+fit.glm <- glm(search_occur ~ of_gender + officer_years_of_service,
+               family = binomial(link = "logit"), 
+               data = df_q2)
+summary(fit.glm, signif.stars=FALSE)
+
+# Looks good so let's put our estimates into a nice table
+kable(cbind(Term=c("Intercept", "of_gender", "officer_years_of_service"),
+            Estimate=round(mlebin.fit$coefficients,3),
+            "Std. Err."=round(mlebin.fit$stderr,3)),
+      caption="Logit Model")
+```
+
+6. For each of 1 through 40 years of service, iterating by one year at a time, estimate the probability of a search at a traffic stop for a male and female officer. Plot your point estimates and confidence intervals on a plot where the x-axis is years of service, y-axis is predicted probability and there are two sets of points and confidence intervals – one for female and one for male officers. How would you respond to the critic?
+
+```{r}
+# We want to know the difference in predicted probability of a traffic stop
+# by a female vs male as a function of their years of service
+
+# Create a sequence of the range of values for years of service
+service.range <- seq(1,40,1)
+
+# Construct the male scenario
+x.lo <- c(1, 0, median(df_q2$officer_years_of_service)) # Democrat scenario
+X.lo <- matrix(x.lo, nrow=length(x.lo), ncol=length(service.range))
+X.lo[3,] <- service.range
+
+# Construct the female scenario
+x.hi <- c(1, 1, median(df_q2$officer_years_of_service)) # Republican scenario
+X.hi <- matrix(x.hi, nrow=length(x.hi), ncol=length(service.range))
+X.hi[3,] <- service.range
+
+# Generate a multivariate normal distribution
+B.tilde <- mvrnorm(1000, coef(fit.glm), vcov(fit.glm))
+
+# Generate the predicted probabilities
+s.lo <- inv.logit(B.tilde %*% X.lo)
+s.hi <- inv.logit(B.tilde %*% X.hi)
+s.lo <- apply(s.lo, 2, quantile, c(0.025, 0.5, 0.975))
+s.hi <- apply(s.hi, 2, quantile, c(0.025, 0.5, 0.975))
+
+
+# Now tidy the data and plot with ggplot
+pred.prob.df <- data.frame(xrange=rep(service.range,2), 
+                           y=c(s.lo[2,],s.hi[2,]),
+                           conf.low = c(s.lo[1,], s.hi[1,]),
+                           conf.high = c(s.lo[3,], s.hi[3,]),
+                           scenario = rep(c("Male", "Female"), 
+                                          each=length(service.range)))
+
+ggplot(data=pred.prob.df, aes(x=xrange, y=y,
+                              ymin=conf.low,
+                              ymax=conf.high,
+                              color=factor(scenario))) +
+  geom_point(size=.8) +
+  geom_errorbar() +
+  labs(x="officer_years_of_service", y="Predicted Probability of Traffic Stop",
+       title="Predicted Probability Plot", color="Officer Gender") +
+  scale_fill_manual(labels=c("Male", "Female"), 
+                    values=c("blue", "red")) +
+  theme_minimal()
+```
+Years of service does not appear to be a confounder in the relationship between gender and traffic stops. First, the model estimates in part 5 indicate that, regardless of gender, officers with more years of service are less likely to conduct a search. From the above plot we can see that, regardless of the years of service, a male officer is generally more likely to conduct a search than a female. 
+
+Further, while years of service may affect the dependent variable (and indeed it does have a significant affect according to our model in part 5), it does not intuitively make sense that years of service could somehow affect an officer's gender. We should, in fact, be concerned that gender affecting the years of service, not the other way around.
+
+# POLI 271 2022 Midterm
+
+## Problem 1: Linear Regression
+
+For this problem set, we will be replicating some work from our very own political science department,Hill, Seth J., and Thad Kousser. “Turning out unlikely voters? A field experiment in the top-two primary.” Political Behavior 38.2 (2016): 413-432. In this experiment, Hill and Kousser sent 150,000 letters to voters before California’s 2014 primary. The authors targeted the group of Californians who had turned out in general elections, but not in primaries.
+
+In this question, we will see if these mailers increased turnout in the 2014 primary. Use the data turnout.csv posted on the course website for this analysis.
+
+The variables of interest are:
+• `yvar`: whether or not a person turned out to vote in the primary
+• `mailer`: whether or not they received any mailer
+• `treatment.assign`: which mailer (if any) they received (see article for a description of the different mailer treatments). This variable is "Control" if they did not receive one.
+• `Party`: Party of the person who received the mailer 
+
+Use a linear regression model to estimate the effect of treatment assignment (treatment.assign) on turnout (yvar). To do this, you should create an indicator variable for each unique value of treatment assignment.
+
+1. Write out the stochastic and systematic components for this model.
+
+2. Derive the log-likelihood.
+
+3. Optimize the model to find the maximum likelihood estimates for β and σ
+
+2. Calculate the standard errors for your $\hat{\beta}$’s and present your results in a nicely formatted table.
+
+4. Generate a histogram of 10,000 predicted values for the number of people to turnout under the Election treatment. Plot a histogram of these predicted values.
+
+5. Why don’t the predicted values make much sense in the context of the substantive application?
+
+## Problem 2: Logit
+
+Instead of a normal OLS model as in the last question, use a logit model to model `yvar` as a function of `treatment.assign`.
+
+1. Write out the stochastic and systematic components for this model.
+
+2. Derive the log-likelihood.
+
+3. Optimize the model to find the maximum likelihood estimates for β. Calculate the standard errors for your βˆ’s and present your results in a nicely formatted table.
+
+4. Generate a histogram of 10,000 *expected* values for the probability of turning out under the Election treatment. Do the same for the control treatment. Plot the two distributions of probabilities next to one another. Why is the uncertainty different in each of the histograms? On average, how much did the treatment increase the probability of turnout?
+
+5. In a target population of 3.7 million voters, approximately how many more voters would the Election treatment have gotten to vote than the control?
+
+
+## Problem 3: Poisson
+
+In this problem, we will reproduce a simplied version of the analysis from Levin, Jamie, et al. “A test of the democratic peacekeeping hypothesis: Coups, democracy, and foreign military deployments.” *Journal of Peace Research* 58.3 (2021): 355-367. Levin et al hypothesize that sending peacekeepers abroad can undermine authoritarian regimes at home by enriching the military and therefore creating incentives for coups. The authors use a Poisson regression to look at the relationship between peacekeepers sent abroad and the number of coups at home. The authors include a lot of components in the model – here we will simply look at whether the number of military coup attemps `milcoupsum` is predicted by the number of peacekeeping troops sent abroad `troops` using a Poisson regression, controlling for `conflict`.
+
+1. Write out the stochastic and systematic components for the model.
+
+2. Derive the log-likelihood.
+
+3. Load the data (`replication_data.dta`) using the `haven` package. Subset the data to only autocracies (`robust_autocracy6`==1). Select only the troops, conflict, and milcoupsum columns of the data. Remove any observations with `NA`’s in either of these columns.
+
+4. Optimize the model to find the maximum likelihood estimates for β. Calculate the standard errors for your $\hat{\beta}$’s and present your results in a nicely formatted table.
+
+5. Generate a histogram of 10000 predicted values for coups when `troops`=5 and `conflict`=1. Plot this histogram next to 10000 predicted values for coups when `troops`=0 and `conflict`=1. About how many more coups would you expect with `troops`=5 than `troops`=0?
+
+6. Use the `AER` package to test for overdispersion. What do you conclude?
+
