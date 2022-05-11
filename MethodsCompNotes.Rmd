@@ -7,6 +7,7 @@ output: html_document
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+library(haven)
 library(plotness) # can install with devtools::install_github("https://github.com/zaynesember/plotness")
 library(vcd)
 library(AER)
@@ -881,7 +882,7 @@ $$
 And the log-likelihood:
 
 $$
-\log\mathcal{L}(\theta|y)=\sum_{i=1}^n\log(\frac{e^{-x_i^T\beta^{1-y_i}}}{1+e^{-x_i^T\beta}})
+\ln\mathcal{L}(\theta|y)=\sum_{i=1}^n\ln(\frac{e^{-x_i^T\beta^{1-y_i}}}{1+e^{-x_i^T\beta}})
 $$
 
 Finding the MLE with R (Ward and Ahlquist code):
@@ -898,7 +899,7 @@ binreg<- function(X,y,method="BFGS"){
     return(-sum(y*log(p) + (1-y)*log(1-p)))
   }
   
-  # Get the gradient
+  # Get the gradient (score function)
   gradient<- function(b,X,y){
     p <- as.vector(1/(1+exp(-X %*% b)))
     
@@ -917,6 +918,7 @@ binreg<- function(X,y,method="BFGS"){
   
   # Pull out the stuff we want
   list(coefficients=results$par,
+       stderr=sqrt(diag(solve(results$hessian))),
        var=solve(results$hessian),
        deviance=2*results$value,
        converged=results$convergence==0)
@@ -1266,7 +1268,7 @@ What we need to evaluate a model's prediction error (AKA generalization error, g
 
 What we want: - Good performance in both the test and training sets
 
-```{r}
+```{r, warning=FALSE}
 # Load in some data
 ms<-read.table("Data/Msrepl87.asc", header=TRUE, 
     colClasses=c("character",rep("numeric",22)))
@@ -2145,17 +2147,99 @@ The variables of interest are:
 
 Use a linear regression model to estimate the effect of treatment assignment (treatment.assign) on turnout (yvar). To do this, you should create an indicator variable for each unique value of treatment assignment.
 
+```{r}
+# Load in the data and create our indicator variables
+df_q1 <- read_csv("MLE_Midterm_Data/turnout.csv") %>% 
+  mutate(control=case_when(treatment.assign == "Control" ~ 1,
+                           T ~ 0),
+         treatment.top2=case_when(treatment.assign == "Top-two info" ~ 1,
+                        T ~ 0),
+         treatment.partisan=case_when(treatment.assign == "Partisan" ~ 1,
+                        T ~ 0),
+         treatment.election=case_when(treatment.assign == "Election info" ~ 1,
+                        T ~ 0)) 
+    # %>% sample_n(size=1000) # get a random subsamples so it doesn't take forever to
+    #                     # run optim() later
+```
+
 1. Write out the stochastic and systematic components for this model.
+
+Stochastic component: $Y\sim N(\theta;\sigma^2)=\frac{1}{\sigma\sqrt{2\pi}}e^{-\frac{(y-\mu)^2}{2\sigma^2}}$
+
+Systematic component: A linear combination of $X$ (i.e. $\beta_0 + \beta_1 x_1 + \beta_2 x_2 + . . .$) where $X\in\mathbb{R}$, expressed as $\mu=\beta X$.
 
 2. Derive the log-likelihood.
 
+Our probability function is: 
+
+$$\mathrm{Pr}(Y=y)=\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}$$
+We first construct the joint probability function by taking the product of the above for $n$ independent observations:
+
+$$f_{\mathrm{joint}}(y_i|\mu;\sigma^2)=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}$$
+
+We define this as our likelihood function:
+$$\mathcal{L}=\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}$$
+We then take the natural log of both sides and simplify by applying log laws:
+
+$$\ln\mathcal{L}=\ln[(\frac{1}{\sigma\sqrt{2\pi}})^n\prod_{i=1}^n e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}]$$
+$$\ln\mathcal{L}=\ln[\prod_{i=1}^n \frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}]$$
+$$\ln\mathcal{L}=\sum_{i=1}^n \ln[\frac{1}{\sqrt{2\pi\sigma^2}}e^{-\frac{(y_i-\mu_i)^2}{2\sigma^2}}]$$
+$$\ln\mathcal{L}=\sum_{i=1}^n[-\frac{1}{2}\ln(2\pi)-\frac{1}{2}\ln(\sigma^2)-\frac{1}{2\sigma^2}(y_i-\mu_i)^2]$$
+
 3. Optimize the model to find the maximum likelihood estimates for β and σ
+
+```{r, warning=FALSE}
+# Build our x
+x <- as.matrix(cbind(1, 
+           df_q1 %>% select(treatment.top2, 
+                            treatment.partisan, 
+                            treatment.election)))
+# Build our y
+y <- df_q1$yvar
+
+# Define a function that returns the (negative) log likelihood
+negLL.OLS <- function(theta,y,x){    
+   n <- nrow(x)    
+   k <- ncol(x)   
+   beta <- theta[1:k]    
+   sigma2 <- theta[k+1]    
+   e <- y-x%*%beta    
+   LL<- -0.5*n*log(2*pi)-0.5*n*log(sigma2)-((t(e)%*%e)/(2*sigma2))    
+   return(-LL)    
+}
+
+# Optimize the likelihood function and return our estimates
+result <- optim(par=rep(1,ncol(x)+1), fn=OLS, method="BFGS", hessian=TRUE, y=y, x=x)
+
+coefficients <- round(result$par[1:ncol(x)],3)
+stderrs <- round(sqrt(diag(solve(result$hessian)))[1:ncol(x)],3)
+
+# Check against lm
+model_q1 <- lm(yvar ~ treatment.top2 + treatment.partisan + treatment.election, data = df_q1)
+summary(model_q1)
+```
 
 2. Calculate the standard errors for your $\hat{\beta}$’s and present your results in a nicely formatted table.
 
+```{r}
+kable(cbind(Term=c("Intercept", "Top-two", "Partisan", "Election"),
+      Estimate=coefficients, "Std. Err."=stderrs))
+```
+
 4. Generate a histogram of 10,000 predicted values for the number of people to turnout under the Election treatment. Plot a histogram of these predicted values.
 
+```{r}
+# To generate predicted values, because when treatment.election = 1 then all other
+# covariates are zero, we have:
+pred.vals <- rnorm(n=10000, mean=coefficients[1], sd=stderrs[1]) + # Intercept
+             rnorm(n=10000, mean=coefficients[4], sd=stderrs[4]) # Election treatment
+
+hist(pred.vals)
+```
+
 5. Why don’t the predicted values make much sense in the context of the substantive application?
+
+Our outcome variable is a binary variable; whether someone turned out or not. The histogram shows that the model is predicted values not within $[0,1]$. A negative predicted value makes no sense given what we're modeling. A logit model would be better suited for our data.
 
 ## Problem 2: Logit
 
@@ -2163,28 +2247,254 @@ Instead of a normal OLS model as in the last question, use a logit model to mode
 
 1. Write out the stochastic and systematic components for this model.
 
+We model binary outcomes as Bernoulli trials so our stochastic component is:
+
+$$
+f_B(y_i;\theta_i)=\theta_i^{y_i}(1-\theta_i)^{1-y_i}= 
+   \left\{
+\begin{array}{ll}
+      \theta_i & y_i=1 \\
+      1-\theta_i & y_i=0
+\end{array} 
+\right. 
+$$
+
+And our systematic component is:
+
+$$
+\theta_i=\mathrm{logit}^{-1}(x_i^T\beta)=\frac{1}{1+e^{-x_i^T\beta}}
+$$
+
 2. Derive the log-likelihood.
+
+We take the product of the stochastic component to get our joint probability distribution:
+
+$$
+Pr(y|\theta)=\prod_{i=1}^n \theta_i^{y_i}(1-\theta_i)^{1-y_i}
+$$
+
+Which we take the log of to get our log-likelihood:
+
+$$
+\ln\mathcal{L}(\theta|y)=\sum_{i=1}^n\ln(\frac{e^{-x_i^T\beta^{1-y_i}}}{1+e^{-x_i^T\beta}})
+$$
+
 
 3. Optimize the model to find the maximum likelihood estimates for β. Calculate the standard errors for your βˆ’s and present your results in a nicely formatted table.
 
+
+```{r}
+#function for optimization of logit
+binreg<- function(X,y,method="BFGS"){
+  X<- cbind(1,X)
+  
+  # Get the log-likelihood
+  negLL<- function(b,X,y){
+    p<-as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-sum(y*log(p) + (1-y)*log(1-p)))
+  }
+  
+  # Get the gradient (score function)
+  gradient<- function(b,X,y){
+    p <- as.vector(1/(1+exp(-X %*% b)))
+    
+    return(-apply(((y - p)*X), 2, sum))
+  }
+  
+  # Pass our data, log-likelihood, and gradient to optim() 
+  # which will find the maximum likelihood
+  results<- optim(par=rep(1,ncol(X)), 
+                  fn=negLL,
+                  gr=gradient, 
+                  hessian=T, 
+                  method=method,
+                  X=X,
+                  y=y)
+  
+  # Pull out the stuff we want and return it
+  list(coefficients=results$par,
+       stderr=sqrt(diag(solve(results$hessian))),
+       var=solve(results$hessian),
+       deviance=2*results$value,
+       converged=results$convergence==0)
+}
+
+# Build our x
+x <- as.matrix(df_q1 %>% select(treatment.top2, 
+                            treatment.partisan, 
+                            treatment.election))
+# Build our y
+y <- df_q1$yvar
+
+# Plug in our x and y created earlier
+mlebin.fit<-binreg(X=x, y=y)
+
+# Get our logit coefficients
+coefficients <- round(mlebin.fit$coefficients,3)
+stderrs <- round(mlebin.fit$stderr,3)
+
+kable(cbind(Term=c("Intercept", "Top-two", "Partisan", "Election"),
+      Estimate=coefficients, "Std. Err."=stderrs))
+
+# Compare to R's baked in logit estimation
+fit.glm <- glm(yvar ~ treatment.top2 + treatment.partisan + treatment.election,
+               family = binomial(link = "logit"), 
+               data = df_q1)
+summary(fit.glm)
+```
+
 4. Generate a histogram of 10,000 *expected* values for the probability of turning out under the Election treatment. Do the same for the control treatment. Plot the two distributions of probabilities next to one another. Why is the uncertainty different in each of the histograms? On average, how much did the treatment increase the probability of turnout?
 
+```{r}
+Y.election <- rnorm(n=10000, mean=coefficients[1], sd=stderrs[1]) + 
+              rnorm(n=10000, mean=coefficients[4], sd=stderrs[4])
+
+P.election <- inv.logit(Y.election)
+
+Y.control <- rnorm(n=10000, mean=coefficients[1], sd=stderrs[1])
+
+P.control <- inv.logit(Y.control)
+
+df_q2.4 <- data.frame(p=c(P.election, P.control),
+                      mu=rep(c(mean(P.election), mean(P.control)), each=10000),
+                      Treatment=rep(c("Election Info", "Control"), each=10000))
+
+ggplot(data=df_q2.4, aes(x=p, fill=Treatment)) +
+  geom_histogram(color="darkgray") +
+  geom_vline(aes(xintercept=mu), linetype="dashed", size=1) +
+  theme_minimal() +
+  facet_wrap(~Treatment, nrow=2)
+```
+Being treated with the election info mailer, on average, increased the probability of turning out by 12.3% as compared to the control group. The uncertainty is larger on the election info probability distribution for two reasons: 1. we have more observations for the control group 2. 2. we are essentially adding the variance of the intercept and election info estimates together when simulating probabilities for the latter. When we simulate the control group we only have the variance on the intercept to consider.
+
 5. In a target population of 3.7 million voters, approximately how many more voters would the Election treatment have gotten to vote than the control?
+
+```{r}
+cat("Election treatment would get:", round(unique(df_q2.4$mu)[[1]]*3.7e6), "voters\n")
+cat("Control would get:", round(unique(df_q2.4$mu)[[2]]*3.7e6), "votSers\n")
+cat("So a difference of:", 
+    round(unique(df_q2.4$mu)[[1]]*3.7e6) - round(unique(df_q2.4$mu)[[2]]*3.7e6), 
+    "voters")
+```
 
 
 ## Problem 3: Poisson
 
-In this problem, we will reproduce a simplied version of the analysis from Levin, Jamie, et al. “A test of the democratic peacekeeping hypothesis: Coups, democracy, and foreign military deployments.” *Journal of Peace Research* 58.3 (2021): 355-367. Levin et al hypothesize that sending peacekeepers abroad can undermine authoritarian regimes at home by enriching the military and therefore creating incentives for coups. The authors use a Poisson regression to look at the relationship between peacekeepers sent abroad and the number of coups at home. The authors include a lot of components in the model – here we will simply look at whether the number of military coup attemps `milcoupsum` is predicted by the number of peacekeeping troops sent abroad `troops` using a Poisson regression, controlling for `conflict`.
+In this problem, we will reproduce a simplified version of the analysis from Levin, Jamie, et al. “A test of the democratic peacekeeping hypothesis: Coups, democracy, and foreign military deployments.” *Journal of Peace Research* 58.3 (2021): 355-367. Levin et al hypothesize that sending peacekeepers abroad can undermine authoritarian regimes at home by enriching the military and therefore creating incentives for coups. The authors use a Poisson regression to look at the relationship between peacekeepers sent abroad and the number of coups at home. The authors include a lot of components in the model – here we will simply look at whether the number of military coup attemps `milcoupsum` is predicted by the number of peacekeeping troops sent abroad `troops` using a Poisson regression, controlling for `conflict`.
 
 1. Write out the stochastic and systematic components for the model.
 
+Stochastic component:
+$$Y\sim f_p(y;\lambda,h)$$ $$Pr(Y=y)=\frac{e^{-h\lambda}(h\lambda)^y}{y!}$$ where $\lambda>0, h>0$
+
+Systematic component: A linear combination of $X$, $\beta X$
+
+
 2. Derive the log-likelihood.
+
+To incorporate covariates into a Poisson model where the mean is greater than zero, we need a link function to map our covariates, $x_i$, onto positive values. We use the exponential function:
+
+$$E[Y_i]=h\lambda_i=he^{x_i^T\beta}$$
+
+Or when $h=1$:
+
+$$E[Y_i]=\lambda_i=e^{x_i^T\beta}$$
+
+Plugging this value of $\lambda$ into our probability mass function we found defined above we get:
+
+$$Pr(Y_i=y|x_i)=\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T\beta}]^y} {y!}$$
+
+We then derive the likelihood as follows:
+
+$$\mathcal{L}(\beta|X,y)=\prod_{i=1}^n\frac{e^{-e^{x_i^T\beta}}[e^{x_i^T \beta}]^{y_i}}{y_i!}$$
+
+Take the log:
+
+$$\ln\mathcal{L}=\sum_{i=1}^n [e^{x_i^T\beta} + y_ix_i^T\beta - \ln(y_i!)]$$
 
 3. Load the data (`replication_data.dta`) using the `haven` package. Subset the data to only autocracies (`robust_autocracy6`==1). Select only the troops, conflict, and milcoupsum columns of the data. Remove any observations with `NA`’s in either of these columns.
 
+```{r}
+df_q3 <- read_dta("MLE_Midterm_Data/replication_data.dta") %>% 
+  filter(robust_autocracy6==1) %>% 
+  select(troops, conflict, milcoupsum) %>% 
+  drop_na()
+```
+
 4. Optimize the model to find the maximum likelihood estimates for β. Calculate the standard errors for your $\hat{\beta}$’s and present your results in a nicely formatted table.
+
+```{r}
+X <- cbind(1,df_q3 %>% select(troops, conflict))
+y <- df_q3$milcoupsum
+
+negLL.poisson <- function(par, y, X){
+  X <- as.matrix(X)
+  beta <- par[1:ncol(X)]
+
+  return(-sum((X%*%beta)*y - exp(X%*%beta)))
+}
+
+fit.poisson <- optim(par = rep(0, ncol(X)), fn = negLL.poisson, y = y,
+                X = X, method = "BFGS", hessian = TRUE)
+
+coefficients <- round(fit.poisson$par,3)
+stderrs <- round(sqrt(diag(solve(fit.poisson$hessian))),3)
+
+
+
+kable(cbind(Term=c("Intercept", "Troops", "Conflict"),
+      Estimate=coefficients, "Std. Err."=stderrs))
+
+# Compare to R's baked in logit estimation
+fit.glm <- glm(milcoupsum ~ troops + conflict,
+               family = "poisson", 
+               data = df_q3)
+summary(fit.glm)
+```
 
 5. Generate a histogram of 10000 predicted values for coups when `troops`=5 and `conflict`=1. Plot this histogram next to 10000 predicted values for coups when `troops`=0 and `conflict`=1. About how many more coups would you expect with `troops`=5 than `troops`=0?
 
+```{r}
+n <- 10000
+scen1 <- exp(rnorm(n, mean=coefficients[1], sd=stderrs[1]) + 
+             5*rnorm(n, mean=coefficients[2], sd=stderrs[2]) +
+             1*rnorm(n, mean=coefficients[3], sd=stderrs[3]))
+
+scen2 <- exp(rnorm(n, mean=coefficients[1], sd=stderrs[1]) + 0 +
+             1*rnorm(n, mean=coefficients[3], sd=stderrs[3]))
+
+df_q2.5 <- data.frame("Predicted milsumcoup Count"=c(scen1, scen2), 
+                      "Scenario"=rep(c("troops=5; conflict=1", 
+                                       "troops=0; conflict=1"),each=n))
+
+ggplot(data=df_q2.5, aes(x=Predicted.milsumcoup.Count,fill=Scenario)) +
+  geom_density(color="darkgray", alpha=0.5, position="identity") +
+  xlim(c(0,3)) +
+  theme_minimal()
+
+df_scen1 <- data.frame(troops = rep(5, 10000), conflict=rep(1, 10000))
+df_scen2 <- data.frame(troops = rep(0, 10000), conflict=rep(1, 10000))
+
+df_scen1$milcoupsum <- exp(predict.glm(fit.glm, df_scen1))
+df_scen2$milcoupsum <- exp(predict.glm(fit.glm, df_scen2))
+
+df_scen1$scenario <- "troops=5; conflict=1"
+df_scen2$scenario <- "troops=0; conflict=0"
+
+df_q2.5 <- rbind(df_scen1, df_scen2)
+
+ggplot(data=df_q2.5, aes(x=milcoupsum,fill=scenario)) +
+  geom_density(color="darkgray", alpha=0.5, position="identity") +
+  xlim(c(0,1)) +
+  theme_minimal()
+
+```
+
 6. Use the `AER` package to test for overdispersion. What do you conclude?
 
+```{r}
+AER::dispersiontest(fit.glm, alternative="greater")
+```
+
+The test indicates there is likely overdispersion in the data. This may be causing our standard errors to be biased toward zero and indicates a quasipoisson or negative binomial model may be a better choice for estimating the relationship between the variables.
