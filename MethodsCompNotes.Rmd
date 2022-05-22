@@ -849,7 +849,7 @@ Logit allows for mapping probabilities onto the unbounded real line using odds. 
 
 $$\mathrm{logit}(p)=\log(\frac{p}{1-p})$$
 
-And the inverse mapping:\
+And the inverse mapping:
 
 $$
 \mathrm{logit}^{-1}(x)=\frac{e^x}{1+e^x}=\frac{1}{1+e^{-x}}
@@ -952,7 +952,7 @@ While the output of logit is similar to OLS, interpretation is a bit more nuance
 
 $$\frac{\partial E[Y_i]}{\partial x_{ki}}=\frac{\partial\theta_i}{\partial x_{ki}}=\beta_k\frac{e^{x_i^T\beta}}{(1+e^{x_i^T\beta})^2}$$
 
-As a quick trick, you can divide a coefficient by 4 to get an estimate of a maximum effect a 1 unit increase in the covariate can have on the probability of the DV being 1. i.e. if we have a coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
+As a quick trick, you can divide a coefficient by 4 to get an estimate of a maximum effect a 1 unit increase in the covariate can have on the bitbability of the DV being 1. i.e. if we have a coefficent of -1.45 then $\frac{-1.45}{4}=-0.4$ so a 1 unit increase in the IV reduces the probability of the DV being one by about 40%.
 
 2.  The logit model is a linear regression on the log odds so the exponentiated coefficients are odds ratios. If we have a coefficient greater than 1 then a 1 unit increase in that covariate corresponds to an *increase* in the relative probability of obtaining a 1 in the outcome variable. Less than 1 represents a decrease.
 
@@ -2209,7 +2209,7 @@ negLL.OLS <- function(theta,y,x){
 }
 
 # Optimize the likelihood function and return our estimates
-result <- optim(par=rep(1,ncol(x)+1), fn=OLS, method="BFGS", hessian=TRUE, y=y, x=x)
+result <- optim(par=rep(1,ncol(x)+1), fn=negLL.OLS, method="BFGS", hessian=TRUE, y=y, x=x)
 
 coefficients <- round(result$par[1:ncol(x)],3)
 stderrs <- round(sqrt(diag(solve(result$hessian)))[1:ncol(x)],3)
